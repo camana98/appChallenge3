@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXFileReference section */
-		B72C5EEC2EBA8DD9001C47BA /* appChallenge3.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = appChallenge3.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		B782A1AC2EBE738800D2C74D /* appChallenge3.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = appChallenge3.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -33,16 +33,8 @@
 			isa = PBXGroup;
 			children = (
 				B72C5EEE2EBA8DD9001C47BA /* appChallenge3 */,
-				B72C5EED2EBA8DD9001C47BA /* Products */,
+				B782A1AC2EBE738800D2C74D /* appChallenge3.app */,
 			);
-			sourceTree = "<group>";
-		};
-		B72C5EED2EBA8DD9001C47BA /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				B72C5EEC2EBA8DD9001C47BA /* appChallenge3.app */,
-			);
-			name = Products;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -67,7 +59,7 @@
 			packageProductDependencies = (
 			);
 			productName = appChallenge3;
-			productReference = B72C5EEC2EBA8DD9001C47BA /* appChallenge3.app */;
+			productReference = B782A1AC2EBE738800D2C74D /* appChallenge3.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -95,7 +87,7 @@
 			mainGroup = B72C5EE32EBA8DD9001C47BA;
 			minimizedProjectReferenceProxies = 1;
 			preferredProjectObjectVersion = 77;
-			productRefGroup = B72C5EED2EBA8DD9001C47BA /* Products */;
+			productRefGroup = B72C5EE32EBA8DD9001C47BA;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
@@ -271,12 +263,15 @@
 				PRODUCT_BUNDLE_IDENTIFIER = br.academy.appChallenge3;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
 				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -305,12 +300,15 @@
 				PRODUCT_BUNDLE_IDENTIFIER = br.academy.appChallenge3;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
 				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};
