@@ -29,7 +29,11 @@ struct PixelArtEditorView: View {
                         gridSize: viewModel.gridSize,
                         pixelSize: viewModel.pixelSize,
                         onPixelTapped: { row, col in
-                            viewModel.setPixel(at: row, col: col, color: viewModel.selectedColor)
+                            if viewModel.isEraserMode {
+                                viewModel.clearPixel(at: row, col: col)
+                            } else {
+                                viewModel.setPixel(at: row, col: col, color: viewModel.selectedColor)
+                            }
                         }
                     )
                     
@@ -50,7 +54,9 @@ struct PixelArtEditorView: View {
                         onSave: { viewModel.showingSaveDialog = true },
                         onShowArtworks: { viewModel.showingArtworksList = true },
                         onClear: { viewModel.clearCanvas() },
-                        onShowAR: { viewModel.showingARView = true }
+                        onShowAR: { viewModel.showingARView = true },
+                        onToggleEraser: { viewModel.isEraserMode.toggle() },
+                        isEraserMode: viewModel.isEraserMode
                     )
                 }
                 .padding(.horizontal, 16)

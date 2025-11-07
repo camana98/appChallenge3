@@ -20,6 +20,7 @@ class PixelArtViewModel: ObservableObject {
     @Published var showingArtworksList = false
     @Published var showingARView = false
     @Published var artworkName = ""
+    @Published var isEraserMode = false
     
     let gridSize: Int
     let pixelSize: CGFloat
@@ -43,6 +44,11 @@ class PixelArtViewModel: ObservableObject {
     func setPixel(at row: Int, col: Int, color: Color) {
         guard row >= 0, row < gridSize, col >= 0, col < gridSize else { return }
         pixels[row][col] = color
+    }
+    
+    func clearPixel(at row: Int, col: Int) {
+        guard row >= 0, row < gridSize, col >= 0, col < gridSize else { return }
+        pixels[row][col] = .white
     }
     
     func clearCanvas() {
