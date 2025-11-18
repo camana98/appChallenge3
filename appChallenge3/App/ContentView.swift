@@ -10,11 +10,11 @@ import SwiftData
 
 struct ContentView: View {
     var body: some View {
-        PixelArtEditorView()
+        ViewExample()
     }
 }
 
 #Preview {
     ContentView()
-        .modelContainer(for: [PixelArt.self], inMemory: true)
+        .modelContainer(for: [], inMemory: true)
 }
