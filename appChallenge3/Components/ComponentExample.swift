@@ -11,6 +11,10 @@ struct ComponentExample: View {
     var body: some View {
         VStack {
             // vazio por enquanto
+            
+            
+            
+            //comentario pra testar PR
         }
     }
 }
