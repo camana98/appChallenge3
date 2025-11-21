@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct UnfinishedCube {
+struct UnfinishedCube: Codable {
     let locationX: Float
     let locationY: Float
     let locationZ: Float
