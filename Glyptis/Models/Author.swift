@@ -9,9 +9,9 @@ import Foundation
 
 @Model
 final class Author {
-    var id: UUID
-    var createdAt: Date
-    var name: String
+    var id: UUID = UUID()
+    var createdAt: Date = Date()
+    var name: String = ""
     var appleUserID: String?
     
     var createdSculptures: [Sculpture]?
