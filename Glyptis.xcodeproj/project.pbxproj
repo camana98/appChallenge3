@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXContainerItemProxy section */
-		D2994FE92ED0CC5100E97910 /* PBXContainerItemProxy */ = {
+		D29A77AA2ED0D899003908C4 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = C5C4EC2D2ECE53E90068CA51 /* Project object */;
 			proxyType = 1;
@@ -18,13 +18,18 @@
 
 /* Begin PBXFileReference section */
 		C5C4EC352ECE53E90068CA51 /* Glyptis.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Glyptis.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		D2994FE52ED0CC5100E97910 /* GlyptisTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = GlyptisTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		D29A77A62ED0D899003908C4 /* GlyptisTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = GlyptisTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		C5C4EC372ECE53E90068CA51 /* Glyptis */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = Glyptis;
+			sourceTree = "<group>";
+		};
+		D29A77A72ED0D899003908C4 /* GlyptisTests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = GlyptisTests;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -37,7 +42,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		D2994FE22ED0CC5100E97910 /* Frameworks */ = {
+		D29A77A32ED0D899003908C4 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -51,6 +56,7 @@
 			isa = PBXGroup;
 			children = (
 				C5C4EC372ECE53E90068CA51 /* Glyptis */,
+				D29A77A72ED0D899003908C4 /* GlyptisTests */,
 				C5C4EC362ECE53E90068CA51 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -59,7 +65,7 @@
 			isa = PBXGroup;
 			children = (
 				C5C4EC352ECE53E90068CA51 /* Glyptis.app */,
-				D2994FE52ED0CC5100E97910 /* GlyptisTests.xctest */,
+				D29A77A62ED0D899003908C4 /* GlyptisTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -89,24 +95,27 @@
 			productReference = C5C4EC352ECE53E90068CA51 /* Glyptis.app */;
 			productType = "com.apple.product-type.application";
 		};
-		D2994FE42ED0CC5100E97910 /* GlyptisTests */ = {
+		D29A77A52ED0D899003908C4 /* GlyptisTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = D2994FED2ED0CC5100E97910 /* Build configuration list for PBXNativeTarget "GlyptisTests" */;
+			buildConfigurationList = D29A77AE2ED0D899003908C4 /* Build configuration list for PBXNativeTarget "GlyptisTests" */;
 			buildPhases = (
-				D2994FE12ED0CC5100E97910 /* Sources */,
-				D2994FE22ED0CC5100E97910 /* Frameworks */,
-				D2994FE32ED0CC5100E97910 /* Resources */,
+				D29A77A22ED0D899003908C4 /* Sources */,
+				D29A77A32ED0D899003908C4 /* Frameworks */,
+				D29A77A42ED0D899003908C4 /* Resources */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				D2994FEA2ED0CC5100E97910 /* PBXTargetDependency */,
+				D29A77AB2ED0D899003908C4 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				D29A77A72ED0D899003908C4 /* GlyptisTests */,
 			);
 			name = GlyptisTests;
 			packageProductDependencies = (
 			);
 			productName = GlyptisTests;
-			productReference = D2994FE52ED0CC5100E97910 /* GlyptisTests.xctest */;
+			productReference = D29A77A62ED0D899003908C4 /* GlyptisTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
@@ -122,7 +131,7 @@
 					C5C4EC342ECE53E90068CA51 = {
 						CreatedOnToolsVersion = 26.0.1;
 					};
-					D2994FE42ED0CC5100E97910 = {
+					D29A77A52ED0D899003908C4 = {
 						CreatedOnToolsVersion = 26.1.1;
 						TestTargetID = C5C4EC342ECE53E90068CA51;
 					};
@@ -143,7 +152,7 @@
 			projectRoot = "";
 			targets = (
 				C5C4EC342ECE53E90068CA51 /* Glyptis */,
-				D2994FE42ED0CC5100E97910 /* GlyptisTests */,
+				D29A77A52ED0D899003908C4 /* GlyptisTests */,
 			);
 		};
 /* End PBXProject section */
@@ -156,7 +165,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		D2994FE32ED0CC5100E97910 /* Resources */ = {
+		D29A77A42ED0D899003908C4 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -173,7 +182,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		D2994FE12ED0CC5100E97910 /* Sources */ = {
+		D29A77A22ED0D899003908C4 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -183,10 +192,10 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		D2994FEA2ED0CC5100E97910 /* PBXTargetDependency */ = {
+		D29A77AB2ED0D899003908C4 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = C5C4EC342ECE53E90068CA51 /* Glyptis */;
-			targetProxy = D2994FE92ED0CC5100E97910 /* PBXContainerItemProxy */;
+			targetProxy = D29A77AA2ED0D899003908C4 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -317,7 +326,6 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = Glyptis/Glyptis.entitlements;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
@@ -354,7 +362,6 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = Glyptis/Glyptis.entitlements;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
@@ -386,7 +393,7 @@
 			};
 			name = Release;
 		};
-		D2994FEB2ED0CC5100E97910 /* Debug */ = {
+		D29A77AC2ED0D899003908C4 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -408,7 +415,7 @@
 			};
 			name = Debug;
 		};
-		D2994FEC2ED0CC5100E97910 /* Release */ = {
+		D29A77AD2ED0D899003908C4 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -451,11 +458,11 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		D2994FED2ED0CC5100E97910 /* Build configuration list for PBXNativeTarget "GlyptisTests" */ = {
+		D29A77AE2ED0D899003908C4 /* Build configuration list for PBXNativeTarget "GlyptisTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				D2994FEB2ED0CC5100E97910 /* Debug */,
-				D2994FEC2ED0CC5100E97910 /* Release */,
+				D29A77AC2ED0D899003908C4 /* Debug */,
+				D29A77AD2ED0D899003908C4 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

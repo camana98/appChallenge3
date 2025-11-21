@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import SwiftData
 
 @main
 struct GlyptisApp: App {
@@ -13,5 +14,11 @@ struct GlyptisApp: App {
         WindowGroup {
             ContentView()
         }
+        .modelContainer(for: [
+            Author.self,
+            Cube.self,
+            Localization.self,
+            Sculpture.self,
+        ])
     }
 }

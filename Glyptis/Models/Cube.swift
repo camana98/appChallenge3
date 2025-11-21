@@ -20,7 +20,7 @@ final class Cube {
     var colorB: Float
     var colorA: Float?
     
-    var sculpture: Sculpture
+    var sculpture: Sculpture?
     
     init(sculpture: Sculpture, x: Float, y: Float, z: Float, r: Float, g: Float, b: Float) {
         self.id = UUID()
