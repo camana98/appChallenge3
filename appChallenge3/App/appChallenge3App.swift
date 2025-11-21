@@ -12,7 +12,7 @@ import SwiftData
 struct appChallenge3App: App {
     var sharedModelContainer: ModelContainer = {
         let schema = Schema([
-            
+            Author.self
         ])
         let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
 
