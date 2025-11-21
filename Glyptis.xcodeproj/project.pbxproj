@@ -32,6 +32,11 @@
 			path = GlyptisTests;
 			sourceTree = "<group>";
 		};
+		D2DBDDB62ECE50E60056369A /* appChallenge3Tests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = appChallenge3Tests;
+			sourceTree = "<group>";
+		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -43,6 +48,13 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		D29A77A32ED0D899003908C4 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D2DBDDB22ECE50E60056369A /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -135,6 +147,11 @@
 						CreatedOnToolsVersion = 26.1.1;
 						TestTargetID = C5C4EC342ECE53E90068CA51;
 					};
+					D2DBDDB42ECE50E60056369A = {
+						CreatedOnToolsVersion = 26.1.1;
+						LastSwiftMigration = 2610;
+						TestTargetID = B72C5EEB2EBA8DD9001C47BA;
+					};
 				};
 			};
 			buildConfigurationList = C5C4EC302ECE53E90068CA51 /* Build configuration list for PBXProject "Glyptis" */;
@@ -172,6 +189,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		D2DBDDB32ECE50E60056369A /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -183,6 +207,13 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		D29A77A22ED0D899003908C4 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D2DBDDB12ECE50E60056369A /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -437,6 +468,53 @@
 			};
 			name = Release;
 		};
+		D2DBDDBC2ECE50E60056369A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 75BF5C5F9K;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.1;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = app.ghiseguilherme.appChallenge3Tests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/appChallenge3.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/appChallenge3";
+			};
+			name = Debug;
+		};
+		D2DBDDBD2ECE50E60056369A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 75BF5C5F9K;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.1;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = app.ghiseguilherme.appChallenge3Tests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/appChallenge3.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/appChallenge3";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -463,6 +541,15 @@
 			buildConfigurations = (
 				D29A77AC2ED0D899003908C4 /* Debug */,
 				D29A77AD2ED0D899003908C4 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		D2DBDDBB2ECE50E60056369A /* Build configuration list for PBXNativeTarget "appChallenge3Tests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D2DBDDBC2ECE50E60056369A /* Debug */,
+				D2DBDDBD2ECE50E60056369A /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
