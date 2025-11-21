@@ -12,15 +12,12 @@ import SwiftData
 
 @MainActor
 final class ViewModelAuthor: ObservableObject {
-    var objectWillChange: ObservableObjectPublisher
-    
     
     @Published var authors: [Author] = []
     
     private var context: ModelContext
     
     init(context: ModelContext) {
-        self.objectWillChange = .init()
         self.context = context
         fetchAuthors()
     }
@@ -30,7 +27,6 @@ final class ViewModelAuthor: ObservableObject {
     func createAuthor(name: String, appleUserID: String) {
         let newAuthor = Author(name: name, appleUserID: appleUserID)
         context.insert(newAuthor)
-        
         
         do {
             try context.save()
