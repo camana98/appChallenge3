@@ -9,12 +9,12 @@ import Foundation
 
 @Model
 final class Localization {
-    var id: UUID
-    var createdAt: Date
+    var id: UUID = UUID()
+    var createdAt: Date = Date()
     
-    var latitude: Double
-    var longitude: Double
-    var altitude: Double
+    var latitude: Double = 0.0
+    var longitude: Double = 0.0
+    var altitude: Double = 0.0
     
     var sculpture: Sculpture?
     
