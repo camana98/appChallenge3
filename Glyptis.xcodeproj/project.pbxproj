@@ -6,20 +6,38 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXContainerItemProxy section */
+		D2994FE92ED0CC5100E97910 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C5C4EC2D2ECE53E90068CA51 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = C5C4EC342ECE53E90068CA51;
+			remoteInfo = Glyptis;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
-		B782A1AC2EBE738800D2C74D /* appChallenge3.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = appChallenge3.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		C5C4EC352ECE53E90068CA51 /* Glyptis.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Glyptis.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		D2994FE52ED0CC5100E97910 /* GlyptisTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = GlyptisTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		B72C5EEE2EBA8DD9001C47BA /* appChallenge3 */ = {
+		C5C4EC372ECE53E90068CA51 /* Glyptis */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			path = appChallenge3;
+			path = Glyptis;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		B72C5EE92EBA8DD9001C47BA /* Frameworks */ = {
+		C5C4EC322ECE53E90068CA51 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D2994FE22ED0CC5100E97910 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -29,75 +47,116 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		B72C5EE32EBA8DD9001C47BA = {
+		C5C4EC2C2ECE53E90068CA51 = {
 			isa = PBXGroup;
 			children = (
-				B72C5EEE2EBA8DD9001C47BA /* appChallenge3 */,
-				B782A1AC2EBE738800D2C74D /* appChallenge3.app */,
+				C5C4EC372ECE53E90068CA51 /* Glyptis */,
+				C5C4EC362ECE53E90068CA51 /* Products */,
 			);
+			sourceTree = "<group>";
+		};
+		C5C4EC362ECE53E90068CA51 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				C5C4EC352ECE53E90068CA51 /* Glyptis.app */,
+				D2994FE52ED0CC5100E97910 /* GlyptisTests.xctest */,
+			);
+			name = Products;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		B72C5EEB2EBA8DD9001C47BA /* appChallenge3 */ = {
+		C5C4EC342ECE53E90068CA51 /* Glyptis */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = B72C5EF72EBA8DDA001C47BA /* Build configuration list for PBXNativeTarget "appChallenge3" */;
+			buildConfigurationList = C5C4EC402ECE53EA0068CA51 /* Build configuration list for PBXNativeTarget "Glyptis" */;
 			buildPhases = (
-				B72C5EE82EBA8DD9001C47BA /* Sources */,
-				B72C5EE92EBA8DD9001C47BA /* Frameworks */,
-				B72C5EEA2EBA8DD9001C47BA /* Resources */,
+				C5C4EC312ECE53E90068CA51 /* Sources */,
+				C5C4EC322ECE53E90068CA51 /* Frameworks */,
+				C5C4EC332ECE53E90068CA51 /* Resources */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
-				B72C5EEE2EBA8DD9001C47BA /* appChallenge3 */,
+				C5C4EC372ECE53E90068CA51 /* Glyptis */,
 			);
-			name = appChallenge3;
+			name = Glyptis;
 			packageProductDependencies = (
 			);
-			productName = appChallenge3;
-			productReference = B782A1AC2EBE738800D2C74D /* appChallenge3.app */;
+			productName = Glyptis;
+			productReference = C5C4EC352ECE53E90068CA51 /* Glyptis.app */;
 			productType = "com.apple.product-type.application";
+		};
+		D2994FE42ED0CC5100E97910 /* GlyptisTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D2994FED2ED0CC5100E97910 /* Build configuration list for PBXNativeTarget "GlyptisTests" */;
+			buildPhases = (
+				D2994FE12ED0CC5100E97910 /* Sources */,
+				D2994FE22ED0CC5100E97910 /* Frameworks */,
+				D2994FE32ED0CC5100E97910 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				D2994FEA2ED0CC5100E97910 /* PBXTargetDependency */,
+			);
+			name = GlyptisTests;
+			packageProductDependencies = (
+			);
+			productName = GlyptisTests;
+			productReference = D2994FE52ED0CC5100E97910 /* GlyptisTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
-		B72C5EE42EBA8DD9001C47BA /* Project object */ = {
+		C5C4EC2D2ECE53E90068CA51 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
-				LastSwiftUpdateCheck = 2600;
+				LastSwiftUpdateCheck = 2610;
 				LastUpgradeCheck = 2600;
 				TargetAttributes = {
-					B72C5EEB2EBA8DD9001C47BA = {
-						CreatedOnToolsVersion = 26.0;
+					C5C4EC342ECE53E90068CA51 = {
+						CreatedOnToolsVersion = 26.0.1;
+					};
+					D2994FE42ED0CC5100E97910 = {
+						CreatedOnToolsVersion = 26.1.1;
+						TestTargetID = C5C4EC342ECE53E90068CA51;
 					};
 				};
 			};
-			buildConfigurationList = B72C5EE72EBA8DD9001C47BA /* Build configuration list for PBXProject "appChallenge3" */;
+			buildConfigurationList = C5C4EC302ECE53E90068CA51 /* Build configuration list for PBXProject "Glyptis" */;
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
 				Base,
 			);
-			mainGroup = B72C5EE32EBA8DD9001C47BA;
+			mainGroup = C5C4EC2C2ECE53E90068CA51;
 			minimizedProjectReferenceProxies = 1;
 			preferredProjectObjectVersion = 77;
-			productRefGroup = B72C5EE32EBA8DD9001C47BA;
+			productRefGroup = C5C4EC362ECE53E90068CA51 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				B72C5EEB2EBA8DD9001C47BA /* appChallenge3 */,
+				C5C4EC342ECE53E90068CA51 /* Glyptis */,
+				D2994FE42ED0CC5100E97910 /* GlyptisTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		B72C5EEA2EBA8DD9001C47BA /* Resources */ = {
+		C5C4EC332ECE53E90068CA51 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D2994FE32ED0CC5100E97910 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -107,7 +166,14 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		B72C5EE82EBA8DD9001C47BA /* Sources */ = {
+		C5C4EC312ECE53E90068CA51 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D2994FE12ED0CC5100E97910 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -116,8 +182,16 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		D2994FEA2ED0CC5100E97910 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = C5C4EC342ECE53E90068CA51 /* Glyptis */;
+			targetProxy = D2994FE92ED0CC5100E97910 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin XCBuildConfiguration section */
-		B72C5EF52EBA8DDA001C47BA /* Debug */ = {
+		C5C4EC3E2ECE53EA0068CA51 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -152,7 +226,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
-				DEVELOPMENT_TEAM = 982JJP92PQ;
+				DEVELOPMENT_TEAM = K7J6QAV9ZN;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
@@ -181,7 +255,7 @@
 			};
 			name = Debug;
 		};
-		B72C5EF62EBA8DDA001C47BA /* Release */ = {
+		C5C4EC3F2ECE53EA0068CA51 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -216,7 +290,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEVELOPMENT_TEAM = 982JJP92PQ;
+				DEVELOPMENT_TEAM = K7J6QAV9ZN;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
@@ -238,21 +312,22 @@
 			};
 			name = Release;
 		};
-		B72C5EF82EBA8DDA001C47BA /* Debug */ = {
+		C5C4EC412ECE53EA0068CA51 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_ENTITLEMENTS = Glyptis/Glyptis.entitlements;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 982JJP92PQ;
+				DEVELOPMENT_TEAM = "";
+				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = K7J6QAV9ZN;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_NSCameraUsageDescription = CAMERA_USAGE_DESCRIPTION;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UIRequiredDeviceCapabilities = arkit;
-				INFOPLIST_KEY_UIStatusBarHidden = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -260,36 +335,36 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = br.academy.appChallenge3;
+				PRODUCT_BUNDLE_IDENTIFIER = br.app.Glyptis;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = GlyptisPP;
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
-				SUPPORTS_MACCATALYST = NO;
-				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
 				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = 1;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
 		};
-		B72C5EF92EBA8DDA001C47BA /* Release */ = {
+		C5C4EC422ECE53EA0068CA51 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_ENTITLEMENTS = Glyptis/Glyptis.entitlements;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 982JJP92PQ;
+				DEVELOPMENT_TEAM = "";
+				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = K7J6QAV9ZN;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_NSCameraUsageDescription = CAMERA_USAGE_DESCRIPTION;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UIRequiredDeviceCapabilities = arkit;
-				INFOPLIST_KEY_UIStatusBarHidden = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -297,43 +372,95 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = br.academy.appChallenge3;
+				PRODUCT_BUNDLE_IDENTIFIER = br.app.Glyptis;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = GlyptisPP;
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
-				SUPPORTS_MACCATALYST = NO;
-				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
 				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = 1;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		D2994FEB2ED0CC5100E97910 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 75BF5C5F9K;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.1;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = app.ghiseguilherme.GlyptisTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Glyptis.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Glyptis";
+			};
+			name = Debug;
+		};
+		D2994FEC2ED0CC5100E97910 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 75BF5C5F9K;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.1;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = app.ghiseguilherme.GlyptisTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Glyptis.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Glyptis";
 			};
 			name = Release;
 		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		B72C5EE72EBA8DD9001C47BA /* Build configuration list for PBXProject "appChallenge3" */ = {
+		C5C4EC302ECE53E90068CA51 /* Build configuration list for PBXProject "Glyptis" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				B72C5EF52EBA8DDA001C47BA /* Debug */,
-				B72C5EF62EBA8DDA001C47BA /* Release */,
+				C5C4EC3E2ECE53EA0068CA51 /* Debug */,
+				C5C4EC3F2ECE53EA0068CA51 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		B72C5EF72EBA8DDA001C47BA /* Build configuration list for PBXNativeTarget "appChallenge3" */ = {
+		C5C4EC402ECE53EA0068CA51 /* Build configuration list for PBXNativeTarget "Glyptis" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				B72C5EF82EBA8DDA001C47BA /* Debug */,
-				B72C5EF92EBA8DDA001C47BA /* Release */,
+				C5C4EC412ECE53EA0068CA51 /* Debug */,
+				C5C4EC422ECE53EA0068CA51 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		D2994FED2ED0CC5100E97910 /* Build configuration list for PBXNativeTarget "GlyptisTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D2994FEB2ED0CC5100E97910 /* Debug */,
+				D2994FEC2ED0CC5100E97910 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
-	rootObject = B72C5EE42EBA8DD9001C47BA /* Project object */;
+	rootObject = C5C4EC2D2ECE53E90068CA51 /* Project object */;
 }
