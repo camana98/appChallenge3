@@ -25,7 +25,7 @@ final class SculptureServiceTests: XCTestCase {
         )
         
         context = ModelContext(container)
-        service = SculptureService(context: context)
+        service = await SculptureService(context: context)
     }
 
     /// Roda DEPOIS de cada teste
@@ -84,18 +84,80 @@ final class SculptureServiceTests: XCTestCase {
         XCTAssertEqual(fetched?.id, created.id)
     }
 
-    // MARK: - UPDATE
-    
-    func testUpdateSculpture() throws {
+    // MARK: - UPDATE (nome)
+
+    func testUpdateName() throws {
         /// DADO QUE tenho uma escultura com nome "Old"
         let sculpture = service.create(name: "Old", cubes: [])
 
         /// QUANDO eu atualizo o nome para "New"
-        service.update(sculpture: sculpture, newName: "New")
+        service.updateName(sculpture, to: "New")
 
         /// ENTÃO o nome deve estar atualizado no banco
         let updated = service.fetchByID(sculpture.id)
         XCTAssertEqual(updated?.name, "New")
+    }
+
+    // MARK: - UPDATE (cubos)
+
+    func testUpdateCubes() throws {
+        /// DADO QUE tenho uma escultura com 1 cubo
+        let initialUnfinishedCubes = [
+            UnfinishedCube(
+                locationX: 0,
+                locationY: 0,
+                locationZ: 0,
+                colorR: 1,
+                colorG: 0,
+                colorB: 0,
+                colorA: 0
+            )
+        ]
+        
+        let sculpture = service.create(
+            name: "WithCubes",
+            cubes: initialUnfinishedCubes
+        )
+        
+        XCTAssertEqual(sculpture.cubes.count, 1)
+
+        /// QUANDO eu atualizo os cubos com uma nova lista
+        let newUnfinishedCubes = [
+            UnfinishedCube(
+                locationX: 1,
+                locationY: 1,
+                locationZ: 1,
+                colorR: 0,
+                colorG: 1,
+                colorB: 0,
+                colorA: 0
+            ),
+            UnfinishedCube(
+                locationX: 2,
+                locationY: 2,
+                locationZ: 2,
+                colorR: 0,
+                colorG: 0,
+                colorB: 1,
+                colorA: 0
+            )
+        ]
+        
+        service.updateCubes(for: sculpture, with: newUnfinishedCubes)
+        
+        /// ENTÃO a escultura deve ter os novos cubos no banco
+        guard let updated = service.fetchByID(sculpture.id) else {
+            XCTFail("Escultura não foi encontrada após updateCubes")
+            return
+        }
+        
+        XCTAssertEqual(updated.cubes.count, 2)
+        XCTAssertEqual(updated.cubes[0].locationX, 1)
+        XCTAssertEqual(updated.cubes[0].locationY, 1)
+        XCTAssertEqual(updated.cubes[0].locationZ, 1)
+        XCTAssertEqual(updated.cubes[1].locationX, 2)
+        XCTAssertEqual(updated.cubes[1].locationY, 2)
+        XCTAssertEqual(updated.cubes[1].locationZ, 2)
     }
 
     // MARK: - DELETE

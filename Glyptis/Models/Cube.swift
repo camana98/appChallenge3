@@ -20,6 +20,7 @@ final class Cube {
     var colorB: Float = 0.0
     var colorA: Float?
     
+    
     var sculpture: Sculpture?
     
     init(sculpture: Sculpture, x: Float, y: Float, z: Float, r: Float, g: Float, b: Float) {

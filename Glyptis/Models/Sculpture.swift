@@ -14,14 +14,14 @@ final class Sculpture {
     var name: String = ""
     
     @Relationship(deleteRule: .cascade, inverse: \Localization.sculpture)
-    var localization: Localization?
+    var localization: [Localization] = []
     
     var author: Author?
     
-    @Relationship(deleteRule: .cascade, inverse: \Cube.sculpture)
-    var cubes: [Cube]?
     
-    init(name: String, localization: Localization? = nil, author: Author? = nil) {
+    var cubes: [Cube] = []
+    
+    init(name: String, localization: [Localization] = [], author: Author? = nil) {
         self.id = UUID()
         self.createdAt = Date()
         self.name = name
@@ -29,3 +29,4 @@ final class Sculpture {
         self.author = author
     }
 }
+
