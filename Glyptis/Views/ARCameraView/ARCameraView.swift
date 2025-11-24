@@ -12,8 +12,20 @@ struct ARCameraView: View {
     @State var coordinator = ARViewCoordinator()
     
     var body: some View {
-        ARViewContainer(coordinator: $coordinator)
-            .edgesIgnoringSafeArea(.all)
+        NavigationStack {
+            ARViewContainer(coordinator: $coordinator)
+                .edgesIgnoringSafeArea(.all)
+            
+            NavigationLink {
+                ContentView()
+            } label: {
+                Text("Ir para Detalhes")
+                    .padding()
+                    .background(Color.blue)
+                    .foregroundColor(.white)
+                    .cornerRadius(10)
+            }
+        }
     }
 }
 
