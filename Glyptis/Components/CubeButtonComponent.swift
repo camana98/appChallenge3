@@ -145,5 +145,10 @@ enum CubeStyle: CaseIterable {
 }
 
 #Preview {
-    CubeButtonComponent(cubeStyle: .checkmark, cubeColor: .blue)
+    VStack {
+        CubeButtonComponent(cubeStyle: .checkmark, cubeColor: .blue)
+    }
+    .onTapGesture {
+        print("hehehehehe")
+    }
 }
