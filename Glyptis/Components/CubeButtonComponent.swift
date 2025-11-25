@@ -13,6 +13,8 @@ struct CubeButtonComponent: View {
     var cubeStyle: CubeStyle
     var cubeColor: CubeColor
     
+    var action: () -> Void
+    
     private let cubeSize: Float = 0.7
     private let iconSize: Float = 0.7 * 0.85
     
@@ -60,6 +62,16 @@ struct CubeButtonComponent: View {
             
             content.add(cubeEntity)
         }
+        .gesture(
+            SpatialTapGesture()
+                .targetedToAnyEntity()
+                .onEnded { _ in
+                    let generator = UIImpactFeedbackGenerator(style: .medium)
+                    generator.impactOccurred()
+                    
+                    action()
+                }
+        )
     }
     
     func generateTextureFromAsset(image: UIImage, color: UIColor) -> TextureResource? {
@@ -146,9 +158,8 @@ enum CubeStyle: CaseIterable {
 
 #Preview {
     VStack {
-        CubeButtonComponent(cubeStyle: .checkmark, cubeColor: .blue)
-    }
-    .onTapGesture {
-        print("hehehehehe")
+        CubeButtonComponent(cubeStyle: .checkmark, cubeColor: .blue) {
+            print("hehehe")
+        }
     }
 }
