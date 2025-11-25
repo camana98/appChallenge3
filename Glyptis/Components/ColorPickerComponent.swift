@@ -8,16 +8,28 @@
 import SwiftUI
 
 struct ColorPickerComponent: View {
-    @State private var selectedColor: Color = .blue
+    @Binding var selectedColor: Color
+    private let colors: [Color] = [.red, .blue, .yellow, .purple, .green]
+    
     
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
         VStack {
-            ColorPicker("Color Picker", selection: $selectedColor)
+            ForEach(colors, id: \.self) { color in
+                Circle()
+                    .foregroundColor(color)
+                    .frame(width: 50)
+//                    .opacity(color == selectedColor ? 0.5 : 1.0)
+//                    .border(color == selectedColor ? Color.black : Color.clear)
+                    .scaleEffect(color == selectedColor ? 1.2 : 1.0)
+                    .onTapGesture {
+                        self.selectedColor = color
+                    }
+                
+            }
         }
     }
 }
 
 #Preview {
-    ColorPickerComponent()
+    ColorPickerComponent(selectedColor: .constant(.blue))
 }
