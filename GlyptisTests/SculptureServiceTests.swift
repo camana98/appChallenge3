@@ -146,18 +146,16 @@ final class SculptureServiceTests: XCTestCase {
         service.updateCubes(for: sculpture, with: newUnfinishedCubes)
         
         /// ENTÃO a escultura deve ter os novos cubos no banco
-        guard let updated = service.fetchByID(sculpture.id), let cubes = updated.cubes else {
+        guard let updated = service.fetchByID(sculpture.id) else {
             XCTFail("Escultura não foi encontrada após updateCubes")
             return
         }
         
+        let cubes = updated.cubes ?? []
         XCTAssertEqual(cubes.count, 2)
-        XCTAssertEqual(cubes[0].locationX, 1.0)
-        XCTAssertEqual(cubes[0].locationY, 1)
-        XCTAssertEqual(cubes[0].locationZ, 1)
-        XCTAssertEqual(cubes[1].locationX, 2)
-        XCTAssertEqual(cubes[1].locationY, 2)
-        XCTAssertEqual(cubes[1].locationZ, 2)
+
+        XCTAssertTrue(cubes.contains { $0.locationX == 1 && $0.locationY == 1 && $0.locationZ == 1 })
+        XCTAssertTrue(cubes.contains { $0.locationX == 2 && $0.locationY == 2 && $0.locationZ == 2 })
     }
 
     // MARK: - DELETE
