@@ -126,6 +126,11 @@ enum CubeStyle: CaseIterable {
     case demolish
     case cleanAll
     case altColor
+    case back
+    case heart
+    case map
+    case pencil
+    case grid
     
     var image: UIImage{
         switch self {
@@ -138,6 +143,11 @@ enum CubeStyle: CaseIterable {
         case .demolish: return .hammerFill
         case .cleanAll: return .xmarkBinFill
         case .altColor: return .paintbrushPointedFill
+        case .back: return .chevronLeft1
+        case .heart: return .heartFill1
+        case .map: return .mappinAndEllipse1
+        case .pencil: return .pencil1
+        case .grid: return .squareGrid3X31
         }
     }
     
@@ -152,6 +162,11 @@ enum CubeStyle: CaseIterable {
         case .demolish: return .customWhite
         case .cleanAll: return .customWhite
         case .altColor: return .customWhite
+        case .back: return .customWhite
+        case .heart: return .customWhite
+        case .map: return .customWhite
+        case .pencil: return .customWhite
+        case .grid: return .customWhite
         }
     }
 }
