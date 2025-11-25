@@ -2,12 +2,11 @@
 //  LocalizationServiceTests.swift
 //  GlyptisTests
 //
-//  Created by Eduardo Camana on 24/11/25.
+//  Created by Eduardo Camana on 25/11/25.
 //
 
-import Foundation
-import SwiftData
 import XCTest
+import SwiftData
 @testable import Glyptis
 
 final class LocalizationServiceTests: XCTestCase {
@@ -16,7 +15,7 @@ final class LocalizationServiceTests: XCTestCase {
     var context: ModelContext!
     var service: LocalizationService!
     
-    //MARK: Setup
+    // MARK: - Setup
     
     /// Roda ANTES de cada teste
     override func setUp() async throws {
@@ -28,13 +27,14 @@ final class LocalizationServiceTests: XCTestCase {
         context = ModelContext(container)
         service = await LocalizationService(context: context)
     }
-
+    
     /// Roda DEPOIS de cada teste
     override func tearDown() {
         container = nil
         context = nil
         service = nil
     }
+    
     
     //MARK: Create
     
@@ -45,8 +45,7 @@ final class LocalizationServiceTests: XCTestCase {
             latitude: 0.0,
             longitude: 0.0,
             altitude: 0.0,
-            sculpture: Sculpture(name: "Test"),
-            contributors: nil
+            sculpture: Sculpture(name: "Test")
         )
         
         /// ENTÃO a localizações deve ser criada com ID e dados corretos
@@ -54,6 +53,7 @@ final class LocalizationServiceTests: XCTestCase {
         XCTAssertEqual(localization.latitude, 0.0)
         XCTAssertEqual(localization.longitude, 0.0)
         XCTAssertEqual(localization.altitude, 0.0)
+        XCTAssertEqual(localization.sculpture?.name, "Test")
 
         /// ENTÃO ela deve estar salva no banco
         let all = service.fetchAll()
@@ -88,10 +88,9 @@ final class LocalizationServiceTests: XCTestCase {
         XCTAssertEqual(fetched?.id, created.id)
     }
     
-    
     //MARK: Delete
     
-    func testDeleteSculpture() throws {
+    func testDeleteLocalization() throws {
         /// DADO QUE tenho uma escultura salva
         let localization = service.create(latitude: 0.0, longitude: 0.0, altitude: 0.0, sculpture: Sculpture(name: "Test"))
 

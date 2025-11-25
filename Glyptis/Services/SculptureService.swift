@@ -124,7 +124,7 @@ final class SculptureService {
             with unfinishedCubes: [UnfinishedCube]
         ) {
             // 1) Remove cubes antigos do contexto
-            for cube in sculpture.cubes {
+            for cube in sculpture.cubes ?? [] {
                 context.delete(cube)
             }
             
@@ -160,4 +160,3 @@ final class SculptureService {
         }
     }
 }
-

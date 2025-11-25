@@ -2,7 +2,7 @@
 //  LocalizationService.swift
 //  Glyptis
 //
-//  Created by Eduardo Camana on 24/11/25.
+//  Created by Eduardo Camana on 25/11/25.
 //
 
 import Foundation
@@ -22,7 +22,7 @@ final class LocalizationService {
         latitude: Double,
         longitude: Double,
         altitude: Double,
-        sculpture: Sculpture, //ver com vivico regra de negocio
+        sculpture: Sculpture,
         contributors: [Author]? = nil
     ) -> Localization {
         let localization = Localization(
@@ -32,7 +32,7 @@ final class LocalizationService {
             sculpture: sculpture
         )
         localization.contributors = contributors
-        sculpture.localization.append(localization)
+        sculpture.localization?.append(localization)
         
         context.insert(localization)
         do {

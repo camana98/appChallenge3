@@ -16,7 +16,7 @@ final class Localization {
     var longitude: Double = 0.0
     var altitude: Double = 0.0
     
-    var sculpture: Sculpture
+    var sculpture: Sculpture?
     
     var contributors: [Author]?
     
@@ -29,4 +29,3 @@ final class Localization {
         self.sculpture = sculpture
     }
 }
-
