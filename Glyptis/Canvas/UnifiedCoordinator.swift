@@ -157,7 +157,7 @@ class UnifiedCoordinator: NSObject, UIGestureRecognizerDelegate {
         let pinchDelta = Float(gesture.scale - 1.0) * 0.3
 
         currentScale -= pinchDelta
-        currentScale = max(0.4, min(currentScale, 3.5))
+        currentScale = max(0.4, min(currentScale, 2))
 
         updateCameraPosition(animated: true)
         gesture.scale = 1.0
