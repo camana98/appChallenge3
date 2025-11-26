@@ -133,6 +133,9 @@ enum CubeStyle: CaseIterable {
     case pencil
     case grid
     case trash
+    case search
+    case filters
+    case unfavourite
     
     var image: UIImage{
         switch self {
@@ -151,6 +154,9 @@ enum CubeStyle: CaseIterable {
         case .pencil: return .pencil1
         case .grid: return .squareGrid3X31
         case .trash: return .trashFill
+        case .search: return .magnifyingglass1
+        case .filters: return .filters1
+        case .unfavourite: return .heart1
         }
     }
     
@@ -171,6 +177,9 @@ enum CubeStyle: CaseIterable {
         case .pencil: return .customWhite
         case .grid: return .customWhite
         case .trash: return .customWhite
+        case .search: return .customWhite
+        case .filters: return .customWhite
+        case .unfavourite: return .customWhite
         }
     }
 }
