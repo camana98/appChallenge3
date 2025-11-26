@@ -19,8 +19,8 @@ struct ContentView: View {
         }
         
         VStack {
-            ColorPickerComponent(selectedColor: $selectedColor)
-            Rectangle()
+            ColorPickerComponent(selectedColor: $selectedColor, isSelected: false)
+            RootHexagon()
                 .frame(width: 100, height: 100)
                 .foregroundColor(selectedColor)
             Text("\(selectedColor.description)")
