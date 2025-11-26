@@ -132,6 +132,7 @@ enum CubeStyle: CaseIterable {
     case map
     case pencil
     case grid
+    case trash
     
     var image: UIImage{
         switch self {
@@ -149,6 +150,7 @@ enum CubeStyle: CaseIterable {
         case .map: return .mappinAndEllipse1
         case .pencil: return .pencil1
         case .grid: return .squareGrid3X31
+        case .trash: return .trashFill
         }
     }
     
@@ -168,6 +170,7 @@ enum CubeStyle: CaseIterable {
         case .map: return .customWhite
         case .pencil: return .customWhite
         case .grid: return .customWhite
+        case .trash: return .customWhite
         }
     }
 }

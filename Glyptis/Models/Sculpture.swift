@@ -29,3 +29,12 @@ final class Sculpture {
         self.author = author
     }
 }
+
+extension Sculpture {
+    var formattedCreatedAt: String {
+        let formatter = DateFormatter()
+        formatter.locale = Locale(identifier: "pt_BR")
+        formatter.dateFormat = "dd/MM/yyyy 'às' HH:mm."
+        return formatter.string(from: createdAt)
+    }
+}
