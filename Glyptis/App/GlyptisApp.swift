@@ -12,7 +12,7 @@ import SwiftData
 struct GlyptisApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            ARCameraView()
         }
         .modelContainer(for: [
             Author.self,
