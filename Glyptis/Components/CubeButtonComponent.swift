@@ -15,8 +15,8 @@ struct CubeButtonComponent: View {
     
     var action: () -> Void
     
-    private let cubeSize: Float = 0.7
-    private let iconSize: Float = 0.7 * 0.85
+    private let cubeSize: Float = 1.0
+    private let iconSize: Float = 0.85
 
     
     var body: some View {

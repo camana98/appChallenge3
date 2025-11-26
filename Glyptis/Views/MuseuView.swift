@@ -10,6 +10,9 @@ import SwiftUI
 import RealityKit
 
 struct MuseuView: View {
+    
+    @State private var showGridListMuseum: Bool = false
+    
     var body: some View {
         ZStack {
             
@@ -20,7 +23,9 @@ struct MuseuView: View {
             
             VStack {
                 HStack {
-                    CubeButtonComponent(cubeStyle: .checkmark, cubeColor: .blue)
+                    CubeButtonComponent(cubeStyle: .back, cubeColor: .blue) {
+                        
+                    }
                         .frame(width: 100, height: 100)
                         .scaledToFill()
                     
@@ -30,52 +35,21 @@ struct MuseuView: View {
                     
                     Spacer()
                     
-                    CubeButtonComponent(cubeStyle: .checkmark, cubeColor: .blue)
+                    CubeButtonComponent(cubeStyle: .grid, cubeColor: .blue) {
+                        showGridListMuseum.toggle()
+                    }
                         .frame(width: 100, height: 100)
                         .scaledToFill()
                 }
                 
                 Spacer()
-                
-                ZStack {
-                    RoundedRectangle(cornerRadius: 32)
-                        .foregroundStyle(.foregroundMuseu)
-                        .opacity(0.9)
-                    
-                    HStack(spacing: 0) {
-                        VStack(spacing: -4) {
-                            CubeButtonComponent(cubeStyle: .demolish, cubeColor: .blue)
-                                .frame(width: 100, height: 100)
-                                .scaledToFill()
-                            Text("Deletar")
-                        }
-                        
-                        VStack(spacing: -4) {
-                            CubeButtonComponent(cubeStyle: .demolish, cubeColor: .blue)
-                                .frame(width: 100, height: 100)
-                                .scaledToFill()
-                            Text("Deletar")
-                        }
-                        
-                        VStack(spacing: -4) {
-                            CubeButtonComponent(cubeStyle: .demolish, cubeColor: .blue)
-                                .frame(width: 100, height: 100)
-                                .scaledToFill()
-                            Text("Deletar")
-                        }
-                        
-                        VStack(spacing: -4) {
-                            CubeButtonComponent(cubeStyle: .demolish, cubeColor: .blue)
-                                .frame(width: 100, height: 100)
-                                .scaledToFill()
-                            Text("Deletar")
-                        }
-                        
-                        
-                    }
-                }
-                
+                                
             }
+        }
+        .sheet(isPresented: $showGridListMuseum) {
+            MuseuGridListView()
+                .presentationDetents([.medium, .large])
+                .presentationBackgroundInteraction(.enabled(upThrough: .medium))
         }
     }
 }
