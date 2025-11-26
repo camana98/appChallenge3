@@ -1,3 +1,10 @@
+//
+//  UnifiedCanvasContainer.swift
+//  Glyptis
+//
+//  Created by Guilherme Ghise Rossoni on 25/11/25.
+//
+
 import SwiftUI
 import RealityKit
 import ARKit
@@ -22,7 +29,7 @@ struct UnifiedCanvasContainer: UIViewRepresentable {
         let arView = ARView(frame: .zero, cameraMode: .nonAR, automaticallyConfigureSession: false)
         arView.environment.background = .color(.clear)
 
-        // setup anchor, cena e coordinator
+        /// setup anchor, cena e coordinator
         let anchor = AnchorEntity(world: .zero)
         arView.scene.anchors.append(anchor)
 
@@ -31,7 +38,7 @@ struct UnifiedCanvasContainer: UIViewRepresentable {
         context.coordinator.usdzOffset = modelOffset
         context.coordinator.setupScene(anchor: anchor, usdzFileName: usdzFileName)
 
-        // gesture recognizers
+        /// gesture recognizers
         let panGesture = UIPanGestureRecognizer(target: context.coordinator, action: #selector(UnifiedCoordinator.handlePan(_:)))
         let pinchGesture = UIPinchGestureRecognizer(target: context.coordinator, action: #selector(UnifiedCoordinator.handlePinch(_:)))
         let tapGesture = UITapGestureRecognizer(target: context.coordinator, action: #selector(UnifiedCoordinator.handleTap(_:)))
@@ -43,7 +50,7 @@ struct UnifiedCanvasContainer: UIViewRepresentable {
         arView.addGestureRecognizer(pinchGesture)
         arView.addGestureRecognizer(tapGesture)
 
-        // bind ViewModel -> Coordinator
+        /// bind ViewModel -> Coordinator
         viewModel.bindCoordinator(context.coordinator)
 
         return arView

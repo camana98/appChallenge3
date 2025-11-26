@@ -1,4 +1,10 @@
-import Foundation
+//
+//  UnifiedCoordinator.swift
+//  Glyptis
+//
+//  Created by Guilherme Ghise Rossoni on 25/11/25.
+//
+
 import SwiftUI
 import RealityKit
 import Combine
@@ -57,7 +63,7 @@ class UnifiedCoordinator: NSObject, UIGestureRecognizerDelegate {
             self.modelEntity = loadedEntity
 
         } catch {
-            print("❌ Erro ao carregar o modelo \(fileName): \(error.localizedDescription)")
+            print("Erro: \(fileName): \(error.localizedDescription)")
             let placeholder = ModelEntity(
                 mesh: .generateSphere(radius: 0.1),
                 materials: [SimpleMaterial(color: .red, isMetallic: false)]
@@ -193,11 +199,11 @@ class UnifiedCoordinator: NSObject, UIGestureRecognizerDelegate {
             if removeMode {
                 removeTopCube(in: "\(parsed.x)_\(parsed.z)")
             } else {
-                // pegar altura real do cubo clicado
+                /// pegar altura real do cubo clicado
                 if let currentCube = arView.entity(at: gesture.location(in: arView)) {
                     showPreviewCubes(
                         for: parsed.x,
-                        y: Int(currentCube.position.y / cubeSize), // altura real do cubo
+                        y: Int(currentCube.position.y / cubeSize), /// altura real do cubo
                         z: parsed.z,
                         color: selectedColor
                     )
@@ -275,20 +281,20 @@ class UnifiedCoordinator: NSObject, UIGestureRecognizerDelegate {
         heights[key] = max(0, (heights[key] ?? 0) - 1)
     }
 
-    // MARK: - Arrows for adjacency
+    // MARK: - Preview das adjacências
 
     func showPreviewCubes(for x: Int, y: Int, z: Int, color: UIColor) {
         removeActivePreviews()
         guard let anchor = anchor else { return }
 
-        // DIREÇÕES: todas as 6 adjacências (dx, dy, dz)
+        /// DIREÇÕES: todas as 6 adjacências (dx, dy, dz)
         let directions: [(dx: Int, dy: Int, dz: Int)] = [
-            (0, 1, 0),   // cima
-            (0, -1, 0),  // baixo
-            (-1, 0, 0),  // esquerda
-            (1, 0, 0),   // direita
-            (0, 0, -1),  // trás
-            (0, 0, 1)    // frente
+            (0, 1, 0),   /// cima
+            (0, -1, 0),  /// baixo
+            (-1, 0, 0),  /// esquerda
+            (1, 0, 0),   /// direita
+            (0, 0, -1),  /// trás
+            (0, 0, 1)    /// frente
         ]
 
         for dir in directions {
@@ -296,18 +302,19 @@ class UnifiedCoordinator: NSObject, UIGestureRecognizerDelegate {
             let nz = z + dir.dz
             let ny = y + dir.dy
 
-            // ❌ ignora fora do grid
+            /// ignora fora do grid
             guard nx >= 0, nx < gridSize, nz >= 0, nz < gridSize else { continue }
-            // ❌ ignora posições abaixo do chão
+            
+            /// ignora posições abaixo do chão
             guard ny >= 0 else { continue }
 
             let keyNeighbor = "\(nx)_\(nz)"
             let currentHeight = heights[keyNeighbor] ?? 0
 
-            // ❌ ignora se já houver cubo nessa altura
+            /// ignora se já houver cubo nessa altura
             if ny < currentHeight { continue }
 
-            // ❌ ignora se a altura máxima for alcançada
+            /// ignora se a altura máxima for alcançada
             if ny > gridSize - 1 { continue }
 
             let posY = (cubeSize / 2) + (Float(ny) * cubeSize)
@@ -323,13 +330,6 @@ class UnifiedCoordinator: NSObject, UIGestureRecognizerDelegate {
         }
     }
 
-
-
-
-
-
-
-
     func removeActivePreviews() {
         activePreviews.forEach { $0.removeFromParent() }
         activePreviews.removeAll()
@@ -337,22 +337,19 @@ class UnifiedCoordinator: NSObject, UIGestureRecognizerDelegate {
 
     func createPreviewCube(at position: SIMD3<Float>, key: String, color: UIColor, size: Float = 0.1) -> ModelEntity {
         
-        // cria material semi-transparente usando a cor passada
+        /// cria material e cubo
         let material = SimpleMaterial(color: color.withAlphaComponent(0.4), isMetallic: false)
         let cube = ModelEntity(mesh: .generateBox(size: size), materials: [material])
         
         cube.position = position
         cube.name = "preview_\(UUID().uuidString)"
         
-        // adiciona componente de dados
         cube.components[PreviewCubeComponent.self] = PreviewCubeComponent(key: key)
         
         cube.generateCollisionShapes(recursive: false)
         
         return cube
     }
-
-
 
     // MARK: - Camera
 
@@ -404,7 +401,7 @@ class UnifiedCoordinator: NSObject, UIGestureRecognizerDelegate {
         updateCameraPosition(animated: animated)
     }
 
-    // Allow gestures at same time
+    /// Permitir gestos simultaneos
     func gestureRecognizer(
         _ gestureRecognizer: UIGestureRecognizer,
         shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer

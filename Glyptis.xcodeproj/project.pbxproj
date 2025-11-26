@@ -21,6 +21,23 @@
 		D29A77A62ED0D899003908C4 /* GlyptisTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = GlyptisTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		D22755A02ED774540095A5D2 /* Exceptions for "GlyptisTests" folder in "Glyptis" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				ARCameraView.swift,
+			);
+			target = C5C4EC342ECE53E90068CA51 /* Glyptis */;
+		};
+		D22755A12ED774540095A5D2 /* Exceptions for "GlyptisTests" folder in "GlyptisTests" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				ARCameraView.swift,
+			);
+			target = D29A77A52ED0D899003908C4 /* GlyptisTests */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		C5C4EC372ECE53E90068CA51 /* Glyptis */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
@@ -29,6 +46,10 @@
 		};
 		D29A77A72ED0D899003908C4 /* GlyptisTests */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				D22755A02ED774540095A5D2 /* Exceptions for "GlyptisTests" folder in "Glyptis" target */,
+				D22755A12ED774540095A5D2 /* Exceptions for "GlyptisTests" folder in "GlyptisTests" target */,
+			);
 			path = GlyptisTests;
 			sourceTree = "<group>";
 		};
@@ -334,6 +355,7 @@
 				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = K7J6QAV9ZN;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSCameraUsageDescription = "O Glyptis usa sua câmera para projetar esculturas 3D no mundo real e permitir que você crie arte em Realidade Aumentada.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -372,6 +394,7 @@
 				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = K7J6QAV9ZN;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSCameraUsageDescription = "O Glyptis usa sua câmera para projetar esculturas 3D no mundo real e permitir que você crie arte em Realidade Aumentada.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;

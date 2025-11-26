@@ -8,8 +8,6 @@
 import SwiftUI
 import RealityKit
 
-import SwiftUI
-
 struct CanvasView: View {
     @StateObject private var vm = CanvasViewModel()
 
@@ -53,8 +51,6 @@ struct CanvasView: View {
                     }
                     .padding(.top, 50)
                     .padding(.trailing, 20)
-                    
-                    
                 }
 
                 Spacer()

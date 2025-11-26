@@ -5,7 +5,6 @@
 //  Created by Guilherme Ghise Rossoni on 25/11/25.
 //
 
-import Foundation
 import SwiftUI
 import Combine
 import SwiftData
@@ -17,7 +16,6 @@ class CanvasViewModel: ObservableObject {
     @Published var selectedColor: Color = .green
     @Published var rotationY: Float = 0.0
 
-    // ref opcional para o coordinator
     weak var coordinator: UnifiedCoordinator?
 
     func bindCoordinator(_ coordinator: UnifiedCoordinator) {
