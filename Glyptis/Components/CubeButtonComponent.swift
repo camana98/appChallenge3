@@ -13,6 +13,8 @@ struct CubeButtonComponent: View {
     var cubeStyle: CubeStyle
     var cubeColor: CubeColor
     
+    var action: () -> Void
+    
     private let cubeSize: Float = 0.7
     private let iconSize: Float = 0.7 * 0.85
     
@@ -60,6 +62,16 @@ struct CubeButtonComponent: View {
             
             content.add(cubeEntity)
         }
+        .gesture(
+            SpatialTapGesture()
+                .targetedToAnyEntity()
+                .onEnded { _ in
+                    let generator = UIImpactFeedbackGenerator(style: .medium)
+                    generator.impactOccurred()
+                    
+                    action()
+                }
+        )
     }
     
     func generateTextureFromAsset(image: UIImage, color: UIColor) -> TextureResource? {
@@ -114,6 +126,11 @@ enum CubeStyle: CaseIterable {
     case demolish
     case cleanAll
     case altColor
+    case back
+    case heart
+    case map
+    case pencil
+    case grid
     
     var image: UIImage{
         switch self {
@@ -126,6 +143,11 @@ enum CubeStyle: CaseIterable {
         case .demolish: return .hammerFill
         case .cleanAll: return .xmarkBinFill
         case .altColor: return .paintbrushPointedFill
+        case .back: return .chevronLeft1
+        case .heart: return .heartFill1
+        case .map: return .mappinAndEllipse1
+        case .pencil: return .pencil1
+        case .grid: return .squareGrid3X31
         }
     }
     
@@ -140,15 +162,19 @@ enum CubeStyle: CaseIterable {
         case .demolish: return .customWhite
         case .cleanAll: return .customWhite
         case .altColor: return .customWhite
+        case .back: return .customWhite
+        case .heart: return .customWhite
+        case .map: return .customWhite
+        case .pencil: return .customWhite
+        case .grid: return .customWhite
         }
     }
 }
 
 #Preview {
     VStack {
-        CubeButtonComponent(cubeStyle: .checkmark, cubeColor: .blue)
-    }
-    .onTapGesture {
-        print("hehehehehe")
+        CubeButtonComponent(cubeStyle: .checkmark, cubeColor: .blue) {
+            print("hehehe")
+        }
     }
 }
