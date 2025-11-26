@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct UnfinishedCube {
+struct UnfinishedCube: Codable {
     let locationX: Float
     let locationY: Float
     let locationZ: Float
@@ -18,6 +18,6 @@ struct UnfinishedCube {
     let colorA: Float
 }
 
-// Utilizado para posicionar blocos sem atribuir à uma escultura de forma desnecessariamente prévia.
+// Utilizado para posicionar blocos sem atribuir à uma escultura de forma desnecessariamente prévia
 // Para transformar isso em Cube apenas criar uma nova escultura, dar um for rascunhoCube in rascunhosCubes
 // e atribuir a nova escultura a cada cubo novo gerado, a nova escultura sendo a sculpture de seu init

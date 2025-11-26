@@ -9,17 +9,19 @@ import Foundation
 
 @Model
 final class Sculpture {
-    var id: UUID
-    var createdAt: Date
-    var name: String
+    var id: UUID = UUID()
+    var createdAt: Date = Date()
+    var name: String = ""
     
-    var localization: Localization?
+    @Relationship(deleteRule: .cascade, inverse: \Localization.sculpture)
+    var localization: [Localization]? = []
     
     var author: Author?
     
+    @Relationship(deleteRule: .cascade, inverse: \Cube.sculpture)
     var cubes: [Cube]?
     
-    init(name: String, localization: Localization? = nil, author: Author? = nil) {
+    init(name: String, localization: [Localization]? = [], author: Author? = nil) {
         self.id = UUID()
         self.createdAt = Date()
         self.name = name

@@ -9,15 +9,15 @@ import Foundation
 
 @Model
 final class Cube {
-    var id: UUID
+    var id: UUID = UUID()
     
-    var locationX: Float
-    var locationY: Float
-    var locationZ: Float
+    var locationX: Float = 0.0
+    var locationY: Float = 0.0
+    var locationZ: Float = 0.0
     
-    var colorR: Float // 0.0 - 1.0
-    var colorG: Float
-    var colorB: Float
+    var colorR: Float = 0.0
+    var colorG: Float = 0.0
+    var colorB: Float = 0.0
     var colorA: Float?
     
     var sculpture: Sculpture?
