@@ -60,6 +60,6 @@ struct UnifiedCanvasContainer: UIViewRepresentable {
         // manter sincronizados
         context.coordinator.removeMode = removeMode
         context.coordinator.selectedColor = UIColor(selectedColor)
-        context.coordinator.updateRotation(rotationY)
+//        context.coordinator.updateRotation(rotationY)
     }
 }
