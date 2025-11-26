@@ -20,12 +20,12 @@ struct MuseuSculptureComponent: View {
                 //MARK: Nome da Escultura
                 Text(sculpture.name)
                     .font(Fonts.title)
-                    .foregroundStyle(.customBlue)
+                    .foregroundStyle(.customNight)
                 
                 //MARK: Data de Criacao
                 Text("Criado em \(sculpture.formattedCreatedAt)")
                     .font(Fonts.notoRegular)
-                    .foregroundStyle(.customBlue)
+                    .foregroundStyle(.customNight)
             }
             
             //MARK: Botões
@@ -75,13 +75,14 @@ struct MuseuSculptureComponent: View {
                 .frame(width: 89, height: 82)
                 
             }
+            .padding(.bottom, 22)
         }
         .padding(.top, 20)
         .padding(.horizontal, 24)
         .padding(.bottom, 32)
         .frame(maxWidth: .infinity)
         .background(.ultraThinMaterial)
-        .clipShape(RoundedRectangle(cornerRadius: 40, style: .continuous))
+        .clipShape(RoundedRectangle(cornerRadius: 70, style: .continuous))
                    
     }
     

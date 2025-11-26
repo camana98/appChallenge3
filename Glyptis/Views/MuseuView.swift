@@ -20,6 +20,7 @@ struct MuseuView: View {
                 .resizable()
                 .scaledToFill()
                 .ignoresSafeArea()
+                .blur(radius: 9.0)
             
             VStack {
                 HStack {
@@ -32,6 +33,8 @@ struct MuseuView: View {
                     Spacer()
                     
                     Text("Museu")
+                        .font(Fonts.title)
+                        .foregroundStyle(.customWhite)
                     
                     Spacer()
                     
@@ -41,9 +44,12 @@ struct MuseuView: View {
                         .frame(width: 100, height: 100)
                         .scaledToFill()
                 }
+                .padding(.horizontal)
                 
                 Spacer()
-                                
+                
+                MuseuSculptureComponent( sculpture: Sculpture(name: "Test", localization: nil, author: nil))
+                    .padding(.bottom, 40)
             }
         }
         .sheet(isPresented: $showGridListMuseum) {
