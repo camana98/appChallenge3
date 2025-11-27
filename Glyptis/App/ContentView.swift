@@ -19,12 +19,7 @@ struct ContentView: View {
         }
         
         VStack {
-            ColorPickerComponent(selectedColor: $selectedColor, isSelected: false)
-            RootHexagon()
-                .frame(width: 100, height: 100)
-                .foregroundColor(selectedColor)
-            Text("\(selectedColor.description)")
-                .font(.system(size: 30))
+            ColorPickerComponent(selectedColor: $selectedColor)
         }
         .padding()
     }

@@ -31,21 +31,27 @@ struct RootHexagon: Shape {
 }
 
 struct Hexagon: View {
-    @Binding var isSelected: Bool
+    let id: Int
+    let isSelected: Bool
+    let hexagonColor: Color
+    let onTap: () -> Void
     
     var body: some View {
         ZStack {
             if isSelected {
                 RootHexagon()
-                    .foregroundColor(.green)
+                    .foregroundColor(.white)
             }
             RootHexagon()
-                .foregroundColor(.gray)
+                .foregroundColor(hexagonColor)
                 .scaleEffect(isSelected ? 0.8 : 1)
+        }
+        .onTapGesture {
+            onTap()
         }
     }
 }
 
 #Preview {
-    Hexagon(isSelected: .constant(true))
+//    Hexagon(isSelectedNotifier: .constant(UUID()), hexagonColor: .red)
 }
