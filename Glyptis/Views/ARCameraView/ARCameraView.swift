@@ -10,14 +10,20 @@ import SwiftUI
 struct ARCameraView: View {
     
     @State var coordinator = ARViewCoordinator()
-    @State private var goToCanvas = false
+    
+    // Closure para avisar quando abrir o Canvas
+    var onOpenCanvas: () -> Void
     
     var body: some View {
-        NavigationStack {
+        ZStack {
+            // aqui vai ficar a ARView real, usando coordinator
+            Color.gray.opacity(0.2) /// Placeholder da câmera
             
             VStack {
+                Spacer()
+                
                 Button {
-                    goToCanvas = true
+                    onOpenCanvas()
                 } label: {
                     Text("Ir para Canvas")
                         .padding()
@@ -25,17 +31,13 @@ struct ARCameraView: View {
                         .foregroundColor(.white)
                         .cornerRadius(10)
                 }
-            }
-            .navigationDestination(isPresented: $goToCanvas) {
-                CanvasView()
-                    .navigationBarBackButtonHidden(true)    
-                    .navigationBarHidden(true)
-  
+                .padding(.bottom, 50)
             }
         }
+        .edgesIgnoringSafeArea(.all)
     }
 }
 
 #Preview {
-    ARCameraView()
+    ARCameraView(onOpenCanvas: {})
 }

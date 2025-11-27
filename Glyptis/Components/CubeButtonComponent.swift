@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-import RealityKit
+internal import RealityKit
 
 struct CubeButtonComponent: View {
     

@@ -2,28 +2,30 @@
 //  CanvasView.swift
 //  Glyptis
 //
-//  Created by Guilherme Ghise Rossoni on 25/11/25.
+//  Created by Guilherme Ghise Rossoni on 26/11/25.
 //
 
 import SwiftUI
-import RealityKit
+internal import RealityKit
 
 struct CanvasView: View {
     @StateObject private var vm = CanvasViewModel()
-    var showColors = false
+    @State private var showNamingPopup: Bool = false
+    @State private var sculptureName: String = ""
+    @State private var showToolbox: Bool = false
     
-    private let colorOptions: [Color] = [
-        .red, .green, .blue, .yellow, .orange, .purple,
-        .cyan, .brown, .white, .black
-    ]
-
+    var showColors: Bool = false
+    var onCancel: () -> Void
+    
     var body: some View {
         ZStack {
+            // MARK: Background
             Image("backgroundCanvas")
                 .resizable()
                 .scaledToFill()
                 .ignoresSafeArea()
-
+            
+            // MARK: Canvas
             UnifiedCanvasContainer(
                 removeMode: $vm.removeMode,
                 selectedColor: $vm.selectedColor,
@@ -33,81 +35,64 @@ struct CanvasView: View {
                 modelOffset: SIMD3<Float>(0, -3.9, 0),
                 viewModel: vm
             )
-            .edgesIgnoringSafeArea(.all)
-
-            VStack {
-                HStack {
-                    CubeButtonComponent(cubeStyle: .xmark, cubeColor: .red) {
-                        print("Cubo vermelho clicado")
-                    }
-                    .frame(width: 80, height: 80)
-
-                    Spacer()
-
-                    CubeButtonComponent(cubeStyle: .checkmark, cubeColor: .green) {
-                        print("Cubo verde clicado")
-                    }
-                    .frame(width: 80, height: 80)
-                    
-                }
-                .padding(.horizontal, 20)
-                .padding(.top, 50)
-
+            
+            // Top Buttons
+            HStack {
+                SimpleCubeIcon(assetName: "cancelCube", action: { onCancel() }, width: 54, height: 56)
                 Spacer()
-                
-                HStack {
-                    CubeButtonComponent(cubeStyle: .toolbox, cubeColor: .red) {}
-                    .frame(width: 80, height: 80)
-
-                    CubeButtonComponent(cubeStyle: .rollback, cubeColor: .green) {}
-                    .frame(width: 80, height: 80)
-                    
-                    CubeButtonComponent(cubeStyle: .rollfront, cubeColor: .green) {}
-                    .frame(width: 80, height: 80)
-                    
-                    CubeButtonComponent(cubeStyle: .demolish, cubeColor: .green) {}
-                    .frame(width: 80, height: 80)
-                }
-                .padding(.horizontal, 20)
-                .padding(.top, 50)
-
-//                HStack {
-//                    Spacer()
-//                    Button(action: {
-//                        vm.toggleRemove()
-//                    }) {
-//                        Text(vm.removeMode ? "Modo: REMOVER" : "Modo: ADICIONAR")
-//                            .font(.headline)
-//                            .padding()
-//                            .background(vm.removeMode ? Color.red : Color.blue)
-//                            .foregroundColor(.white)
-//                            .cornerRadius(12)
-//                            .shadow(radius: 5)
-//                    }
-//                    .padding(.trailing, 20)
-//                }
-//                
-//               
-//                    // Paleta de cores
-//                    ScrollView(.horizontal, showsIndicators: false) {
-//                        HStack(spacing: 15) {
-//                            ForEach(colorOptions, id: \.self) { color in
-//                                Circle()
-//                                    .fill(color)
-//                                    .frame(width: 50, height: 50)
-//                                    .overlay(
-//                                        Circle()
-//                                            .stroke(Color.white, lineWidth: vm.selectedColor == color ? 4 : 0)
-//                                    )
-//                                    .shadow(radius: 3)
-//                                    .onTapGesture {
-//                                        vm.selectColor(color)
-//                                    }
-//                            }
-//                        }
-//                        .padding()
-//                    }
+                SimpleCubeIcon(assetName: "saveCube", action: { showNamingPopup = true }, width: 54, height: 56)
             }
+            .padding(.horizontal, 24)
+            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
+            .padding(.top, 75)
+            
+            // Bottom Buttons
+            if !showToolbox {
+                HStack {
+                    SimpleCubeIcon(assetName: "toolboxCube", action: { showToolbox = true }, width: 54, height: 140)
+                    Spacer()
+                    SimpleCubeIcon(assetName: "addCube", action: { /* ?? */ }, width: 54, height: 56)
+                }
+                .padding(.horizontal, 24)
+                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottom)
+                .padding(.bottom, 50)
+            }
+            
+            // MARK: Popups
+            namingPopup()
+            toolboxSheet()
+        }
+    }
+    
+    // MARK: - Popups
+    
+    @ViewBuilder
+    private func namingPopup() -> some View {
+        if showNamingPopup {
+            NameSculpturePopup(
+                sculptureName: $sculptureName,
+                onSave: {
+                    showNamingPopup = false
+                    
+                },
+                onCancel: { showNamingPopup = false }
+            )
+            .transition(.opacity)
+            .zIndex(1)
+        }
+    }
+    
+    @ViewBuilder
+    private func toolboxSheet() -> some View {
+        if showToolbox {
+            ToolboxSheet(
+                onDemolish: { vm.toggleRemove() },
+                onCleanAll: { vm.clearAllCubes() },
+                onChangeColor: { }, // * implementar color picker
+                isVisible: $showToolbox,
+                isDemolishActive: $vm.removeMode
+            )
+            .zIndex(1)
         }
     }
 }

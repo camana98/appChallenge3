@@ -5,7 +5,7 @@
 //  Created by Guilherme Ghise Rossoni on 25/11/25.
 //
 
-import RealityKit
+internal import RealityKit
 import simd
 
 struct PreviewCubeComponent: Component {
