@@ -117,21 +117,21 @@ struct ColorPalete {
     ]
     
     static let line9: [HexColor] = [
-        HexColor(id: 82, color: Color(red: 179/255, green: 0/255, blue: 76/255)),
-        HexColor(id: 83, color: Color(red: 181/255, green: 0/255, blue: 74/255)),
-        HexColor(id: 84, color: Color(red: 183/255, green: 0/255, blue: 72/255)),
-        HexColor(id: 85, color: Color(red: 185/255, green: 0/255, blue: 70/255)),
-        HexColor(id: 86, color: Color(red: 187/255, green: 0/255, blue: 68/255)),
-        HexColor(id: 87, color: Color(red: 190/255, green: 0/255, blue: 65/255)),
-        HexColor(id: 88, color: Color(red: 192/255, green: 0/255, blue: 63/255)),
-        HexColor(id: 89, color: Color(red: 194/255, green: 0/255, blue: 61/255)),
-        HexColor(id: 90, color: Color(red: 196/255, green: 0/255, blue: 59/255)),
-        HexColor(id: 91, color: Color(red: 198/255, green: 0/255, blue: 57/255)),
-        HexColor(id: 92, color: Color(red: 200/255, green: 0/255, blue: 55/255))
+        HexColor(id: 82, color: Color(red: 94/255, green: 119/255, blue: 41/255)),
+        HexColor(id: 83, color: Color(red: 113/255, green: 152/255, blue: 44/255)),
+        HexColor(id: 84, color: Color(red: 177/255, green: 252/255, blue: 92/255)),
+        HexColor(id: 85, color: Color(red: 214/255, green: 254/255, blue: 125/255)),
+        HexColor(id: 86, color: Color(red: 255/255, green: 255/255, blue: 166/255)),
+        HexColor(id: 87, color: Color(red: 247/255, green: 206/255, blue: 160/255)),
+        HexColor(id: 88, color: Color(red: 241/255, green: 158/255, blue: 156/255)),
+        HexColor(id: 89, color: Color(red: 237/255, green: 112/255, blue: 153/255)),
+        HexColor(id: 90, color: Color(red: 235/255, green: 72/255, blue: 151/255)),
+        HexColor(id: 91, color: Color(red: 188/255, green: 64/255, blue: 150/255)),
+        HexColor(id: 92, color: Color(red: 140/255, green: 26/255, blue: 148/255))
     ]
     
     static let line10: [HexColor] = [
-        HexColor(id: 93, color: Color(red: 0/255,   green: 255/255, blue: 178/255)),
+        HexColor(id: 93, color: Color(red: 102/255,   green: 102/255, blue: 158/255)),
         HexColor(id: 94, color: Color(red: 0/255,   green: 255/255, blue: 138/255)),
         HexColor(id: 95, color: Color(red: 0/255,   green: 255/255, blue: 98/255)),
         HexColor(id: 96, color: Color(red: 0/255,   green: 255/255, blue: 58/255)),
@@ -146,7 +146,7 @@ struct ColorPalete {
     
     static let line11: [HexColor] = [
         HexColor(id: 103, color: Color(red: 102/255, green: 82/255,  blue: 114/255)),
-        HexColor(id: 104, color: Color(red: 132/255, green: 108/255, blue: 145/255)),
+        HexColor(id: 104, color: Color(red: 164/255, green: 108/255, blue: 145/255)),
         HexColor(id: 105, color: Color(red: 160/255, green: 135/255, blue: 173/255)),
         HexColor(id: 106, color: Color(red: 187/255, green: 162/255, blue: 199/255)),
         HexColor(id: 107, color: Color(red: 209/255, green: 187/255, blue: 222/255)),
