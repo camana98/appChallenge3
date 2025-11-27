@@ -48,8 +48,16 @@ struct MuseuView: View {
                 
                 Spacer()
                 
-                MuseuSculptureComponent( sculpture: Sculpture(name: "Test", localization: nil, author: nil))
-                    .padding(.bottom, 40)
+                ZStack {
+                    Image(.colunaMuseu)
+                        .padding(.bottom, 50)
+                        .padding(.leading, 10)
+                        
+                    MuseuSculptureComponent( sculpture: Sculpture(name: "Test", localization: nil, author: nil))
+                        .padding(.top, 325)
+                }
+                
+                
             }
         }
         .sheet(isPresented: $showGridListMuseum) {
