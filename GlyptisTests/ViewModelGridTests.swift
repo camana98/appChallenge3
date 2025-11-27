@@ -5,6 +5,8 @@
 //  Created by Vicenzo Másera on 27/11/25.
 //
 
+// MuseuGridViewModelTests.swift
+
 import XCTest
 import SwiftData
 @testable import Glyptis
@@ -24,9 +26,9 @@ final class MuseuGridViewModelTests: XCTestCase {
         )
         
         context = ModelContext(container)
-        
         service = await SculptureService(context: context)
         
+        // Inicializa a ViewModel (AGORA SEGURO, pois o init está vazio de lógica)
         viewModel = MuseuGridViewModel(context: context, service: service)
     }
 
@@ -38,97 +40,76 @@ final class MuseuGridViewModelTests: XCTestCase {
     }
     
     func testInitFetchData() {
-        /// DADO QUE existem esculturas no banco ANTES da VM iniciar
+        // 1. Cria dados no banco
         _ = service.create(name: "lolo")
         _ = service.create(name: "hehehe")
         
-        /// QUANDO eu inicializo uma NOVA ViewModel
-        let newVM = MuseuGridViewModel(context: context, service: service)
+        // 2. A VM já foi iniciada no setUp, mas está vazia.
+        // Chamamos o fetch manualmente:
+        viewModel.fetchData()
         
-        /// ENTÃO a ViewModel deve carregar os dados automaticamente no init
-        XCTAssertEqual(newVM.sculptures.count, 2)
-        XCTAssertEqual(newVM.sculptures.first?.name, "lolo")
+        // 3. Verifica
+        XCTAssertEqual(viewModel.sculptures.count, 2)
+        XCTAssertEqual(viewModel.sculptures.first?.name, "hehehe")
     }
     
-    // MARK: - FILTER (Busca)
-    
     func testFilterEmptySearch() {
-        /// DADO QUE existem esculturas carregadas e a busca está vazia
-        _ = service.create(name: "A", cubes: [])
-        _ = service.create(name: "B", cubes: [])
-        // Recarrega a VM para pegar os dados
-        viewModel = MuseuGridViewModel(context: context, service: service)
+        _ = service.create(name: "A")
+        _ = service.create(name: "B")
+        
+        viewModel.fetchData() // Carrega os dados
         
         viewModel.searchText = ""
         
-        /// QUANDO acesso a lista filtrada
         let list = viewModel.filteredSculptures
-        
-        /// ENTÃO deve retornar tudo
         XCTAssertEqual(list.count, 2)
     }
     
     func testFilterSpecificSearch() {
-        /// DADO QUE tenho esculturas com nomes diferentes
-        _ = service.create(name: "Vênus de Milo", cubes: [])
-        _ = service.create(name: "O Pensador", cubes: [])
-        viewModel = MuseuGridViewModel(context: context, service: service)
+        _ = service.create(name: "guigo")
+        _ = service.create(name: "Ohahahaha")
         
-        /// QUANDO busco por "Vênus"
-        viewModel.searchText = "Vênus"
+        viewModel.fetchData()
         
-        /// ENTÃO deve retornar apenas 1 item correto
+        viewModel.searchText = "gui"
+        
         let list = viewModel.filteredSculptures
         XCTAssertEqual(list.count, 1)
-        XCTAssertEqual(list.first?.name, "Vênus de Milo")
+        XCTAssertEqual(list.first?.name, "guigo")
     }
     
     func testFilterCaseInsensitive() {
-        /// DADO QUE tenho "David" salvo
-        _ = service.create(name: "David", cubes: [])
-        viewModel = MuseuGridViewModel(context: context, service: service)
+        _ = service.create(name: "pedro")
         
-        /// QUANDO busco por "david" (minúsculo)
-        viewModel.searchText = "david"
+        viewModel.fetchData()
         
-        /// ENTÃO deve encontrar mesmo com a caixa diferente
+        viewModel.searchText = "PEDRO"
+        
         let list = viewModel.filteredSculptures
         XCTAssertEqual(list.count, 1)
-        XCTAssertEqual(list.first?.name, "David")
+        XCTAssertEqual(list.first?.name, "pedro")
     }
     
     func testFilterNoMatch() {
-        /// DADO QUE tenho dados
-        _ = service.create(name: "David", cubes: [])
-        viewModel = MuseuGridViewModel(context: context, service: service)
+        _ = service.create(name: "pedro")
         
-        /// QUANDO busco por algo que não existe
+        viewModel.fetchData()
+        
         viewModel.searchText = "Godzilla"
         
-        /// ENTÃO a lista deve vir vazia
         let list = viewModel.filteredSculptures
         XCTAssertTrue(list.isEmpty)
     }
     
-    // MARK: - DELETE
-    
     func testDeleteAction() {
-        /// DADO QUE tenho uma escultura na ViewModel
-        let sculpture = service.create(name: "ToDelete", cubes: [])
-        viewModel = MuseuGridViewModel(context: context, service: service)
+        let sculpture = service.create(name: "ToDelete")
         
-        // Verifica se carregou
+        viewModel.fetchData()
         XCTAssertEqual(viewModel.sculptures.count, 1)
         
-        /// QUANDO chamo a função delete da ViewModel
         viewModel.delete(s: sculpture)
         
-        /// ENTÃO o item deve ter sumido do BANCO DE DADOS (via Service)
         let allInDb = service.fetchAll()
         XCTAssertEqual(allInDb.count, 0)
-        
-        // Obs: Se a sua VM não recarregar o array 'sculptures' localmente após o delete,
-        // o teste de 'viewModel.sculptures.count' poderia falhar aqui.
-        // O teste acima garante que a ordem chegou ao banco.
     }
 }

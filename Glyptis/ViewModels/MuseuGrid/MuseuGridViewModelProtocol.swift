@@ -20,4 +20,5 @@ protocol MuseuGridViewModelProtocol {
     func delete(s: Sculpture) -> Void
     func edit(s: Sculpture)  -> Void
     func anchor(s: Sculpture)  -> Void
+    func fetchData() -> Void
 }

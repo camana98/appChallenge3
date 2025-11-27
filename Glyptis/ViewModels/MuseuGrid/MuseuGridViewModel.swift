@@ -33,8 +33,6 @@ class MuseuGridViewModel: MuseuGridViewModelProtocol {
     init(context: ModelContext, service: SculptureService) {
         self.context = context
         self.service = service
-        
-        sculptures = service.fetchAll()
     }
     
     func delete(s: Sculpture) {
@@ -45,5 +43,9 @@ class MuseuGridViewModel: MuseuGridViewModelProtocol {
     }
     func anchor(s: Sculpture) {
         // TODO: fazer funcao de ancorar
+    }
+    
+    func fetchData() {
+        sculptures = service.fetchAll()
     }
 }

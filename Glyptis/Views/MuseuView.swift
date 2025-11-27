@@ -8,8 +8,11 @@
 import Foundation
 import SwiftUI
 internal import RealityKit
+import SwiftData
 
 struct MuseuView: View {
+    
+    @Environment(\.modelContext) var modelContext
     
     @State private var showGridListMuseum: Bool = false
     
@@ -47,7 +50,7 @@ struct MuseuView: View {
             }
         }
         .sheet(isPresented: $showGridListMuseum) {
-            MuseuGridListView()
+            MuseuGridListView(vm: MuseuGridViewModel(context: modelContext, service: SculptureService(context: modelContext)))
                 .presentationDetents([.medium, .large])
                 .presentationBackgroundInteraction(.enabled(upThrough: .medium))
         }

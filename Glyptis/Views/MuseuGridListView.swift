@@ -75,11 +75,11 @@ struct MuseuGridListView: View {
                             $vm.searchText, isPresented: $vm.showSearch)
             .toolbar(.hidden, for: .navigationBar)
         }
+        .onAppear {
+            vm.fetchData()
+        }
     }
 }
 
-#Preview {
-    MuseuGridListView()
-}
 
 
