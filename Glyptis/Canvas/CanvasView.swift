@@ -13,7 +13,10 @@ struct CanvasView: View {
     @State private var showNamingPopup: Bool = false
     @State private var sculptureName: String = ""
     @State private var showToolbox: Bool = false
-    
+    @State private var arView: ARView?
+    @State private var showSaveAlert = false
+
+
     var showColors: Bool = false
     var onCancel: () -> Void
     
@@ -33,7 +36,10 @@ struct CanvasView: View {
                 usdzFileName: "canvasColumn",
                 modelScale: 0.013,
                 modelOffset: SIMD3<Float>(0, -3.9, 0),
-                viewModel: vm
+                viewModel: vm,
+                onARViewCreated: { view in
+                    arView = view
+                }
             )
             
             // Top Buttons
@@ -51,12 +57,21 @@ struct CanvasView: View {
                     cubeStyle: .checkmark,
                     cubeColor: .green
                 ) {
+                    guard let arView else { return }
+
+                    SnapshotService.takeSnapshot(from: arView) { image in
+                        if let image = image {
+                            SnapshotService.saveSnapshot(image)
+                        }
+                    }
+
                     showNamingPopup = true
                 }
                 .frame(width: 140, height: 140)
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
             .padding(.top, 75)
+            
             
             
             // Bottom Buttons
@@ -90,6 +105,10 @@ struct CanvasView: View {
             namingPopup()
             toolboxSheet()
         }
+        
+        .alert("heheeeee", isPresented: $showSaveAlert) {
+            Button("OK") {}
+        }
     }
     
     // MARK: - Popups
@@ -122,5 +141,9 @@ struct CanvasView: View {
             )
             .zIndex(1)
         }
+    }
+    
+    func save3DPreview() {
+
     }
 }
