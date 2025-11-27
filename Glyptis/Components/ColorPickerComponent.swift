@@ -223,7 +223,7 @@ struct ColorPickerComponent: View {
              HStack {
                  VStack {
                      HStack(spacing: overlap) {
-                         ForEach(ColorPalete.line2) { hexColor in
+                         ForEach(ColorPalete.line14) { hexColor in
                              Hexagon(
                                  id: hexColor.id,
                                  isSelected: selectedHexID == hexColor.id,
@@ -238,7 +238,7 @@ struct ColorPickerComponent: View {
                       .offset(y: 8) // line (1) * 5
                      
                      HStack(spacing: overlap) {
-                         ForEach(ColorPalete.line1) { hexColor in
+                         ForEach(ColorPalete.line15) { hexColor in
                              Hexagon(
                                  id: hexColor.id,
                                  isSelected: selectedHexID == hexColor.id,
