@@ -78,6 +78,7 @@ struct CanvasView: View {
                 sculptureName: $sculptureName,
                 onSave: {
                     showNamingPopup = false
+                    
 
                     // MARK: 1) Converter para UnfinishedCube
                     let unfinished = vm.cubes.map { cube in
@@ -92,6 +93,8 @@ struct CanvasView: View {
                         )
                     }
 
+//                    vm.createSculpture(name: sculptureName, author: nil, unfinishedCubes: unfinished)
+                    
                     // MARK: 2) Criar service
                     let service = SculptureService(context: context)
 

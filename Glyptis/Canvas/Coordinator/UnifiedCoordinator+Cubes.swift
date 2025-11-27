@@ -64,6 +64,7 @@ extension UnifiedCoordinator {
         columns[key, default: []].append(cube)
 
         heights[key] = (heights[key] ?? 0) + 1
+        print("cube just added \(cube)")
     }
 
     // Remove um cubo

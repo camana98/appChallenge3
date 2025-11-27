@@ -17,12 +17,13 @@ class CanvasViewModel: ObservableObject {
     @Published var cubes: [Cube] = []
 
     weak var coordinator: UnifiedCoordinator?
-    
+
     // Escultura atual sendo construída
     var currentSculpture: Sculpture?
 
     func bindCoordinator(_ coordinator: UnifiedCoordinator) {
         self.coordinator = coordinator
+        coordinator.delegate = self
         coordinator.removeMode = removeMode
         coordinator.selectedColor = UIColor(selectedColor)
         coordinator.updateRotation(rotationY)
@@ -48,39 +49,39 @@ class CanvasViewModel: ObservableObject {
 
     // MARK: - Cubos
 
-    func addCube(_ unfinished: UnfinishedCube) {
-        guard let sculpture = currentSculpture else { return }
+//    func addCube(_ unfinished: UnfinishedCube) {
+//        guard let sculpture = currentSculpture else { return }
+//
+//        let cube = Cube(
+//            sculpture: sculpture,
+//            x: unfinished.locationX,
+//            y: unfinished.locationY,
+//            z: unfinished.locationZ,
+//            r: unfinished.colorR,
+//            g: unfinished.colorG,
+//            b: unfinished.colorB
+//        )
+//
+//        cubes.append(cube)
+//        let key = "\(Int(cube.locationX))_\(Int(cube.locationZ))"
+//        coordinator?.addCube(atKey: key, fromBase: true)
+//    }
 
-        let cube = Cube(
-            sculpture: sculpture,
-            x: unfinished.locationX,
-            y: unfinished.locationY,
-            z: unfinished.locationZ,
-            r: unfinished.colorR,
-            g: unfinished.colorG,
-            b: unfinished.colorB
-        )
-
-        cubes.append(cube)
-        let key = "\(Int(cube.locationX))_\(Int(cube.locationZ))"
-        coordinator?.addCube(atKey: key, fromBase: true)
-    }
-
-    func addCubeDirectly(x: Float, y: Float, z: Float) {
-        guard let sculpture = currentSculpture else { return }
-        let cube = Cube(
-            sculpture: sculpture,
-            x: x,
-            y: y,
-            z: z,
-            r: Float(selectedColor.cgColor?.components?[0] ?? 0),
-            g: Float(selectedColor.cgColor?.components?[1] ?? 1),
-            b: Float(selectedColor.cgColor?.components?[2] ?? 0)
-        )
-        cubes.append(cube)
-        let key = "\(Int(cube.locationX))_\(Int(cube.locationZ))"
-        coordinator?.addCube(atKey: key, fromBase: true)
-    }
+//    func addCubeDirectly(x: Float, y: Float, z: Float) {
+//        guard let sculpture = currentSculpture else { return }
+//        let cube = Cube(
+//            sculpture: sculpture,
+//            x: x,
+//            y: y,
+//            z: z,
+//            r: Float(selectedColor.cgColor?.components?[0] ?? 0),
+//            g: Float(selectedColor.cgColor?.components?[1] ?? 1),
+//            b: Float(selectedColor.cgColor?.components?[2] ?? 0)
+//        )
+//        cubes.append(cube)
+//        let key = "\(Int(cube.locationX))_\(Int(cube.locationZ))"
+//        coordinator?.addCube(atKey: key, fromBase: true)
+//    }
 
     func removeCube(at cube: Cube) {
         guard let lastIndex = cubes.lastIndex(where: { $0.id == cube.id }) else { return }
@@ -108,7 +109,17 @@ class CanvasViewModel: ObservableObject {
         currentSculpture = sculpture
 
         for uCube in unfinishedCubes {
-            addCube(uCube)
+            //addCube(uCube)
         }
     }
+}
+
+extension CanvasViewModel: CubeDelegate {
+    
+    func didAddCube(/*RECEBER CUBO CRIADO*/) {
+//        cubes.append(newCubw)
+        print("NOVO CUBO ADICIONADO")
+    }
+    
+    
 }

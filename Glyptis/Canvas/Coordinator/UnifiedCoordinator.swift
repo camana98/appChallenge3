@@ -11,10 +11,14 @@ internal import RealityKit
 import Combine
 import ARKit
 
+protocol CubeDelegate: AnyObject {
+    func didAddCube()
+}
+
 class UnifiedCoordinator: NSObject, UIGestureRecognizerDelegate {
     
     // MARK: - Referências principais
-    
+    weak var delegate: CubeDelegate? = nil
     weak var arView: ARView? /// ARView gerenciada
     var anchor: AnchorEntity?   /// Anchor principal da cena
     var modelEntity: Entity?  /// Modelo de referência carregado (usdz)

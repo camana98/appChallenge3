@@ -62,6 +62,7 @@ extension UnifiedCoordinator {
         if entity.name.starts(with: "preview_") {
             if let preview = entity.components[PreviewCubeComponent.self] {
                 addCube(at: entity.position, key: preview.key)
+                delegate?.didAddCube()
                 removeActivePreviews()
             }
             return
@@ -72,6 +73,7 @@ extension UnifiedCoordinator {
         if entity.name.starts(with: "base_") {
             if !removeMode, let parsed = parseBaseName(entity.name) {
                 addCube(atKey: "\(parsed.x)_\(parsed.z)", fromBase: true)
+                delegate?.didAddCube()
             }
             return
         }
