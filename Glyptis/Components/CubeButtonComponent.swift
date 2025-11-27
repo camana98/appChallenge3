@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-import RealityKit
+internal import RealityKit
 
 struct CubeButtonComponent: View {
     
@@ -46,7 +46,6 @@ struct CubeButtonComponent: View {
                 planeMaterial.color = .init(texture: .init(texture))
                 planeMaterial.blending = .transparent(opacity: 1.0)
             } else {
-                
                 print("Textura não encontrada.")
                 planeMaterial.color = .init(tint: .red.withAlphaComponent(0.5))
             }
