@@ -44,76 +44,76 @@ struct ColorPalete {
     ]
     
     static let line4: [HexColor] = [
-        HexColor(id: 24, color: Color(red: 52/255, green: 0/255, blue: 203/255)),
-        HexColor(id: 25, color: Color(red: 55/255, green: 0/255, blue: 200/255)),
-        HexColor(id: 26, color: Color(red: 57/255, green: 0/255, blue: 198/255)),
-        HexColor(id: 27, color: Color(red: 59/255, green: 0/255, blue: 196/255)),
-        HexColor(id: 28, color: Color(red: 61/255, green: 0/255, blue: 194/255)),
-        HexColor(id: 29, color: Color(red: 63/255, green: 0/255, blue: 192/255)),
-        HexColor(id: 30, color: Color(red: 66/255, green: 0/255, blue: 189/255)),
-        HexColor(id: 31, color: Color(red: 68/255, green: 0/255, blue: 187/255)),
-        HexColor(id: 32, color: Color(red: 70/255, green: 0/255, blue: 185/255)),
-        HexColor(id: 33, color: Color(red: 72/255, green: 0/255, blue: 183/255))
+        HexColor(id: 24, color: Color(red: 82/255, green: 151/255, blue: 106/255)),
+        HexColor(id: 25, color: Color(red: 92/255, green: 201/255, blue: 156/255)),
+        HexColor(id: 26, color: Color(red: 117/255, green: 251/255, blue: 207/255)),
+        HexColor(id: 27, color: Color(red: 117/255, green: 251/255, blue: 253/255)),
+        HexColor(id: 28, color: Color(red: 103/255, green: 201/255, blue: 250/255)),
+        HexColor(id: 29, color: Color(red: 82/255, green: 151/255, blue: 247/255)),
+        HexColor(id: 30, color: Color(red: 113/255, green: 152/255, blue: 248/255)),
+        HexColor(id: 31, color: Color(red: 102/255, green: 102/255, blue: 246/255)),
+        HexColor(id: 32, color: Color(red: 93/255, green: 14/255, blue: 245/255)),
+        HexColor(id: 33, color: Color(red: 93/255, green: 14/255, blue: 196/255))
     ]
     
     static let line5: [HexColor] = [
-        HexColor(id: 34, color: Color(red: 74/255, green: 0/255, blue: 181/255)),
-        HexColor(id: 35, color: Color(red: 76/255, green: 0/255, blue: 179/255)),
-        HexColor(id: 36, color: Color(red: 79/255, green: 0/255, blue: 176/255)),
-        HexColor(id: 37, color: Color(red: 81/255, green: 0/255, blue: 174/255)),
-        HexColor(id: 38, color: Color(red: 83/255, green: 0/255, blue: 172/255)),
-        HexColor(id: 39, color: Color(red: 85/255, green: 0/255, blue: 170/255)),
-        HexColor(id: 40, color: Color(red: 87/255, green: 0/255, blue: 168/255)),
-        HexColor(id: 41, color: Color(red: 90/255, green: 0/255, blue: 165/255)),
-        HexColor(id: 42, color: Color(red: 92/255, green: 0/255, blue: 163/255)),
-        HexColor(id: 43, color: Color(red: 94/255, green: 0/255, blue: 161/255)),
-        HexColor(id: 44, color: Color(red: 96/255, green: 0/255, blue: 159/255))
+        HexColor(id: 34, color: Color(red: 82/255, green: 151/255, blue: 66/255)),
+        HexColor(id: 35, color: Color(red: 92/255, green: 201/255, blue: 113/255)),
+        HexColor(id: 36, color: Color(red: 117/255, green: 251/255, blue: 162/255)),
+        HexColor(id: 37, color: Color(red: 146/255, green: 252/255, blue: 207/255)),
+        HexColor(id: 38, color: Color(red: 146/255, green: 252/255, blue: 253/255)),
+        HexColor(id: 39, color: Color(red: 128/255, green: 202/255, blue: 250/255)),
+        HexColor(id: 40, color: Color(red: 164/255, green: 203/255, blue: 250/255)),
+        HexColor(id: 41, color: Color(red: 153/255, green: 153/255, blue: 248/255)),
+        HexColor(id: 42, color: Color(red: 146/255, green: 104/255, blue: 246/255)),
+        HexColor(id: 43, color: Color(red: 141/255, green: 58/255, blue: 246/255)),
+        HexColor(id: 44, color: Color(red: 140/255, green: 26/255, blue: 245/255))
     ]
     
     static let line6: [HexColor] = [
-        HexColor(id: 45, color: Color(red: 98/255, green: 0/255, blue: 157/255)),
-        HexColor(id: 46, color: Color(red: 100/255, green: 0/255, blue: 155/255)),
-        HexColor(id: 47, color: Color(red: 103/255, green: 0/255, blue: 152/255)),
-        HexColor(id: 48, color: Color(red: 105/255, green: 0/255, blue: 150/255)),
-        HexColor(id: 49, color: Color(red: 107/255, green: 0/255, blue: 148/255)),
-        HexColor(id: 50, color: Color(red: 109/255, green: 0/255, blue: 146/255)),
-        HexColor(id: 51, color: Color(red: 111/255, green: 0/255, blue: 144/255)),
-        HexColor(id: 52, color: Color(red: 114/255, green: 0/255, blue: 141/255)),
-        HexColor(id: 53, color: Color(red: 116/255, green: 0/255, blue: 139/255)),
-        HexColor(id: 54, color: Color(red: 118/255, green: 0/255, blue: 137/255)),
-        HexColor(id: 55, color: Color(red: 120/255, green: 0/255, blue: 135/255)),
-        HexColor(id: 56, color: Color(red: 122/255, green: 0/255, blue: 133/255))
+        HexColor(id: 45, color: Color(red: 43/255, green: 100/255, blue: 25/255)),
+        HexColor(id: 46, color: Color(red: 92/255, green: 201/255, blue: 159/255)),
+        HexColor(id: 47, color: Color(red: 117/255, green: 251/255, blue: 76/255)),
+        HexColor(id: 48, color: Color(red: 146/255, green: 252/255, blue: 163/255)),
+        HexColor(id: 49, color: Color(red: 117/255, green: 252/255, blue: 208/255)),
+        HexColor(id: 50, color: Color(red: 214/255, green: 254/255, blue: 254/255)),
+        HexColor(id: 51, color: Color(red: 204/255, green: 204/255, blue: 251/255)),
+        HexColor(id: 52, color: Color(red: 196/255, green: 155/255, blue: 249/255)),
+        HexColor(id: 53, color: Color(red: 191/255, green: 107/255, blue: 247/255)),
+        HexColor(id: 54, color: Color(red: 188/255, green: 64/255, blue: 246/255)),
+        HexColor(id: 55, color: Color(red: 187/255, green: 39/255, blue: 246/255)),
+        HexColor(id: 56, color: Color(red: 140/255, green: 26/255, blue: 197/255))
     ]
     
     static let line7: [HexColor] = [
-        HexColor(id: 57, color: Color(red: 124/255, green: 0/255, blue: 131/255)),
-        HexColor(id: 58, color: Color(red: 127/255, green: 0/255, blue: 128/255)),
-        HexColor(id: 59, color: Color(red: 129/255, green: 0/255, blue: 126/255)),
-        HexColor(id: 60, color: Color(red: 131/255, green: 0/255, blue: 124/255)),
-        HexColor(id: 61, color: Color(red: 133/255, green: 0/255, blue: 122/255)),
-        HexColor(id: 62, color: Color(red: 135/255, green: 0/255, blue: 120/255)),
-        HexColor(id: 63, color: Color(red: 137/255, green: 0/255, blue: 118/255)),
-        HexColor(id: 64, color: Color(red: 140/255, green: 0/255, blue: 115/255)),
-        HexColor(id: 65, color: Color(red: 142/255, green: 0/255, blue: 113/255)),
-        HexColor(id: 66, color: Color(red: 144/255, green: 0/255, blue: 111/255)),
-        HexColor(id: 67, color: Color(red: 146/255, green: 0/255, blue: 109/255)),
-        HexColor(id: 68, color: Color(red: 148/255, green: 0/255, blue: 107/255)),
-        HexColor(id: 69, color: Color(red: 150/255, green: 0/255, blue: 105/255))
+        HexColor(id: 57, color: Color(red: 18/255, green: 50/255, blue: 8/255)),
+        HexColor(id: 58, color: Color(red: 67/255, green: 151/255, blue: 65/255)),
+        HexColor(id: 59, color: Color(red: 103/255, green: 201/255, blue: 77/255)),
+        HexColor(id: 60, color: Color(red: 146/255, green: 252/255, blue: 122/255)),
+        HexColor(id: 61, color: Color(red: 177/255, green: 252/255, blue: 163/255)),
+        HexColor(id: 62, color: Color(red: 214/255, green: 254/255, blue: 208/255)),
+        HexColor(id: 63, color: Color(red: 255/255, green: 255/255, blue: 255/255)),
+        HexColor(id: 64, color: Color(red: 247/255, green: 206/255, blue: 252/255)),
+        HexColor(id: 65, color: Color(red: 241/255, green: 158/255, blue: 249/255)),
+        HexColor(id: 66, color: Color(red: 237/255, green: 112/255, blue: 248/255)),
+        HexColor(id: 67, color: Color(red: 234/255, green: 51/255, blue: 247/255)),
+        HexColor(id: 68, color: Color(red: 187/255, green: 39/255, blue: 197/255)),
+        HexColor(id: 69, color: Color(red: 93/255, green: 14/255, blue: 98/255))
     ]
     
     static let line8: [HexColor] = [
-        HexColor(id: 70, color: Color(red: 153/255, green: 0/255, blue: 102/255)),
-        HexColor(id: 71, color: Color(red: 155/255, green: 0/255, blue: 100/255)),
-        HexColor(id: 72, color: Color(red: 157/255, green: 0/255, blue: 98/255)),
-        HexColor(id: 73, color: Color(red: 159/255, green: 0/255, blue: 96/255)),
-        HexColor(id: 74, color: Color(red: 161/255, green: 0/255, blue: 94/255)),
-        HexColor(id: 75, color: Color(red: 164/255, green: 0/255, blue: 91/255)),
-        HexColor(id: 76, color: Color(red: 166/255, green: 0/255, blue: 89/255)),
-        HexColor(id: 77, color: Color(red: 168/255, green: 0/255, blue: 87/255)),
-        HexColor(id: 78, color: Color(red: 170/255, green: 0/255, blue: 85/255)),
-        HexColor(id: 79, color: Color(red: 172/255, green: 0/255, blue: 83/255)),
-        HexColor(id: 80, color: Color(red: 174/255, green: 0/255, blue: 81/255)),
-        HexColor(id: 81, color: Color(red: 177/255, green: 0/255, blue: 78/255))
+        HexColor(id: 70, color: Color(red: 64/255, green: 101/255, blue: 26/255)),
+        HexColor(id: 71, color: Color(red: 67/255, green: 151/255, blue: 42/255)),
+        HexColor(id: 72, color: Color(red: 146/255, green: 252/255, blue: 91/255)),
+        HexColor(id: 73, color: Color(red: 177/255, green: 252/255, blue: 123/255)),
+        HexColor(id: 74, color: Color(red: 214/255, green: 254/255, blue: 164/255)),
+        HexColor(id: 75, color: Color(red: 255/255, green: 255/255, blue: 209/255)),
+        HexColor(id: 76, color: Color(red: 247/255, green: 206/255, blue: 205/255)),
+        HexColor(id: 77, color: Color(red: 241/255, green: 158/255, blue: 202/255)),
+        HexColor(id: 78, color: Color(red: 237/255, green: 112/255, blue: 200/255)),
+        HexColor(id: 79, color: Color(red: 235/255, green: 172/255, blue: 199/255)),
+        HexColor(id: 80, color: Color(red: 187/255, green: 39/255, blue: 149/255)),
+        HexColor(id: 81, color: Color(red: 141/255, green: 58/255, blue: 148/255))
     ]
     
     static let line9: [HexColor] = [
