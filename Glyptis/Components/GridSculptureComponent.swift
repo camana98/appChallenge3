@@ -17,15 +17,18 @@ struct GridSculptureComponent: View {
                 Image(.bezeled)
                     .scaledToFill()
                 
+                
+                
+                
             }
             
-            Text("")
-                .font(.custom, size: <#T##CGFloat#>))
+            Text(sculpture.name)
+                .font(.custom("", size: 13))
             
         }
     }
 }
 
 #Preview {
-    GridSculptureComponent()
+    GridSculptureComponent(sculpture: Sculpture(name: "heheeeeee"))
 }
