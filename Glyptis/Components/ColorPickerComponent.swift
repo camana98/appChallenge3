@@ -68,6 +68,7 @@ struct ColorPickerComponent: View {
                 
                 RootHexagon()
                     .fill(selectedColor)
+                    .stroke(Color.black.opacity(0.15), lineWidth: 2)
                     .frame(width: 40, height: 40)
             }
         }
