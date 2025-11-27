@@ -10,7 +10,7 @@ import SwiftUI
 struct MuseuGridListView: View {
     
     @State var vm: MuseuGridViewModelProtocol
-    
+
     var body: some View {
         NavigationStack {
             VStack(spacing: 11) {
@@ -64,7 +64,6 @@ struct MuseuGridListView: View {
                     }
                 }
                 .padding(.horizontal)
-                
             }
             .background(
                 Rectangle()
@@ -80,6 +79,7 @@ struct MuseuGridListView: View {
         }
     }
 }
+
 
 
 
