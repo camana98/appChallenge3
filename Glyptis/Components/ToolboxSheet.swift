@@ -75,20 +75,6 @@ struct ToolboxSheet: View {
                             }
                         }
                         
-                        VStack {
-                            SimpleCubeIcon(
-                                assetName: "changeColorCube",
-                                action: onChangeColor,
-                                width: 54,
-                                height: 56
-                            )
-                            
-                            Text("Alterar cor")
-                                .font(.system(size: 15))
-                                .foregroundColor(Color("customBlue"))
-                                .padding(.bottom, 50)
-                            
-                        }
                     }
                     .padding(.horizontal, 24)
                     .frame(maxWidth: .infinity)

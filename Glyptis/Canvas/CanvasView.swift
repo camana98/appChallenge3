@@ -10,6 +10,8 @@ internal import RealityKit
 
 struct CanvasView: View {
     @StateObject private var vm = CanvasViewModel()
+    @Environment(\.modelContext) private var context
+    
     @State private var showNamingPopup: Bool = false
     @State private var sculptureName: String = ""
     @State private var showToolbox: Bool = false
@@ -40,7 +42,9 @@ struct CanvasView: View {
             HStack {
                 SimpleCubeIcon(assetName: "cancelCube", action: { onCancel() }, width: 54, height: 56)
                 Spacer()
-                SimpleCubeIcon(assetName: "saveCube", action: { showNamingPopup = true }, width: 54, height: 56)
+                SimpleCubeIcon(assetName: "saveCube", action: {
+                    showNamingPopup = true
+                }, width: 54, height: 56)
             }
             .padding(.horizontal, 24)
             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
@@ -67,13 +71,40 @@ struct CanvasView: View {
     // MARK: - Popups
     
     @ViewBuilder
+    
     private func namingPopup() -> some View {
         if showNamingPopup {
             NameSculpturePopup(
                 sculptureName: $sculptureName,
                 onSave: {
                     showNamingPopup = false
-                    
+
+                    // MARK: 1) Converter para UnfinishedCube
+                    let unfinished = vm.cubes.map { cube in
+                        UnfinishedCube(
+                            locationX: cube.locationX,
+                            locationY: cube.locationY,
+                            locationZ: cube.locationZ,
+                            colorR: cube.colorR,
+                            colorG: cube.colorG,
+                            colorB: cube.colorB,
+                            colorA: cube.colorA ?? 1
+                        )
+                    }
+
+                    // MARK: 2) Criar service
+                    let service = SculptureService(context: context)
+
+                    // MARK: 3) Salvar escultura e cubos no SwiftData
+                    let saved = service.create(
+                        name: sculptureName,
+                        author: nil,
+                        localization: nil,
+                        cubes: unfinished
+                    )
+
+                    print("ESCULTURA SALVA → \(saved.name)")
+                    vm.currentSculpture = saved
                 },
                 onCancel: { showNamingPopup = false }
             )
@@ -81,6 +112,7 @@ struct CanvasView: View {
             .zIndex(1)
         }
     }
+
     
     @ViewBuilder
     private func toolboxSheet() -> some View {

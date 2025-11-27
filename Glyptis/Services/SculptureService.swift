@@ -46,42 +46,38 @@ final class SculptureService {
     
     // MARK: - CREATE
     
-    func create(
-        name: String,
-        author: Author? = nil,
-        localization: Localization? = nil,
-        cubes: [UnfinishedCube] = []
-    ) -> Sculpture {
-        
-        let sculpture = Sculpture(
-            name: name,
-            author: author
-        )
-        
-        // 1) Converte os unfinished -> cubes (sem mexer em context)
-        let newCubes = makeCubes(
-            for: sculpture,
-            from: cubes
-        )
-        
-        // 2) Relaciona os cubes com a sculpture
-        sculpture.cubes = newCubes
-        
-        // 3) Persiste cubes no context
-        insertCubesIntoContext(newCubes)
-    
-        // 4) Persiste a sculpture
-        context.insert(sculpture)
-        
-        // 5) Salva
-        do {
-            try context.save()
-        } catch {
-            print("Erro ao criar escultura:", error)
-        }
-        
-        return sculpture
-    }
+    @discardableResult
+       func create(
+           name: String,
+           author: Author?,
+           localization: Localization?,
+           cubes: [UnfinishedCube]
+       ) -> Sculpture {
+
+           let sculpture = Sculpture(name: name)
+           sculpture.author = author
+           sculpture.localization = nil
+
+           context.insert(sculpture)
+
+           for u in cubes {
+               let cube = Cube(
+                   sculpture: sculpture,
+                   x: u.locationX,
+                   y: u.locationY,
+                   z: u.locationZ,
+                   r: u.colorR,
+                   g: u.colorG,
+                   b: u.colorB
+               )
+               context.insert(cube)
+               sculpture.cubes?.append(cube)
+           }
+
+           try? context.save()
+
+           return sculpture
+       }
     
     // MARK: - READ
     
