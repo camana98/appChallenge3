@@ -7,7 +7,7 @@
 
 import Foundation
 import SwiftUI
-import RealityKit
+internal import RealityKit
 
 struct MuseuView: View {
     

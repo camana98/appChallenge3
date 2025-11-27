@@ -9,8 +9,7 @@ import SwiftUI
 
 struct MuseuGridListView: View {
     
-    @State private var searchText = ""
-    @State private var showSearch: Bool = false
+    @State var vm: MuseuGridViewModelProtocol
     
     var body: some View {
         NavigationStack {
@@ -29,24 +28,51 @@ struct MuseuGridListView: View {
                     Spacer()
                     
                     CubeButtonComponent(cubeStyle: .filters, cubeColor: .blue) {
-                        print("filtros")
+                        
                     }
-                    .frame(width: 75, height: 75)
+                    .frame(width: 75,height: 75)
                     .scaledToFill()
                 }
+                .padding(.top)
                 
                 
                 ScrollView {
-                    Text("Grid de Esculturas...")
-                        .padding()
+                    LazyVGrid(columns: vm.columns, spacing: 13){
+                        ForEach(vm.filteredSculptures) { escultura in
+                            GridSculptureComponent(sculpture: escultura)
+                                .contextMenu {
+                                    
+                                    Button {
+                                        vm.edit(s: escultura)
+                                    } label: {
+                                        Label("Editar", systemImage: "pencil")
+                                    }
+                                    
+                                    Button {
+                                        vm.anchor(s: escultura)
+                                    } label: {
+                                        Label("Ancorar", systemImage: "pin")
+                                    }
+                                    
+                                    Button(role: .destructive) {
+                                        vm.delete(s: escultura)
+                                    } label: {
+                                        Label("Deletar", systemImage: "trash")
+                                    }
+                                }
+                        }
+                    }
                 }
+                .padding(.horizontal)
+                
             }
             .background(
                 Rectangle()
                     .foregroundStyle(.foregroundMuseu)
                     .ignoresSafeArea()
             )
-            .searchable(text: $searchText, isPresented: $showSearch)
+            .searchable(text:
+                            $vm.searchText, isPresented: $vm.showSearch)
             .toolbar(.hidden, for: .navigationBar)
         }
     }
