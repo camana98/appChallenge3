@@ -53,5 +53,6 @@ struct Hexagon: View {
 }
 
 #Preview {
+    RootHexagon()
 //    Hexagon(isSelectedNotifier: .constant(UUID()), hexagonColor: .red)
 }

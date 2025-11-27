@@ -12,263 +12,90 @@ struct ColorPickerComponent: View {
     @Binding var selectedColor: Color
     
     var beehiveSize: CGFloat = 16
-
+    
+    // Linhas principais
+    private var hiveLines: [[HexColor]] {
+        [
+            ColorPalete.line1,
+            ColorPalete.line2,
+            ColorPalete.line3,
+            ColorPalete.line4,
+            ColorPalete.line5,
+            ColorPalete.line6,
+            ColorPalete.line7,
+            ColorPalete.line8,
+            ColorPalete.line9,
+            ColorPalete.line10,
+            ColorPalete.line11,
+            ColorPalete.line12,
+            ColorPalete.line13
+        ]
+    }
+    
     var body: some View {
-        let overlap = beehiveSize * (0.866-1)
+        let horizontalOverlap = beehiveSize * (0.866 - 1)
+        let verticalOverlap   = beehiveSize * 0.25   // 0.75 da altura entre centros
         
-        VStack {
-            VStack {
-                Text("Alterar Cor")
-                    .font(.largeTitle)
+        VStack(spacing: 24) {
+            Text("Alterar cor")
+                .font(.largeTitle)
+            
+            // Favo principal
+            VStack(spacing: -verticalOverlap) {
+                ForEach(hiveLines.indices, id: \.self) { rowIndex in
+                    HStack(spacing: horizontalOverlap) {
+                        ForEach(hiveLines[rowIndex]) { hexColor in
+                            hexagonView(for: hexColor)
+                        }
+                    }
+                }
             }
-            Spacer()
-            VStack {
-                VStack(spacing: 0){
-                     HStack(spacing: overlap) {
-                         ForEach(ColorPalete.line1) { hexColor in
-                             Hexagon(
-                                 id: hexColor.id,
-                                 isSelected: selectedHexID == hexColor.id,
-                                 hexagonColor: hexColor.color
-                             ) {
-                                 selectedColor = hexColor.color
-                                 selectedHexID = hexColor.id
-                             }
-                             .frame(width: beehiveSize, height: beehiveSize)
-                         }
-                     }
-                    HStack(spacing: overlap) {
-                        ForEach(ColorPalete.line2) { hexColor in
-                            Hexagon(
-                                id: hexColor.id,
-                                isSelected: selectedHexID == hexColor.id,
-                                hexagonColor: hexColor.color
-                            ) {
-                                selectedColor = hexColor.color
-                                selectedHexID = hexColor.id
-                            }
-                            .frame(width: beehiveSize, height: beehiveSize)
+            
+            // Escala de cinza + hex de preview
+            HStack(spacing: 24) {
+                VStack(spacing: -verticalOverlap) {
+                    HStack(spacing: horizontalOverlap) {
+                        ForEach(ColorPalete.line14) { hexColor in
+                            hexagonView(for: hexColor)
                         }
                     }
-                     .offset(y: -5) // line (1) * 5
-                    
-                    HStack(spacing: overlap) {
-                        ForEach(ColorPalete.line3) { hexColor in
-                            Hexagon(
-                                id: hexColor.id,
-                                isSelected: selectedHexID == hexColor.id,
-                                hexagonColor: hexColor.color
-                            ) {
-                                selectedColor = hexColor.color
-                                selectedHexID = hexColor.id
-                            }
-                            .frame(width: beehiveSize, height: beehiveSize)
+                    HStack(spacing: horizontalOverlap) {
+                        ForEach(ColorPalete.line15) { hexColor in
+                            hexagonView(for: hexColor)
                         }
                     }
-                     .offset(y: -10) // line (1) * 5
-                    
-                    HStack(spacing: overlap) {
-                        ForEach(ColorPalete.line4) { hexColor in
-                            Hexagon(
-                                id: hexColor.id,
-                                isSelected: selectedHexID == hexColor.id,
-                                hexagonColor: hexColor.color
-                            ) {
-                                selectedColor = hexColor.color
-                                selectedHexID = hexColor.id
-                            }
-                            .frame(width: beehiveSize, height: beehiveSize)
-                        }
-                    }
-                     .offset(y: -15) // line (1) * 5
-                    
-                    HStack(spacing: overlap) {
-                        ForEach(ColorPalete.line5) { hexColor in
-                            Hexagon(
-                                id: hexColor.id,
-                                isSelected: selectedHexID == hexColor.id,
-                                hexagonColor: hexColor.color
-                            ) {
-                                selectedColor = hexColor.color
-                                selectedHexID = hexColor.id
-                            }
-                            .frame(width: beehiveSize, height: beehiveSize)
-                        }
-                    }
-                     .offset(y: -20) // line (1) * 5
-                    
-                    HStack(spacing: overlap) {
-                        ForEach(ColorPalete.line6) { hexColor in
-                            Hexagon(
-                                id: hexColor.id,
-                                isSelected: selectedHexID == hexColor.id,
-                                hexagonColor: hexColor.color
-                            ) {
-                                selectedColor = hexColor.color
-                                selectedHexID = hexColor.id
-                            }
-                            .frame(width: beehiveSize, height: beehiveSize)
-                        }
-                    }
-                     .offset(y: -25) // line (1) * 5
-                    
-                    HStack(spacing: overlap) {
-                        ForEach(ColorPalete.line7) { hexColor in
-                            Hexagon(
-                                id: hexColor.id,
-                                isSelected: selectedHexID == hexColor.id,
-                                hexagonColor: hexColor.color
-                            ) {
-                                selectedColor = hexColor.color
-                                selectedHexID = hexColor.id
-                            }
-                            .frame(width: beehiveSize, height: beehiveSize)
-                        }
-                    }
-                     .offset(y: -30) // line (1) * 5
-                    
-                    HStack(spacing: overlap) {
-                        ForEach(ColorPalete.line8) { hexColor in
-                            Hexagon(
-                                id: hexColor.id,
-                                isSelected: selectedHexID == hexColor.id,
-                                hexagonColor: hexColor.color
-                            ) {
-                                selectedColor = hexColor.color
-                                selectedHexID = hexColor.id
-                            }
-                            .frame(width: beehiveSize, height: beehiveSize)
-                        }
-                    }
-                     .offset(y: -35) // line (1) * 5
-                    
-                    HStack(spacing: overlap) {
-                        ForEach(ColorPalete.line9) { hexColor in
-                            Hexagon(
-                                id: hexColor.id,
-                                isSelected: selectedHexID == hexColor.id,
-                                hexagonColor: hexColor.color
-                            ) {
-                                selectedColor = hexColor.color
-                                selectedHexID = hexColor.id
-                            }
-                            .frame(width: beehiveSize, height: beehiveSize)
-                        }
-                    }
-                     .offset(y: -40) // line (1) * 5
-                    
-                    HStack(spacing: overlap) {
-                        ForEach(ColorPalete.line10) { hexColor in
-                            Hexagon(
-                                id: hexColor.id,
-                                isSelected: selectedHexID == hexColor.id,
-                                hexagonColor: hexColor.color
-                            ) {
-                                selectedColor = hexColor.color
-                                selectedHexID = hexColor.id
-                            }
-                            .frame(width: beehiveSize, height: beehiveSize)
-                        }
-                    }
-                     .offset(y: -45) // line (1) * 5
-                    
-                    HStack(spacing: overlap) {
-                        ForEach(ColorPalete.line11) { hexColor in
-                            Hexagon(
-                                id: hexColor.id,
-                                isSelected: selectedHexID == hexColor.id,
-                                hexagonColor: hexColor.color
-                            ) {
-                                selectedColor = hexColor.color
-                                selectedHexID = hexColor.id
-                            }
-                            .frame(width: beehiveSize, height: beehiveSize)
-                        }
-                    }
-                     .offset(y: -50) // line (1) * 5
-                    
-                    HStack(spacing: overlap) {
-                        ForEach(ColorPalete.line12) { hexColor in
-                            Hexagon(
-                                id: hexColor.id,
-                                isSelected: selectedHexID == hexColor.id,
-                                hexagonColor: hexColor.color
-                            ) {
-                                selectedColor = hexColor.color
-                                selectedHexID = hexColor.id
-                            }
-                            .frame(width: beehiveSize, height: beehiveSize)
-                        }
-                    }
-                     .offset(y: -55) // line (1) * 5
-                    
-                    HStack(spacing: overlap) {
-                        ForEach(ColorPalete.line13) { hexColor in
-                            Hexagon(
-                                id: hexColor.id,
-                                isSelected: selectedHexID == hexColor.id,
-                                hexagonColor: hexColor.color
-                            ) {
-                                selectedColor = hexColor.color
-                                selectedHexID = hexColor.id
-                            }
-                            .frame(width: beehiveSize, height: beehiveSize)
-                        }
-                    }
-                     .offset(y: -60) // line (1) * 5
-                 }
-             }
-             .frame(height: beehiveSize * 4) // * line num
-             
-             HStack {
-                 VStack {
-                     HStack(spacing: overlap) {
-                         ForEach(ColorPalete.line14) { hexColor in
-                             Hexagon(
-                                 id: hexColor.id,
-                                 isSelected: selectedHexID == hexColor.id,
-                                 hexagonColor: hexColor.color
-                             ) {
-                                 selectedColor = hexColor.color
-                                 selectedHexID = hexColor.id
-                             }
-                             .frame(width: beehiveSize, height: beehiveSize)
-                         }
-                     }
-                      .offset(y: 8) // line (1) * 5
-                     
-                     HStack(spacing: overlap) {
-                         ForEach(ColorPalete.line15) { hexColor in
-                             Hexagon(
-                                 id: hexColor.id,
-                                 isSelected: selectedHexID == hexColor.id,
-                                 hexagonColor: hexColor.color
-                             ) {
-                                 selectedColor = hexColor.color
-                                 selectedHexID = hexColor.id
-                             }
-                             .frame(width: beehiveSize, height: beehiveSize)
-                         }
-                     }
-                      .offset(y: -5) // line (1) * 5
-                 }
-
-                 RootHexagon()
-                     .frame(width: 28, height: 28)
-                     .foregroundColor(selectedColor)
-             }
-             .padding()
-             .frame(width: 300, height: 50)
+                }
+                
+                RootHexagon()
+                    .fill(selectedColor)
+                    .frame(width: 40, height: 40)
+            }
         }
-        .frame(width: 300, height: 300)
+        .padding(24)
+        .frame(width: 320, height: 360)
         .background(.ultraThinMaterial)
-        .cornerRadius(30)
+        .clipShape(RoundedRectangle(cornerRadius: 30, style: .continuous))
+    }
+    
+    // MARK: - Subview
+    
+    @ViewBuilder
+    private func hexagonView(for hexColor: HexColor) -> some View {
+        let isSelected = selectedHexID == hexColor.id
         
-
+        Hexagon(
+            id: hexColor.id,
+            isSelected: isSelected,
+            hexagonColor: hexColor.color
+        ) {
+            selectedColor = hexColor.color
+            selectedHexID = hexColor.id
+        }
+        .frame(width: beehiveSize, height: beehiveSize)
+        .zIndex(isSelected ? 1 : 0)   // garante que a borda do selecionado fique por cima
     }
 }
 
 #Preview {
     ColorPickerComponent(selectedHexID: 3, selectedColor: .constant(.red))
 }
-
