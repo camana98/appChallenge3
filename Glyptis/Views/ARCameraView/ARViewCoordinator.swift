@@ -5,7 +5,7 @@
 //  Created by Vicenzo Másera on 24/11/25.
 //
 import ARKit
-import RealityKit
+internal import RealityKit
 import Foundation
 
 class ARViewCoordinator: NSObject {

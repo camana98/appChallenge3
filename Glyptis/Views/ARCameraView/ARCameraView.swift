@@ -11,24 +11,33 @@ struct ARCameraView: View {
     
     @State var coordinator = ARViewCoordinator()
     
+    // Closure para avisar quando abrir o Canvas
+    var onOpenCanvas: () -> Void
+    
     var body: some View {
-        NavigationStack {
-            ARViewContainer(coordinator: $coordinator)
-                .edgesIgnoringSafeArea(.all)
+        ZStack {
+            // aqui vai ficar a ARView real, usando coordinator
+            Color.gray.opacity(0.2) /// Placeholder da câmera
             
-            NavigationLink {
-                ContentView()
-            } label: {
-                Text("Ir para Detalhes")
-                    .padding()
-                    .background(Color.blue)
-                    .foregroundColor(.white)
-                    .cornerRadius(10)
+            VStack {
+                Spacer()
+                
+                Button {
+                    onOpenCanvas()
+                } label: {
+                    Text("Ir para Canvas")
+                        .padding()
+                        .background(Color.blue)
+                        .foregroundColor(.white)
+                        .cornerRadius(10)
+                }
+                .padding(.bottom, 50)
             }
         }
+        .edgesIgnoringSafeArea(.all)
     }
 }
 
 #Preview {
-    ARCameraView()
+    ARCameraView(onOpenCanvas: {})
 }

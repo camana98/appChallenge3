@@ -7,7 +7,7 @@
 
 import Foundation
 import ARKit
-import RealityKit
+internal import RealityKit
 import SwiftUI
 
 struct ARViewContainer: UIViewRepresentable {
