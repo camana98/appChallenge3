@@ -13,6 +13,7 @@ import ARKit
 
 protocol CubeDelegate: AnyObject {
     func didAddCube(x: Float, y: Float, z: Float, colorR: Float, colorG: Float, colorB: Float, colorA: Float)
+    func didRemoveCube(x: Float, y: Float, z: Float)
 }
 
 class UnifiedCoordinator: NSObject, UIGestureRecognizerDelegate {

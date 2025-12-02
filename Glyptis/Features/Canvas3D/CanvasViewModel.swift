@@ -49,20 +49,21 @@ class CanvasViewModel: ObservableObject {
     }
 
 
-    func removeCube(x: Float, y: Float, z: Float) {
-        // Remove o cubo do array usando posição (x, y, z)
-        // Remove o último cubo que corresponde à posição x, z (mesma coluna)
-        // e tem a altura y mais próxima
-        if let index = unfinishedCubes.lastIndex(where: { 
-            abs($0.locationX - x) < 0.01 && 
-            abs($0.locationZ - z) < 0.01 &&
-            abs($0.locationY - y) < 0.01
-        }) {
-            unfinishedCubes.remove(at: index)
-        }
-        let key = "\(Int(x))_\(Int(z))"
-        coordinator?.removeCube(in: key)
-    }
+//    func removeCube(x: Float, y: Float, z: Float) {
+//        // Remove o cubo do array usando posição (x, y, z)
+//        // Remove o último cubo que corresponde à posição x, z (mesma coluna)
+//        // e tem a altura y mais próxima
+//        if let index = unfinishedCubes.lastIndex(where: { 
+//            abs($0.locationX - x) < 0.01 && 
+//            abs($0.locationZ - z) < 0.01 &&
+//            abs($0.locationY - y) < 0.01w
+//        }) {
+//            unfinishedCubes.remove(at: index)
+//        }
+//        let key = "\(Int(x))_\(Int(z))"
+//        coordinator?.removeCube(in: key)
+//        coordinator
+//    }
 
     func clearAllCubes() {
         coordinator?.clearAllCubes()
@@ -100,6 +101,17 @@ extension CanvasViewModel: CubeDelegate {
             colorA: colorA
         )
         unfinishedCubes.append(unfinished)
-        print("CUBO ADICIONADO → X: \(x), Y: \(y), Z: \(z)")
+    }
+    
+    func didRemoveCube(x: Float, y: Float, z: Float) {
+        // Remove o cubo do array usando posição (x, y, z)
+        // Usa uma tolerância pequena para comparação de floats
+        if let index = unfinishedCubes.firstIndex(where: { 
+            abs($0.locationX - x) < 0.01 && 
+            abs($0.locationY - y) < 0.01 &&
+            abs($0.locationZ - z) < 0.01
+        }) {
+            unfinishedCubes.remove(at: index)
+        }
     }
 }

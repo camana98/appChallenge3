@@ -89,8 +89,10 @@ extension UnifiedCoordinator {
         
         if entity.name.starts(with: "base_") {
             if !removeMode, let parsed = parseBaseName(entity.name) {
+                let key = "\(parsed.x)_\(parsed.z)"
+
+                /*
                 addCube(atKey: "\(parsed.x)_\(parsed.z)", fromBase: true)
-                
                 // Calcular posição (mesma lógica do addCube) TESTAR ASSIM, SE NÃO DER USE OS COMENTADOS
                 let posX = Float(parsed.x)
                 let posZ = Float(parsed.z)
@@ -114,6 +116,41 @@ extension UnifiedCoordinator {
                     colorB: Float(blue),
                     colorA: Float(alpha)
                 )
+                */
+
+
+                
+                // Calcular posição ANTES de adicionar (para pegar a altura correta)
+                var targetLayer = 0
+                while isSpaceOccupied(key: key, layer: targetLayer) {
+                    targetLayer += 1
+                }
+                
+                if targetLayer < gridSize {
+                    let posY = (cubeSize / 2) + (Float(targetLayer) * cubeSize)
+                    let posX = Float(parsed.x) * (cubeSize + gap) - baseOffset
+                    let posZ = Float(parsed.z) * (cubeSize + gap) - baseOffset
+                    
+                    // Adiciona o cubo visual
+                    addCube(atKey: key, fromBase: true)
+                    
+                    // Extrair componentes de cor
+                    var red: CGFloat = 0
+                    var green: CGFloat = 0
+                    var blue: CGFloat = 0
+                    var alpha: CGFloat = 0
+                    selectedColor.getRed(&red, green: &green, blue: &blue, alpha: &alpha)
+                    
+                    delegate?.didAddCube(
+                        x: posX,
+                        y: posY,
+                        z: posZ,
+                        colorR: Float(red),
+                        colorG: Float(green),
+                        colorB: Float(blue),
+                        colorA: Float(alpha)
+                    )
+                }
             }
             return
         }

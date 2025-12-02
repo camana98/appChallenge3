@@ -91,6 +91,9 @@ extension UnifiedCoordinator {
         /// Encontra o cubo específico na lista da colun
         guard let index = list.firstIndex(where: { $0 === entity }) else { return }
 
+        /// Salva a posição antes de remover para notificar o delegate
+        let position = entity.position
+        
         /// Remove visualmente da cena (sem mover os outros = flutuante)
         entity.removeFromParent()
         
@@ -105,6 +108,9 @@ extension UnifiedCoordinator {
             let topLayerIndex = Int((maxY - (cubeSize / 2)) / cubeSize)
             heights[key] = topLayerIndex + 1
         }
+        
+        /// Notifica o delegate sobre a remoção
+        delegate?.didRemoveCube(x: position.x, y: position.y, z: position.z)
     }
     
     // Limpa todos os cubos da cena
