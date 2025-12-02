@@ -19,9 +19,15 @@ extension UnifiedCoordinator {
         guard parts.count == 2,
               let x = Int(parts[0]), let z = Int(parts[1]) else { return }
 
-        let currentHeight = heights[key] ?? 0
-        let posY = (cubeSize / 2) + (Float(currentHeight) * cubeSize)
+        var targetLayer = 0
+        
+        while isSpaceOccupied(key: key, layer: targetLayer) {
+            targetLayer += 1
+        }
+        
+        if targetLayer >= gridSize { return }
 
+        let posY = (cubeSize / 2) + (Float(targetLayer) * cubeSize)
         let posX = Float(x) * (cubeSize + gap) - baseOffset
         let posZ = Float(z) * (cubeSize + gap) - baseOffset
 
@@ -66,15 +72,38 @@ extension UnifiedCoordinator {
         heights[key] = (heights[key] ?? 0) + 1
     }
 
+    // Verifica se já existe um cubo naquela coordenada específica
+    func isSpaceOccupied(key: String, layer: Int) -> Bool {
+        guard let list = columns[key] else { return false }
+        
+        /// Calcula a posição Y esperada para essa layer
+        let targetY = (cubeSize / 2) + (Float(layer) * cubeSize)
+        
+        /// Verifica se algum cubo da lista está nessa posição
+        return list.contains { abs($0.position.y - targetY) < 0.001 }
+    }
+    
     // Remove um cubo
-    func removeCube(in key: String) {
-        guard var list = columns[key], list.count > 0 else { return }
+    func removeSpecificCube(entity: Entity, key: String) {
+        guard var list = columns[key] else { return }
 
-        let top = list.removeLast()
-        top.removeFromParent()
+        /// Encontra o cubo específico na lista da colun
+        guard let index = list.firstIndex(where: { $0 === entity }) else { return }
 
+        /// Remove visualmente da cena (sem mover os outros = flutuante)
+        entity.removeFromParent()
+        
+        /// Remove da lista de dados
+        list.remove(at: index)
         columns[key] = list
-        heights[key] = max(0, (heights[key] ?? 0) - 1)
+        
+        if list.isEmpty {
+            heights[key] = 0
+        } else {
+            let maxY = list.map { $0.position.y }.max() ?? 0
+            let topLayerIndex = Int((maxY - (cubeSize / 2)) / cubeSize)
+            heights[key] = topLayerIndex + 1
+        }
     }
     
     // Limpa todos os cubos da cena
@@ -93,29 +122,27 @@ extension UnifiedCoordinator {
     func showPreviewCubes(for x: Int, y: Int, z: Int, color: UIColor) {
         removeActivePreviews()
         guard let anchor = anchor else { return }
-
+        
         let directions: [(dx: Int, dy: Int, dz: Int)] = [
-            (0, 1, 0),
-            (0, -1, 0),
-            (-1, 0, 0),
-            (1, 0, 0),
-            (0, 0, -1),
-            (0, 0, 1)
+            (0, 1, 0),  /// Cima
+            (0, -1, 0), /// Baixo
+            (-1, 0, 0), /// Esquerda
+            (1, 0, 0),  /// Direita
+            (0, 0, -1), /// Frente
+            (0, 0, 1)   /// Trás
         ]
 
         for dir in directions {
             let nx = x + dir.dx
-            let nz = z + dir.dz
             let ny = y + dir.dy
+            let nz = z + dir.dz
 
             guard nx >= 0, nx < gridSize, nz >= 0, nz < gridSize else { continue }
-            guard ny >= 0 else { continue }
+            guard ny >= 0, ny < gridSize else { continue }
 
             let keyNeighbor = "\(nx)_\(nz)"
-            let currentHeight = heights[keyNeighbor] ?? 0
 
-            if ny < currentHeight { continue }
-            if ny > gridSize - 1 { continue }
+            if isSpaceOccupied(key: keyNeighbor, layer: ny) { continue }
 
             let posY = (cubeSize / 2) + (Float(ny) * cubeSize)
             let pos = SIMD3<Float>(
