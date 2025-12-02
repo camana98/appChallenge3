@@ -12,7 +12,7 @@ internal import RealityKit
 @MainActor
 class CanvasViewModel: ObservableObject {
     @Published var removeMode: Bool = false
-    @Published var selectedColor: Color = .green
+    @Published var selectedColor: Color = .customBlue
     @Published var rotationY: Float = 0.0
     @Published var cubes: [Cube] = []
 
