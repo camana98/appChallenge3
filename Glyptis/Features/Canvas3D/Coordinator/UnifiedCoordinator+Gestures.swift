@@ -23,7 +23,7 @@ extension UnifiedCoordinator {
         let deltaX = Float(translation.x - lastTranslation.x)
         let deltaY = Float(translation.y - lastTranslation.y)
 
-        currentRotationY += deltaX * 0.01
+        currentRotationY -= deltaX * 0.01
         updateCameraPosition(animated: false)
 
         anchor?.position.y -= deltaY * 0.005
