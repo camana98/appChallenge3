@@ -19,9 +19,19 @@ extension UnifiedCoordinator {
         guard parts.count == 2,
               let x = Int(parts[0]), let z = Int(parts[1]) else { return }
 
-        let currentHeight = heights[key] ?? 0
-        let posY = (cubeSize / 2) + (Float(currentHeight) * cubeSize)
+        // NOVA LÓGICA:
+        // Em vez de pegar heights[key], vamos procurar a primeira layer livre começando do chão (0)
+        var targetLayer = 0
+        
+        // Enquanto o espaço estiver ocupado, subimos uma layer
+        while isSpaceOccupied(key: key, layer: targetLayer) {
+            targetLayer += 1
+        }
+        
+        // Se a torre estiver muito alta (limite de grid), paramos
+        if targetLayer >= gridSize { return }
 
+        let posY = (cubeSize / 2) + (Float(targetLayer) * cubeSize)
         let posX = Float(x) * (cubeSize + gap) - baseOffset
         let posZ = Float(z) * (cubeSize + gap) - baseOffset
 
@@ -66,6 +76,17 @@ extension UnifiedCoordinator {
         heights[key] = (heights[key] ?? 0) + 1
     }
 
+    // Verifica se já existe um cubo naquela coordenada específica (Layer)
+    func isSpaceOccupied(key: String, layer: Int) -> Bool {
+        guard let list = columns[key] else { return false }
+        
+        // Calcula a posição Y esperada para essa layer
+        let targetY = (cubeSize / 2) + (Float(layer) * cubeSize)
+        
+        // Verifica se algum cubo da lista está nessa posição (com pequena margem de erro para float)
+        return list.contains { abs($0.position.y - targetY) < 0.001 }
+    }
+    
     // Remove um cubo
     func removeSpecificCube(entity: Entity, key: String) {
         guard var list = columns[key] else { return }
@@ -119,29 +140,37 @@ extension UnifiedCoordinator {
         removeActivePreviews()
         guard let anchor = anchor else { return }
 
+        // Todas as 6 direções possíveis (Cima, Baixo, Esquerda, Direita, Frente, Trás)
         let directions: [(dx: Int, dy: Int, dz: Int)] = [
-            (0, 1, 0),
-            (0, -1, 0),
-            (-1, 0, 0),
-            (1, 0, 0),
-            (0, 0, -1),
-            (0, 0, 1)
+            (0, 1, 0),  // Cima
+            (0, -1, 0), // Baixo (ESSENCIAL para preencher buracos)
+            (-1, 0, 0), // Esquerda
+            (1, 0, 0),  // Direita
+            (0, 0, -1), // Frente
+            (0, 0, 1)   // Trás
         ]
 
         for dir in directions {
             let nx = x + dir.dx
-            let nz = z + dir.dz
             let ny = y + dir.dy
+            let nz = z + dir.dz
 
+            // 1. Verifica limites laterais da Grid (X e Z)
             guard nx >= 0, nx < gridSize, nz >= 0, nz < gridSize else { continue }
-            guard ny >= 0 else { continue }
+            
+            // 2. Verifica limites verticais (Y)
+            // ny >= 0: Não pode colocar abaixo do chão
+            // ny < gridSize: Não pode colocar acima do limite máximo de altura
+            guard ny >= 0, ny < gridSize else { continue }
 
             let keyNeighbor = "\(nx)_\(nz)"
-            let currentHeight = heights[keyNeighbor] ?? 0
 
-            if ny < currentHeight { continue }
-            if ny > gridSize - 1 { continue }
+            // 3. A GRANDE CORREÇÃO:
+            // A única restrição agora é: "O espaço está ocupado?"
+            // Removemos qualquer verificação de altura máxima da coluna aqui.
+            if isSpaceOccupied(key: keyNeighbor, layer: ny) { continue }
 
+            // Se passou por tudo, calcula a posição e mostra o preview
             let posY = (cubeSize / 2) + (Float(ny) * cubeSize)
             let pos = SIMD3<Float>(
                 Float(nx) * (cubeSize + gap) - baseOffset,
