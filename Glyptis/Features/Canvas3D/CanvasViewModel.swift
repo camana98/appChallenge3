@@ -82,13 +82,6 @@ class CanvasViewModel: ObservableObject {
         coordinator?.addCube(atKey: key, fromBase: true)
     }
 
-    func removeCube(at cube: Cube) {
-        guard let lastIndex = cubes.lastIndex(where: { $0.id == cube.id }) else { return }
-        cubes.remove(at: lastIndex)
-        let key = "\(Int(cube.locationX))_\(Int(cube.locationZ))"
-        coordinator?.removeCube(in: key)
-    }
-
     func clearAllCubes() {
         coordinator?.clearAllCubes()
         cubes.removeAll()
