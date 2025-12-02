@@ -60,14 +60,17 @@ struct CanvasView: View {
                     guard let arView else { return }
 
                     SnapshotService.takeSnapshot(from: arView) { image in
-                        if let image = image {
-                            SnapshotService.saveSnapshot(image)
+                        guard let image = image else { return }
+
+                        SnapshotService.saveSnapshot(image) { _ in
+                            // Nada acontece na UI — apenas salva.
                         }
                     }
 
                     showNamingPopup = true
                 }
                 .frame(width: 140, height: 140)
+                
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
             .padding(.top, 75)

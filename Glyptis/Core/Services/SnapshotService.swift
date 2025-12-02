@@ -16,22 +16,24 @@ struct SnapshotService {
             completion(image)
         }
     }
-    
-    // MARK: - SALVAR IMAGEM
-    static func saveSnapshot(_ image: UIImage) -> URL? {
-        guard let data = image.pngData() else { return nil }
+
+    // MARK: - SALVAR IMAGEM + COMPLETION PARA ALERTA
+    static func saveSnapshot(_ image: UIImage, completion: @escaping (Bool) -> Void) {
+        guard let data = image.pngData() else {
+            completion(false)
+            return
+        }
 
         let url = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
             .appendingPathComponent("snapshot-\(UUID().uuidString).png")
 
         do {
             try data.write(to: url)
-            print("Snapshot salvo em:", url)
-            return url
+            completion(true)
         } catch {
-            print("Erro ao salvar snapshot:", error)
-            return nil
+            completion(false)
         }
     }
 }
+
 
