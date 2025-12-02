@@ -40,24 +40,48 @@ struct CanvasView: View {
             
             // Top Buttons
             HStack {
-                SimpleCubeIcon(assetName: "cancelCube", action: { onCancel() }, width: 54, height: 56)
+                CubeButtonComponent(
+                    cubeStyle: .xmark,
+                    cubeColor: .red
+                ) {
+                    onCancel()
+                }
+                .frame(width: 140, height: 140)
+                
                 Spacer()
+
                 SimpleCubeIcon(assetName: "saveCube", action: {
                     showNamingPopup = true
                 }, width: 54, height: 56)
+
             }
-            .padding(.horizontal, 24)
             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
             .padding(.top, 75)
+            
             
             // Bottom Buttons
             if !showToolbox {
                 HStack {
-                    SimpleCubeIcon(assetName: "toolboxCube", action: { showToolbox = true }, width: 54, height: 140)
+                    CubeButtonComponent(
+                        cubeStyle: .toolbox,
+                        cubeColor: .blue
+                    ) {
+                        showToolbox = true
+                    }
+                    .frame(width: 140, height: 140)
+
+                    
                     Spacer()
-                    SimpleCubeIcon(assetName: "addCube", action: { /* ?? */ }, width: 54, height: 56)
+                    CubeButtonComponent(
+                        cubeStyle: .addCube,
+                        cubeColor: .blue
+                    ) {
+                        // ação de adicionar cubo
+                    }
+                    .frame(width: 140, height: 140)
+
                 }
-                .padding(.horizontal, 24)
+                
                 .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottom)
                 .padding(.bottom, 50)
             }

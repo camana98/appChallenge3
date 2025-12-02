@@ -15,8 +15,9 @@ struct CubeButtonComponent: View {
     
     var action: () -> Void
     
-    private let cubeSize: Float = 0.7
-    private let iconSize: Float = 0.7 * 0.85
+    private let cubeSize: Float = 1.0
+    private let iconSize: Float = 0.85
+
     
     var body: some View {
         RealityView { content in
@@ -130,6 +131,9 @@ enum CubeStyle: CaseIterable {
     case map
     case pencil
     case grid
+    case search
+    case filters
+    case unfavourite
     
     var image: UIImage{
         switch self {
@@ -147,6 +151,9 @@ enum CubeStyle: CaseIterable {
         case .map: return .mappinAndEllipse1
         case .pencil: return .pencil1
         case .grid: return .squareGrid3X31
+        case .search: return .magnifyingglass1
+        case .filters: return .filters1
+        case .unfavourite: return .heart1
         }
     }
     
@@ -166,6 +173,9 @@ enum CubeStyle: CaseIterable {
         case .map: return .customWhite
         case .pencil: return .customWhite
         case .grid: return .customWhite
+        case .search: return .customWhite
+        case .filters: return .customWhite
+        case .unfavourite: return .customWhite
         }
     }
 }
