@@ -67,14 +67,39 @@ extension UnifiedCoordinator {
     }
 
     // Remove um cubo
-    func removeCube(in key: String) {
-        guard var list = columns[key], list.count > 0 else { return }
+    func removeSpecificCube(entity: Entity, key: String) {
+        guard var list = columns[key] else { return }
 
-        let top = list.removeLast()
-        top.removeFromParent()
+        // 1. Encontra o cubo específico na lista da coluna
+        // Usamos 'firstIndex' comparando as referências dos objetos
+        guard let index = list.firstIndex(where: { $0 === entity }) else { return }
 
+        // 2. Remove visualmente da cena (sem mover os outros = flutuante)
+        entity.removeFromParent()
+        
+        // 3. Remove da lista de dados
+        list.remove(at: index)
         columns[key] = list
-        heights[key] = max(0, (heights[key] ?? 0) - 1)
+
+        // 4. Recalcula a altura da coluna (heights)
+        // Isso é CRUCIAL para evitar bugs ao adicionar novos blocos nessa coluna depois.
+        // A nova altura deve ser baseada no cubo mais alto que sobrou + 1.
+        
+        if list.isEmpty {
+            heights[key] = 0
+        } else {
+            // Descobre qual é o cubo mais alto que restou (baseado na posição Y)
+            let maxY = list.map { $0.position.y }.max() ?? 0
+            
+            // Converte a posição Y de volta para índice de "layer" (aproximado)
+            // Fórmula inversa de: posY = (cubeSize / 2) + (layer * cubeSize)
+            let topLayerIndex = Int((maxY - (cubeSize / 2)) / cubeSize)
+            
+            heights[key] = topLayerIndex + 1
+        }
+        
+        // Debug opcional para verificar se a altura ficou correta
+        // print("Cubo removido. Nova altura da coluna \(key): \(heights[key] ?? 0)")
     }
     
     // Limpa todos os cubos da cena
