@@ -15,6 +15,7 @@ struct MuseuView: View {
     @Environment(\.modelContext) var modelContext
     
     @State private var showGridListMuseum: Bool = false
+    var onBackClicked: () -> Void
     
     var body: some View {
         ZStack {
@@ -27,7 +28,7 @@ struct MuseuView: View {
             VStack {
                 HStack {
                     CubeButtonComponent(cubeStyle: .back, cubeColor: .blue) {
-                        
+                        onBackClicked()
                     }
                         .frame(width: 100, height: 100)
                         .scaledToFill()
@@ -58,5 +59,5 @@ struct MuseuView: View {
 }
 
 #Preview {
-    MuseuView()
+    MuseuView(onBackClicked: {})
 }
