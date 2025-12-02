@@ -23,7 +23,7 @@ extension UnifiedCoordinator {
         let deltaX = Float(translation.x - lastTranslation.x)
         let deltaY = Float(translation.y - lastTranslation.y)
 
-        currentRotationY += deltaX * 0.01
+        currentRotationY -= deltaX * 0.01
         updateCameraPosition(animated: false)
 
         anchor?.position.y -= deltaY * 0.005
@@ -47,18 +47,18 @@ extension UnifiedCoordinator {
 
     @objc func handleTap(_ gesture: UITapGestureRecognizer) {
         guard let arView = arView else { return }
-
+        
         let location = gesture.location(in: arView)
         guard let entity = arView.entity(at: location) else {
             removeActivePreviews()
             return
         }
-
+        
         if entity.name == "reference_model" {
             removeActivePreviews()
             return
         }
-
+        
         if entity.name.starts(with: "preview_") {
             if let preview = entity.components[PreviewCubeComponent.self] {
                 addCube(at: entity.position, key: preview.key)
@@ -117,11 +117,14 @@ extension UnifiedCoordinator {
             }
             return
         }
-
+        
         if let parsed = parseCellName(entity.name) {
+            // Se estiver no modo remover
             if removeMode {
-                removeCube(in: "\(parsed.x)_\(parsed.z)")
+                // MUDANÇA: Passamos a entidade exata e a chave da coluna
+                removeSpecificCube(entity: entity, key: "\(parsed.x)_\(parsed.z)")
             } else {
+                // Lógica de adicionar (preview) continua igual...
                 if let currentCube = arView.entity(at: gesture.location(in: arView)) {
                     showPreviewCubes(
                         for: parsed.x,
