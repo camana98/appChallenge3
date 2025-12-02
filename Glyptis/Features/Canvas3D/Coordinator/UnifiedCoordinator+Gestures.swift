@@ -62,18 +62,58 @@ extension UnifiedCoordinator {
         if entity.name.starts(with: "preview_") {
             if let preview = entity.components[PreviewCubeComponent.self] {
                 addCube(at: entity.position, key: preview.key)
-                delegate?.didAddCube()
+                
+                // Extrair componentes de cor
+                var red: CGFloat = 0
+                var green: CGFloat = 0
+                var blue: CGFloat = 0
+                var alpha: CGFloat = 0
+                selectedColor.getRed(&red, green: &green, blue: &blue, alpha: &alpha)
+                
+                delegate?.didAddCube(
+                    x: entity.position.x,
+                    y: entity.position.y,
+                    z: entity.position.z,
+                    colorR: Float(red),
+                    colorG: Float(green),
+                    colorB: Float(blue),
+                    colorA: Float(alpha)
+                )
+                
                 removeActivePreviews()
             }
             return
         }
-
+        
         removeActivePreviews()
-
+        
         if entity.name.starts(with: "base_") {
             if !removeMode, let parsed = parseBaseName(entity.name) {
                 addCube(atKey: "\(parsed.x)_\(parsed.z)", fromBase: true)
-                delegate?.didAddCube()
+                
+                // Calcular posição (mesma lógica do addCube) TESTAR ASSIM, SE NÃO DER USE OS COMENTADOS
+                let posX = Float(parsed.x)
+                let posZ = Float(parsed.z)
+//                let posX = Float(parsed.x) * (cubeSize + gap) - baseOffset
+//                let posZ = Float(parsed.z) * (cubeSize + gap) - baseOffset
+                
+                
+                // Extrair componentes de cor
+                var red: CGFloat = 0
+                var green: CGFloat = 0
+                var blue: CGFloat = 0
+                var alpha: CGFloat = 0
+                selectedColor.getRed(&red, green: &green, blue: &blue, alpha: &alpha)
+                
+                delegate?.didAddCube(
+                    x: posX,
+                    y: 0,
+                    z: posZ,
+                    colorR: Float(red),
+                    colorG: Float(green),
+                    colorB: Float(blue),
+                    colorA: Float(alpha)
+                )
             }
             return
         }

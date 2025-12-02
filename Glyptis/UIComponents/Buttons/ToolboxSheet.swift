@@ -43,9 +43,9 @@ struct ToolboxSheet: View {
                         VStack {
                             SimpleCubeIcon(
                                 assetName: isDemolishActive ? "demolishCubeActive" : "demolishCube",
-                                action: onDemolish,
-                                width: 54,
-                                height: 56
+                                width: 56,
+                                height: 54,
+                                action: onDemolish
                             )
                             
                             Text("Demolir")
@@ -58,9 +58,9 @@ struct ToolboxSheet: View {
                         VStack {
                             SimpleCubeIcon(
                                 assetName: "clearAllCube",
-                                action: { showConfirmClear = true },
                                 width: 54,
-                                height: 56
+                                height: 56,
+                                action: { showConfirmClear = true },
                             )
                             
                             Text("Limpar")

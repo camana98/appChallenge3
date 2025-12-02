@@ -12,7 +12,7 @@ import Combine
 import ARKit
 
 protocol CubeDelegate: AnyObject {
-    func didAddCube()
+    func didAddCube(x: Float, y: Float, z: Float, colorR: Float, colorG: Float, colorB: Float, colorA: Float)
 }
 
 class UnifiedCoordinator: NSObject, UIGestureRecognizerDelegate {

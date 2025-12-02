@@ -50,9 +50,10 @@ struct CanvasView: View {
                 
                 Spacer()
 
-                SimpleCubeIcon(assetName: "saveCube", action: {
+                
+                SimpleCubeIcon(assetName: "saveCube", width: 56, height: 54) {
                     showNamingPopup = true
-                }, width: 54, height: 56)
+                }
 
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
@@ -101,39 +102,33 @@ struct CanvasView: View {
             NameSculpturePopup(
                 sculptureName: $sculptureName,
                 onSave: {
+                    // Validar se tem nome
+                    guard !sculptureName.trimmingCharacters(in: .whitespaces).isEmpty else {
+                        return
+                    }
+                    
+                    // Validar se tem cubos
+                    guard !vm.unfinishedCubes.isEmpty else {
+                        return
+                    }
+                    
                     showNamingPopup = false
                     
-
-                    // MARK: 1) Converter para UnfinishedCube
-                    let unfinished = vm.cubes.map { cube in
-                        UnfinishedCube(
-                            locationX: cube.locationX,
-                            locationY: cube.locationY,
-                            locationZ: cube.locationZ,
-                            colorR: cube.colorR,
-                            colorG: cube.colorG,
-                            colorB: cube.colorB,
-                            colorA: cube.colorA ?? 1
-                        )
-                    }
-
-//                    vm.createSculpture(name: sculptureName, author: nil, unfinishedCubes: unfinished)
-                    
-                    // MARK: 2) Criar service
+                    // MARK: Criar service e salvar
                     let service = SculptureService(context: context)
-
-                    // MARK: 3) Salvar escultura e cubos no SwiftData
+                    
                     let saved = service.create(
                         name: sculptureName,
                         author: nil,
                         localization: nil,
-                        cubes: unfinished
+                        cubes: vm.unfinishedCubes
                     )
-
-                    print("ESCULTURA SALVA → \(saved.name)")
+                    
                     vm.currentSculpture = saved
                 },
-                onCancel: { showNamingPopup = false }
+                onCancel: { 
+                    showNamingPopup = false 
+                }
             )
             .transition(.opacity)
             .zIndex(1)
