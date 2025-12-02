@@ -49,7 +49,6 @@ struct ColorPickerComponent: View {
     
     var beehiveSize: CGFloat = 32
     
-    // Armazena a posição de TODAS as cores (cima e baixo)
     @State private var hexagonPositions: [HexagonFrameData] = []
     
     private var hiveLines: [[HexColor]] {
@@ -128,14 +127,11 @@ struct ColorPickerComponent: View {
     // MARK: - Lógica de Detecção
     
     private func detectColor(at location: CGPoint) {
-        // Procura em 'hexagonPositions' qual hexágono está mais perto do dedo
         if let closest = hexagonPositions.min(by: { dist($0.center, location) < dist($1.center, location) }) {
             
-            // Aumentei um pouco a tolerância de distância (1.2x) para facilitar a seleção nos cantos
             if dist(closest.center, location) < (beehiveSize * 1.2) {
                 
                 if selectedHexID != closest.id {
-                    // Busca a cor correspondente em TODAS as listas (linhas normais + escala de cinza)
                     let allMainColors = hiveLines.flatMap { $0 }
                     let grayScaleColors = ColorPalete.line14 + ColorPalete.line15
                     let totalColors = allMainColors + grayScaleColors
