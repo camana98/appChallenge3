@@ -15,8 +15,8 @@ struct CanvasView: View {
     @State private var showToolbox: Bool = false
     @State private var arView: ARView?
     @State private var showSaveAlert = false
-
-
+    
+    
     var showColors: Bool = false
     var onCancel: () -> Void
     
@@ -38,7 +38,9 @@ struct CanvasView: View {
                 modelOffset: SIMD3<Float>(0, -3.9, 0),
                 viewModel: vm,
                 onARViewCreated: { view in
-                    arView = view
+                    DispatchQueue.main.async {
+                        self.arView = view
+                    }
                 }
             )
             
@@ -57,16 +59,30 @@ struct CanvasView: View {
                     cubeStyle: .checkmark,
                     cubeColor: .green
                 ) {
-                    guard let arView else { return }
-
+                    guard let arView else {
+                        print("caiu ali")
+                        return
+                    }
+                    
+                    let referenceModel = arView.scene.findEntity(named: "reference_model")
+                    let gridLines = arView.scene.findEntity(named: "grid_lines")
+                    
+                    referenceModel?.isEnabled = false
+                    gridLines?.isEnabled = false
+                    
                     SnapshotService.takeSnapshot(from: arView) { image in
-                        guard let image = image else { return }
-
+                        guard let image = image else {
+                            print("caiu aqui")
+                            return
+                        }
+                        referenceModel?.isEnabled = true
+                        gridLines?.isEnabled = true
+                        
                         SnapshotService.saveSnapshot(image) { _ in
-                            // Nada acontece na UI — apenas salva.
+                            print("foi salvo")
                         }
                     }
-
+                    
                     showNamingPopup = true
                 }
                 .frame(width: 140, height: 140)
@@ -75,29 +91,18 @@ struct CanvasView: View {
             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
             .padding(.top, 75)
             
-            
-            
-            // Bottom Buttons
             if !showToolbox {
                 HStack {
-                    CubeButtonComponent(
-                        cubeStyle: .toolbox,
-                        cubeColor: .blue
-                    ) {
+                    SimpleCubeIcon(assetName: "addCube", action: {
                         showToolbox = true
-                    }
-                    .frame(width: 140, height: 140)
-
+                    }, width: 55, height: 55)
+                    
                     
                     Spacer()
-                    CubeButtonComponent(
-                        cubeStyle: .addCube,
-                        cubeColor: .blue
-                    ) {
-                        // ação de adicionar cubo
-                    }
-                    .frame(width: 140, height: 140)
-
+                    SimpleCubeIcon(assetName: "addCube", action: {
+                        print("hahahahha")
+                    }, width: 55, height: 55)
+                    
                 }
                 
                 .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottom)
@@ -147,6 +152,6 @@ struct CanvasView: View {
     }
     
     func save3DPreview() {
-
+        
     }
 }

@@ -73,6 +73,11 @@ extension UnifiedCoordinator {
     }
 
     func setupGridLines(anchor: AnchorEntity) {
+        
+        let gridContainer = Entity()
+        gridContainer.name = "grid_lines"
+        anchor.addChild(gridContainer)
+        
         let totalLength = Float(gridSize) * cubeSize
         let halfLength = totalLength / 2.0
         let lineMaterial = SimpleMaterial(color: .black.withAlphaComponent(0.5), isMetallic: false)
@@ -84,12 +89,13 @@ extension UnifiedCoordinator {
             let vLineMesh = MeshResource.generateBox(size: [gridLineWidth, lineHeight, totalLength])
             let vLine = ModelEntity(mesh: vLineMesh, materials: [lineMaterial])
             vLine.position = [offset, lineHeight, 0]
-            anchor.addChild(vLine)
+            gridContainer.addChild(vLine)
 
             let hLineMesh = MeshResource.generateBox(size: [totalLength, lineHeight, gridLineWidth])
             let hLine = ModelEntity(mesh: hLineMesh, materials: [lineMaterial])
             hLine.position = [0, lineHeight, offset]
-            anchor.addChild(hLine)
+            gridContainer.addChild(hLine)
+            
         }
     }
 
