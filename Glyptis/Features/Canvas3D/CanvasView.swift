@@ -10,7 +10,7 @@ internal import RealityKit
 
 struct CanvasView: View {
     @StateObject private var vm = CanvasViewModel()
-
+    
     @Environment(\.modelContext) private var context
     
     @State private var showNamingPopup: Bool = false
@@ -21,13 +21,13 @@ struct CanvasView: View {
     
     @State private var showColorPicker: Bool = false
     @State private var showConfirmClear: Bool = false
-    @State private var showToolbox: Bool = false
     
     var onCancel: () -> Void
     
     var body: some View {
         ZStack {
-            // MARK: Layer 1 - Background & 3D Content
+            
+            // MARK: - Background & 3D
             Image("backgroundCanvas")
                 .resizable()
                 .scaledToFill()
@@ -55,7 +55,7 @@ struct CanvasView: View {
                 }
             )
             
-            /// Camada invisível para detectar cliques fora da área do menu (fecha o picker)
+            // MARK: - Camada invisível para fechar picker
             if showColorPicker {
                 Color.black.opacity(0.001)
                     .ignoresSafeArea()
@@ -65,25 +65,19 @@ struct CanvasView: View {
                         }
                     }
                     .zIndex(1)
-            // Top Buttons
+            }
+            
+            // MARK: - Top Buttons
             HStack {
-                CubeButtonComponent(
-                    cubeStyle: .xmark,
-                    cubeColor: .red
-                ) {
+                CubeButtonComponent(cubeStyle: .xmark, cubeColor: .red) {
                     onCancel()
                 }
                 .frame(width: 140, height: 140)
                 
                 Spacer()
-                CubeButtonComponent(
-                    cubeStyle: .checkmark,
-                    cubeColor: .green
-                ) {
-                    guard let arView else {
-                        print("caiu ali")
-                        return
-                    }
+                
+                CubeButtonComponent(cubeStyle: .checkmark, cubeColor: .green) {
+                    guard let arView else { return }
                     
                     let referenceModel = arView.scene.findEntity(named: "reference_model")
                     let gridLines = arView.scene.findEntity(named: "grid_lines")
@@ -92,16 +86,12 @@ struct CanvasView: View {
                     gridLines?.isEnabled = false
                     
                     SnapshotService.takeSnapshot(from: arView) { image in
-                        guard let image = image else {
-                            print("caiu aqui")
-                            return
-                        }
+                        guard let image else { return }
+                        
                         referenceModel?.isEnabled = true
                         gridLines?.isEnabled = true
                         
-                        SnapshotService.saveSnapshot(image) { _ in
-                            print("foi salvo")
-                        }
+                        SnapshotService.saveSnapshot(image) { _ in }
                     }
                     
                     showNamingPopup = true
@@ -111,76 +101,46 @@ struct CanvasView: View {
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
             .padding(.top, 75)
-            
-            if !showToolbox {
-                HStack {
-                    SimpleCubeIcon(assetName: "addCube", action: {
-                        showToolbox = true
-                    }, width: 55, height: 55)
-                    
-                    
-                    Spacer()
-                    SimpleCubeIcon(assetName: "addCube", action: {
-                        print("hahahahha")
-                    }, width: 55, height: 55)
-                    
-                }
-                .padding(.top, 60)
-                .padding(.horizontal, 24)
-                
-                Spacer()
-                
-                // Rodapé
-                VStack {
-                    if showColorPicker {
-                        /// MODO: SELETOR DE COR
-                        ColorPickerComponent(
-                            selectedColor: $vm.selectedColor,
-                            onColorSelected: {
-                                withAnimation(.spring(response: 0.4, dampingFraction: 0.8)) {
-                                    showColorPicker = false
-                                }
-                            }
-                        )
-                        .padding(.top, 24)
-                        .padding(.bottom, 60)
-                        .transition(.opacity.combined(with: .move(edge: .bottom)))
-                    } else {
-                        toolsButtonsView()
-                            .padding(.top, 24)
-                            .padding(.bottom, 40)
-                            .transition(.opacity.combined(with: .move(edge: .bottom)))
-                    }
-                }
-                .frame(maxWidth: .infinity)
-                .background(
-                    ZStack {
-                        Rectangle()
-                            .fill(.ultraThinMaterial)
-                        
-                        UnevenRoundedRectangle(topLeadingRadius: 35, topTrailingRadius: 35)
-                            .stroke(LinearGradient(
-                                colors: [.white.opacity(0.4), .white.opacity(0.1)],
-                                startPoint: .top,
-                                endPoint: .bottom
-                            ), lineWidth: 1)
-                    }
-                    .clipShape(UnevenRoundedRectangle(topLeadingRadius: 35, topTrailingRadius: 35))
-                    .shadow(color: .black.opacity(0.15), radius: 10, x: 0, y: -5)
-                )
-            }
-            .ignoresSafeArea(edges: .bottom)
             .zIndex(2)
             
-            // MARK: Layer 3 - Outros Popups
+            
+            // MARK: - Toolbox inicial (botões pequenos)
+            if !showToolbox {
+                VStack {
+                    HStack {
+                        SimpleCubeIcon(assetName: "addCube", width: 55, height: 55) {
+                            showToolbox = true
+                        }
+                        
+                        Spacer()
+                        
+                        SimpleCubeIcon(assetName: "addCube", width: 55, height: 55) {
+                            print("hahahahha")
+                        }
+                    }
+                    .padding(.top, 60)
+                    .padding(.horizontal, 24)
+                    
+                    Spacer()
+                    
+                    footer()
+                }
+                .zIndex(2)
+                .ignoresSafeArea(edges: .bottom)
+            }
+            
+            // MARK: - Naming Popup
             namingPopup()
         }
+        
+        // MARK: - Alerts
         .alert("Tem certeza que deseja limpar tudo?", isPresented: $showConfirmClear) {
             Button("Cancelar", role: .cancel) {}
             Button("Limpar", role: .destructive) {
                 vm.clearAllCubes()
             }
         }
+        
         .onChange(of: vm.selectedColor) { _ in
             vm.removeMode = false
         }
@@ -190,62 +150,101 @@ struct CanvasView: View {
         }
     }
     
-    // MARK: - Subviews
+    // MARK: - Footer (ferramentas ou color picker)
+    private func footer() -> some View {
+        VStack {
+            if showColorPicker {
+                ColorPickerComponent(
+                    selectedColor: $vm.selectedColor,
+                    onColorSelected: {
+                        withAnimation(.spring(response: 0.4, dampingFraction: 0.8)) {
+                            showColorPicker = false
+                        }
+                    }
+                )
+                .padding(.top, 24)
+                .padding(.bottom, 60)
+                .transition(.opacity.combined(with: .move(edge: .bottom)))
+                
+            } else {
+                toolsButtonsView()
+                    .padding(.top, 24)
+                    .padding(.bottom, 40)
+                    .transition(.opacity.combined(with: .move(edge: .bottom)))
+            }
+        }
+        .frame(maxWidth: .infinity)
+        .background(
+            ZStack {
+                Rectangle().fill(.ultraThinMaterial)
+                
+                UnevenRoundedRectangle(topLeadingRadius: 35, topTrailingRadius: 35)
+                    .stroke(
+                        LinearGradient(
+                            colors: [.white.opacity(0.4), .white.opacity(0.1)],
+                            startPoint: .top,
+                            endPoint: .bottom
+                        ),
+                        lineWidth: 1
+                    )
+            }
+            .clipShape(UnevenRoundedRectangle(topLeadingRadius: 35, topTrailingRadius: 35))
+            .shadow(color: .black.opacity(0.15), radius: 10, x: 0, y: -5)
+        )
+    }
     
+    
+    // MARK: - Tools Buttons
     private func toolsButtonsView() -> some View {
         HStack(spacing: 60) {
-            // 1. Botão Demolir
+            
             Button(action: { vm.toggleRemove() }) {
                 VStack(spacing: 6) {
                     SimpleCubeIcon(
                         assetName: vm.removeMode ? "demolishCubeActive" : "demolishCube",
                         width: 44,
-                        height: 46,
-                        action: { vm.toggleRemove() }
-                    )
+                        height: 46
+                    ) {
+                        vm.toggleRemove()
+                    }
                     Text("Demolir")
                         .font(.caption2)
                         .fontWeight(.medium)
                         .foregroundColor(.white)
-                        .shadow(radius: 2)
                 }
             }
             
-            // 2. Botão Limpar
             Button(action: { showConfirmClear = true }) {
                 VStack(spacing: 6) {
                     SimpleCubeIcon(
                         assetName: "clearAllCube",
                         width: 44,
-                        height: 46,
-                        action: { showConfirmClear = true }
-                    )
+                        height: 46
+                    ) {
+                        showConfirmClear = true
+                    }
                     Text("Limpar")
                         .font(.caption2)
-                        .fontWeight(.medium)
                         .foregroundColor(.white)
-                        .shadow(radius: 2)
                 }
             }
             
-            // 3. Botão Cor
-            Button(action: {
+            Button {
                 withAnimation(.spring(response: 0.4, dampingFraction: 0.8)) {
                     showColorPicker = true
                 }
-            }) {
+            } label: {
                 VStack(spacing: 6) {
                     ZStack {
                         SimpleCubeIcon(
                             assetName: "changeColorCube",
                             width: 44,
-                            height: 46,
-                            action: {
-                                withAnimation(.spring(response: 0.4, dampingFraction: 0.8)) {
-                                    showColorPicker = true
-                                }
+                            height: 46
+                        ) {
+                            withAnimation(.spring(response: 0.4, dampingFraction: 0.8)) {
+                                showColorPicker = true
                             }
-                        )
+                        }
                         
                         Circle()
                             .fill(vm.selectedColor)
@@ -253,19 +252,16 @@ struct CanvasView: View {
                             .frame(width: 12, height: 12)
                             .offset(x: 16, y: -16)
                     }
-                    
                     Text("Cor")
                         .font(.caption2)
-                        .fontWeight(.medium)
                         .foregroundColor(.white)
-                        .shadow(radius: 2)
                 }
             }
         }
     }
     
+    // MARK: - Naming Popup
     @ViewBuilder
-    
     private func namingPopup() -> some View {
         if showNamingPopup {
             Color.black.opacity(0.4)
@@ -275,21 +271,12 @@ struct CanvasView: View {
             NameSculpturePopup(
                 sculptureName: $sculptureName,
                 onSave: {
-                    // Validar se tem nome
-                    guard !sculptureName.trimmingCharacters(in: .whitespaces).isEmpty else {
-                        return
-                    }
-                    
-                    // Validar se tem cubos
-                    guard !vm.unfinishedCubes.isEmpty else {
-                        return
-                    }
+                    guard !sculptureName.trimmingCharacters(in: .whitespaces).isEmpty else { return }
+                    guard !vm.unfinishedCubes.isEmpty else { return }
                     
                     showNamingPopup = false
                     
-                    // MARK: Criar service e salvar
                     let service = SculptureService(context: context)
-                    
                     let saved = service.create(
                         name: sculptureName,
                         author: nil,
@@ -299,12 +286,12 @@ struct CanvasView: View {
                     
                     vm.currentSculpture = saved
                 },
-                onCancel: { 
-                    showNamingPopup = false 
+                onCancel: {
+                    showNamingPopup = false
                 }
             )
             .transition(.opacity)
-            .zIndex(1)
+            .zIndex(4)
         }
     }
 }

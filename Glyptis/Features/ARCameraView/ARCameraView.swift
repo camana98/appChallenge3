@@ -8,6 +8,7 @@
 import SwiftUI
 import SwiftData
 
+
 struct ARCameraView: View {
     
     @State var coordinator = ARViewCoordinator()
@@ -49,23 +50,23 @@ struct ARCameraView: View {
                         .cornerRadius(10)
                 }
                 
-//                Button {
-//                    showSnapshots = true
-//                } label: {
-//                    Text("Ver Snapshots")
-//                        .padding()
-//                        .background(Color.green)
-//                        .foregroundColor(.white)
-//                        .cornerRadius(10)
-//                }
-//                .padding(.top, 12)
+                Button {
+                    showSnapshots = true
+                } label: {
+                    Text("Ver Snapshots")
+                        .padding()
+                        .background(Color.green)
+                        .foregroundColor(.white)
+                        .cornerRadius(10)
+                }
+                .padding(.top, 12)
                 .padding(.bottom, 50)
             }
         }
         .edgesIgnoringSafeArea(.all)
-//        .sheet(isPresented: $showSnapshots) {
-//            SnapshotListView()
-//        }
+        .sheet(isPresented: $showSnapshots) {
+            SnapshotListView()
+        }
     }
     
     private func printSavedSculptures() {
