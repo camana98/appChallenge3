@@ -17,8 +17,11 @@ struct UnifiedCanvasContainer: UIViewRepresentable {
     var usdzFileName: String
     var modelScale: Float = 0.08
     var modelOffset: SIMD3<Float> = SIMD3<Float>(0, -2, 0)
+    
 
     var viewModel: CanvasViewModel
+
+    var onARViewCreated: (ARView) -> Void = { _ in }
 
     func makeCoordinator() -> UnifiedCoordinator {
         let coordinator = UnifiedCoordinator()
@@ -52,6 +55,8 @@ struct UnifiedCanvasContainer: UIViewRepresentable {
 
         /// bind ViewModel -> Coordinator
         viewModel.bindCoordinator(context.coordinator)
+        
+        onARViewCreated(arView)
 
         return arView
     }

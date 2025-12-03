@@ -12,6 +12,8 @@ struct ARCameraView: View {
     
     @State var coordinator = ARViewCoordinator()
     
+    // controla a abertura da tela de snapshots
+    @State private var showSnapshots = false
     @Environment(\.modelContext) private var context
     
     // Closure para avisar quando abrir o Canvas
@@ -34,10 +36,24 @@ struct ARCameraView: View {
                         .foregroundStyle(.white)
                         .cornerRadius(10)
                 }
+                
+//                Button {
+//                    showSnapshots = true
+//                } label: {
+//                    Text("Ver Snapshots")
+//                        .padding()
+//                        .background(Color.green)
+//                        .foregroundColor(.white)
+//                        .cornerRadius(10)
+//                }
+//                .padding(.top, 12)
                 .padding(.bottom, 50)
             }
         }
         .edgesIgnoringSafeArea(.all)
+//        .sheet(isPresented: $showSnapshots) {
+//            SnapshotListView()
+//        }
     }
     
     private func printSavedSculptures() {
@@ -81,3 +97,4 @@ struct ARCameraView: View {
 #Preview {
     ARCameraView(onOpenCanvas: {})
 }
+

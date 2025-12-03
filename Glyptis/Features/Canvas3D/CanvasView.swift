@@ -15,6 +15,10 @@ struct CanvasView: View {
     
     @State private var showNamingPopup: Bool = false
     @State private var sculptureName: String = ""
+    @State private var showToolbox: Bool = false
+    @State private var arView: ARView?
+    @State private var showSaveAlert = false
+    
     @State private var showColorPicker: Bool = false
     @State private var showConfirmClear: Bool = false
     @State private var showToolbox: Bool = false
@@ -43,7 +47,12 @@ struct CanvasView: View {
                 usdzFileName: "canvasColumn",
                 modelScale: 0.013,
                 modelOffset: SIMD3<Float>(0, -3.9, 0),
-                viewModel: vm
+                viewModel: vm,
+                onARViewCreated: { view in
+                    DispatchQueue.main.async {
+                        self.arView = view
+                    }
+                }
             )
             
             /// Camada invisível para detectar cliques fora da área do menu (fecha o picker)
@@ -56,29 +65,65 @@ struct CanvasView: View {
                         }
                     }
                     .zIndex(1)
-            }
-            
-            // MARK: Layer 2 - UI Fixa
-            VStack(spacing: 0) {
-                /// Topo
-                HStack {
-                    CubeButtonComponent(
-                        cubeStyle: .xmark,
-                        cubeColor: .red
-                    ) {
-                        onCancel()
+            // Top Buttons
+            HStack {
+                CubeButtonComponent(
+                    cubeStyle: .xmark,
+                    cubeColor: .red
+                ) {
+                    onCancel()
+                }
+                .frame(width: 140, height: 140)
+                
+                Spacer()
+                CubeButtonComponent(
+                    cubeStyle: .checkmark,
+                    cubeColor: .green
+                ) {
+                    guard let arView else {
+                        print("caiu ali")
+                        return
                     }
-                    .frame(width: 100, height: 100)
+                    
+                    let referenceModel = arView.scene.findEntity(named: "reference_model")
+                    let gridLines = arView.scene.findEntity(named: "grid_lines")
+                    
+                    referenceModel?.isEnabled = false
+                    gridLines?.isEnabled = false
+                    
+                    SnapshotService.takeSnapshot(from: arView) { image in
+                        guard let image = image else {
+                            print("caiu aqui")
+                            return
+                        }
+                        referenceModel?.isEnabled = true
+                        gridLines?.isEnabled = true
+                        
+                        SnapshotService.saveSnapshot(image) { _ in
+                            print("foi salvo")
+                        }
+                    }
+                    
+                    showNamingPopup = true
+                }
+                .frame(width: 140, height: 140)
+                
+            }
+            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
+            .padding(.top, 75)
+            
+            if !showToolbox {
+                HStack {
+                    SimpleCubeIcon(assetName: "addCube", action: {
+                        showToolbox = true
+                    }, width: 55, height: 55)
+                    
                     
                     Spacer()
+                    SimpleCubeIcon(assetName: "addCube", action: {
+                        print("hahahahha")
+                    }, width: 55, height: 55)
                     
-                    CubeButtonComponent(
-                        cubeStyle: .checkmark,
-                        cubeColor: .green
-                    ) {
-                        showNamingPopup = true
-                    }
-                    .frame(width: 100, height: 100)
                 }
                 .padding(.top, 60)
                 .padding(.horizontal, 24)
@@ -138,6 +183,10 @@ struct CanvasView: View {
         }
         .onChange(of: vm.selectedColor) { _ in
             vm.removeMode = false
+        }
+        
+        .alert("heheeeee", isPresented: $showSaveAlert) {
+            Button("OK") {}
         }
     }
     
