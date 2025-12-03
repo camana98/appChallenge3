@@ -9,6 +9,7 @@ import XCTest
 import SwiftData
 @testable import Glyptis
 
+@MainActor
 final class SculptureServiceTests: XCTestCase {
 
     var container: ModelContainer!
@@ -39,6 +40,8 @@ final class SculptureServiceTests: XCTestCase {
     
     func testCreateSculpture() throws {
         /// DADO QUE quero criar uma nova escultura
+        let initialCount = service.fetchAll().count
+        
         /// QUANDO eu chamo o método create()
         let sculpture = service.create(
             name: "Minha Escultura",
@@ -51,30 +54,32 @@ final class SculptureServiceTests: XCTestCase {
         XCTAssertNotNil(sculpture.id)
         XCTAssertEqual(sculpture.name, "Minha Escultura")
 
-        /// ENTÃO ela deve estar salva no banco
+        /// ENTÃO o total de esculturas deve ter aumentado em 1
         let all = service.fetchAll()
-        XCTAssertEqual(all.count, 1)
+        XCTAssertEqual(all.count, initialCount + 1)
     }
 
     // MARK: - READ (Buscar todas)
     
     func testFetchAll() throws {
-        /// DADO QUE existem 2 esculturas salvas
-        _ = service.create(name: "A", cubes: [])
-        _ = service.create(name: "B", cubes: [])
+        /// DADO QUE existem esculturas salvas
+        let initialCount = service.fetchAll().count
+        
+        _ = service.create(name: "A", author: Author(name: "Author"), localization: nil, cubes: [])
+        _ = service.create(name: "B", author: Author(name: "Author"), localization: nil, cubes: [])
 
         /// QUANDO eu busco todas
         let all = service.fetchAll()
 
-        /// ENTÃO devo receber as 2 esculturas
-        XCTAssertEqual(all.count, 2)
+        /// ENTÃO devo receber +2 esculturas em relação ao total inicial
+        XCTAssertEqual(all.count, initialCount + 2)
     }
 
     // MARK: - READ (Buscar por ID)
     
     func testFetchByID() throws {
         /// DADO QUE existe uma escultura salva
-        let created = service.create(name: "Test", cubes: [])
+        let created = service.create(name: "Test", author: Author(name: "Author"), localization: nil, cubes: [])
         
         /// QUANDO eu busco pela mesma pelo ID dela
         let fetched = service.fetchByID(created.id)
@@ -88,7 +93,7 @@ final class SculptureServiceTests: XCTestCase {
 
     func testUpdateName() throws {
         /// DADO QUE tenho uma escultura com nome "Old"
-        let sculpture = service.create(name: "Old", cubes: [])
+        let sculpture = service.create(name: "Old", author: Author(name: "Author"), localization: nil, cubes: [])
 
         /// QUANDO eu atualizo o nome para "New"
         service.updateName(sculpture, to: "New")
@@ -116,6 +121,8 @@ final class SculptureServiceTests: XCTestCase {
         
         let sculpture = service.create(
             name: "WithCubes",
+            author: Author(name: "Author"),
+            localization: nil,
             cubes: initialUnfinishedCubes
         )
         
@@ -162,13 +169,20 @@ final class SculptureServiceTests: XCTestCase {
     
     func testDeleteSculpture() throws {
         /// DADO QUE tenho uma escultura salva
-        let sculpture = service.create(name: "ToDelete", cubes: [])
+        let initialCount = service.fetchAll().count
+        
+        let sculpture = service.create(
+            name: "ToDelete",
+            author: Author(name: "Author"),
+            localization: nil,
+            cubes: []
+        )
 
         /// QUANDO eu a deleto
         service.delete(sculpture)
 
-        /// ENTÃO ela não deve mais existir no banco
+        /// ENTÃO o total deve voltar ao mesmo valor inicial
         let all = service.fetchAll()
-        XCTAssertEqual(all.count, 0)
+        XCTAssertEqual(all.count, initialCount)
     }
 }

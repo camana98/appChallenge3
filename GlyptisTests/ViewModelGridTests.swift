@@ -41,8 +41,8 @@ final class MuseuGridViewModelTests: XCTestCase {
     
     func testInitFetchData() {
         // 1. Cria dados no banco
-        _ = service.create(name: "lolo")
-        _ = service.create(name: "hehehe")
+        _ = service.create(name: "lolo", author: Author(name: "Author"), localization: nil, cubes: [])
+        _ = service.create(name: "hehehe", author: Author(name: "Author"), localization: nil, cubes: [])
         
         // 2. A VM já foi iniciada no setUp, mas está vazia.
         // Chamamos o fetch manualmente:
@@ -54,8 +54,8 @@ final class MuseuGridViewModelTests: XCTestCase {
     }
     
     func testFilterEmptySearch() {
-        _ = service.create(name: "A")
-        _ = service.create(name: "B")
+        _ = service.create(name: "A", author: Author(name: "Author"), localization: nil, cubes: [])
+        _ = service.create(name: "B", author: Author(name: "Author"), localization: nil, cubes: [])
         
         viewModel.fetchData() // Carrega os dados
         
@@ -66,8 +66,8 @@ final class MuseuGridViewModelTests: XCTestCase {
     }
     
     func testFilterSpecificSearch() {
-        _ = service.create(name: "guigo")
-        _ = service.create(name: "Ohahahaha")
+        _ = service.create(name: "guigo", author: Author(name: "Author"), localization: nil, cubes: [])
+        _ = service.create(name: "Ohahahaha", author: Author(name: "Author"), localization: nil, cubes: [])
         
         viewModel.fetchData()
         
@@ -79,7 +79,7 @@ final class MuseuGridViewModelTests: XCTestCase {
     }
     
     func testFilterCaseInsensitive() {
-        _ = service.create(name: "pedro")
+        _ = service.create(name: "pedro", author: Author(name: "Author"), localization: nil, cubes: [])
         
         viewModel.fetchData()
         
@@ -91,7 +91,7 @@ final class MuseuGridViewModelTests: XCTestCase {
     }
     
     func testFilterNoMatch() {
-        _ = service.create(name: "pedro")
+        _ = service.create(name: "pedro", author: Author(name: "Author"), localization: nil, cubes: [])
         
         viewModel.fetchData()
         
@@ -102,7 +102,7 @@ final class MuseuGridViewModelTests: XCTestCase {
     }
     
     func testDeleteAction() {
-        let sculpture = service.create(name: "ToDelete")
+        let sculpture = service.create(name: "ToDelete", author: Author(name: "Author"), localization: nil, cubes: [])
         
         viewModel.fetchData()
         XCTAssertEqual(viewModel.sculptures.count, 1)
@@ -113,3 +113,4 @@ final class MuseuGridViewModelTests: XCTestCase {
         XCTAssertEqual(allInDb.count, 0)
     }
 }
+
