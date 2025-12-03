@@ -9,9 +9,9 @@ import SwiftUI
 
 struct SimpleCubeIcon: View {
     let assetName: String
-    let action: () -> Void
     let width: CGFloat
     let height: CGFloat
+    let action: () -> Void
 
     var body: some View {
         Button(action: {

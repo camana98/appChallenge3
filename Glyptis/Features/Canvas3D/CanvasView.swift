@@ -10,6 +10,8 @@ internal import RealityKit
 
 struct CanvasView: View {
     @StateObject private var vm = CanvasViewModel()
+    @Environment(\.modelContext) private var context
+    
     @State private var showNamingPopup: Bool = false
     @State private var sculptureName: String = ""
     @State private var showToolbox: Bool = false
@@ -47,13 +49,12 @@ struct CanvasView: View {
                 .frame(width: 140, height: 140)
                 
                 Spacer()
-                CubeButtonComponent(
-                    cubeStyle: .checkmark,
-                    cubeColor: .green
-                ) {
+
+                
+                SimpleCubeIcon(assetName: "saveCube", width: 56, height: 54) {
                     showNamingPopup = true
                 }
-                .frame(width: 140, height: 140)
+
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
             .padding(.top, 75)
@@ -95,20 +96,45 @@ struct CanvasView: View {
     // MARK: - Popups
     
     @ViewBuilder
+    
     private func namingPopup() -> some View {
         if showNamingPopup {
             NameSculpturePopup(
                 sculptureName: $sculptureName,
                 onSave: {
+                    // Validar se tem nome
+                    guard !sculptureName.trimmingCharacters(in: .whitespaces).isEmpty else {
+                        return
+                    }
+                    
+                    // Validar se tem cubos
+                    guard !vm.unfinishedCubes.isEmpty else {
+                        return
+                    }
+                    
                     showNamingPopup = false
                     
+                    // MARK: Criar service e salvar
+                    let service = SculptureService(context: context)
+                    
+                    let saved = service.create(
+                        name: sculptureName,
+                        author: nil,
+                        localization: nil,
+                        cubes: vm.unfinishedCubes
+                    )
+                    
+                    vm.currentSculpture = saved
                 },
-                onCancel: { showNamingPopup = false }
+                onCancel: { 
+                    showNamingPopup = false 
+                }
             )
             .transition(.opacity)
             .zIndex(1)
         }
     }
+
     
     @ViewBuilder
     private func toolboxSheet() -> some View {
