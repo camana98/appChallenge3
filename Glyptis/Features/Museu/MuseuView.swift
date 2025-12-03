@@ -53,9 +53,15 @@ struct MuseuView: View {
                 Spacer()
                 
                 ZStack {
-                    Image(.colunaMuseu)
-                        .padding(.bottom, 50)
-                        .padding(.leading, 10)
+                    
+                    VStack(spacing: 0) {
+                        
+                        //TODO: colocar snapshot aqui e ajustar tamanho, tem que fazer a logica de qual snapshot é de qual escultura
+                        
+                        Image(.colunaMuseu)
+                            .padding(.bottom, 50)
+                            .padding(.leading, 10)
+                    }
                         
                     MuseuSculptureComponent( sculpture: Sculpture(name: "Test", localization: nil, author: nil))
                         .padding(.top, 325)
