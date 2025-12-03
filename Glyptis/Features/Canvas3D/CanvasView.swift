@@ -15,10 +15,8 @@ struct CanvasView: View {
     
     @State private var showNamingPopup: Bool = false
     @State private var sculptureName: String = ""
-    @State private var showToolbox: Bool = false
     @State private var arView: ARView?
     @State private var showSaveAlert = false
-    
     @State private var showColorPicker: Bool = false
     @State private var showConfirmClear: Bool = false
     
@@ -26,7 +24,6 @@ struct CanvasView: View {
     
     var body: some View {
         ZStack {
-            
             // MARK: - Background & 3D
             Image("backgroundCanvas")
                 .resizable()
@@ -68,68 +65,53 @@ struct CanvasView: View {
             }
             
             // MARK: - Top Buttons
-            HStack {
-                CubeButtonComponent(cubeStyle: .xmark, cubeColor: .red) {
-                    onCancel()
-                }
-                .frame(width: 140, height: 140)
-                
-                Spacer()
-                
-                CubeButtonComponent(cubeStyle: .checkmark, cubeColor: .green) {
-                    guard let arView else { return }
-                    
-                    let referenceModel = arView.scene.findEntity(named: "reference_model")
-                    let gridLines = arView.scene.findEntity(named: "grid_lines")
-                    
-                    referenceModel?.isEnabled = false
-                    gridLines?.isEnabled = false
-                    
-                    SnapshotService.takeSnapshot(from: arView) { image in
-                        guard let image else { return }
-                        
-                        referenceModel?.isEnabled = true
-                        gridLines?.isEnabled = true
-                        
-                        SnapshotService.saveSnapshot(image) { _ in }
+            VStack {
+                HStack {
+                    SimpleCubeIcon(assetName: "cancelCube", width: 55, height: 56) {
+                        onCancel()
                     }
-                    
-                    showNamingPopup = true
-                }
-                .frame(width: 140, height: 140)
-                
-            }
-            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
-            .padding(.top, 75)
-            .zIndex(2)
-            
-            
-            // MARK: - Toolbox inicial (botões pequenos)
-            if !showToolbox {
-                VStack {
-                    HStack {
-                        SimpleCubeIcon(assetName: "addCube", width: 55, height: 55) {
-                            showToolbox = true
-                        }
-                        
-                        Spacer()
-                        
-                        SimpleCubeIcon(assetName: "addCube", width: 55, height: 55) {
-                            print("hahahahha")
-                        }
-                    }
-                    .padding(.top, 60)
-                    .padding(.horizontal, 24)
+                    .accessibilityIdentifier("CloseCanvasButton")
                     
                     Spacer()
                     
-                    footer()
+                    Text("Nova Escultura")
+                        .font(.custom("Angle Square DEMO", size: 24))
+                        .foregroundStyle(.customWhite)
+                    
+                    Spacer()
+                    
+                    SimpleCubeIcon(assetName: "saveCube", width: 55, height: 56) {
+                        guard let arView else { return }
+                        
+                        let referenceModel = arView.scene.findEntity(named: "reference_model")
+                        let gridLines = arView.scene.findEntity(named: "grid_lines")
+                        
+                        referenceModel?.isEnabled = false
+                        gridLines?.isEnabled = false
+                        
+                        SnapshotService.takeSnapshot(from: arView) { image in
+                            guard let image else { return }
+                            
+                            referenceModel?.isEnabled = true
+                            gridLines?.isEnabled = true
+                            
+                            SnapshotService.saveSnapshot(image) { _ in }
+                        }
+                        
+                        showNamingPopup = true
+                    }
+                    .accessibilityIdentifier("SaveSculptureButton")
                 }
-                .zIndex(2)
-                .ignoresSafeArea(edges: .bottom)
+                .padding(.top, 60)
+                .padding(.horizontal, 24)
+                
+                Spacer()
+                
+                footer()
             }
+            .zIndex(2)
+            .ignoresSafeArea(edges: .bottom)
             
-            // MARK: - Naming Popup
             namingPopup()
         }
         
@@ -139,8 +121,8 @@ struct CanvasView: View {
             Button("Limpar", role: .destructive) {
                 vm.clearAllCubes()
             }
+            .accessibilityIdentifier("ConfirmClearButton")
         }
-        
         .onChange(of: vm.selectedColor) { _ in
             vm.removeMode = false
         }
@@ -165,6 +147,7 @@ struct CanvasView: View {
                 .padding(.top, 24)
                 .padding(.bottom, 60)
                 .transition(.opacity.combined(with: .move(edge: .bottom)))
+                .accessibilityIdentifier("ColorPickerComponent")
                 
             } else {
                 toolsButtonsView()
@@ -196,38 +179,40 @@ struct CanvasView: View {
     
     // MARK: - Tools Buttons
     private func toolsButtonsView() -> some View {
-        HStack(spacing: 60) {
+        HStack {
             
             Button(action: { vm.toggleRemove() }) {
                 VStack(spacing: 6) {
                     SimpleCubeIcon(
                         assetName: vm.removeMode ? "demolishCubeActive" : "demolishCube",
-                        width: 44,
-                        height: 46
+                        width: 54,
+                        height: 56
                     ) {
                         vm.toggleRemove()
                     }
+                    
                     Text("Demolir")
-                        .font(.caption2)
-                        .fontWeight(.medium)
-                        .foregroundColor(.white)
+                        .font(.custom("NotoSans-Medium", size: 15))
+                        .foregroundColor(vm.removeMode ? .customRed : .accent)
                 }
             }
+            .accessibilityIdentifier("DemolishCubeButton")
             
             Button(action: { showConfirmClear = true }) {
                 VStack(spacing: 6) {
                     SimpleCubeIcon(
                         assetName: "clearAllCube",
-                        width: 44,
-                        height: 46
+                        width: 54,
+                        height: 56
                     ) {
                         showConfirmClear = true
                     }
                     Text("Limpar")
-                        .font(.caption2)
-                        .foregroundColor(.white)
+                        .font(.custom("NotoSans-Medium", size: 15))
+                        .foregroundColor(.accent)
                 }
             }
+            .accessibilityIdentifier("ClearAllButton")
             
             Button {
                 withAnimation(.spring(response: 0.4, dampingFraction: 0.8)) {
@@ -238,8 +223,8 @@ struct CanvasView: View {
                     ZStack {
                         SimpleCubeIcon(
                             assetName: "changeColorCube",
-                            width: 44,
-                            height: 46
+                            width: 54,
+                            height: 56
                         ) {
                             withAnimation(.spring(response: 0.4, dampingFraction: 0.8)) {
                                 showColorPicker = true
@@ -249,14 +234,15 @@ struct CanvasView: View {
                         Circle()
                             .fill(vm.selectedColor)
                             .stroke(Color.white, lineWidth: 1.5)
-                            .frame(width: 12, height: 12)
+                            .frame(width: 20, height: 20)
                             .offset(x: 16, y: -16)
                     }
                     Text("Cor")
-                        .font(.caption2)
-                        .foregroundColor(.white)
+                        .font(.custom("NotoSans-Medium", size: 15))
+                        .foregroundColor(.accent)
                 }
             }
+            .accessibilityIdentifier("ChangeColorButton")
         }
     }
     
@@ -293,5 +279,11 @@ struct CanvasView: View {
             .transition(.opacity)
             .zIndex(4)
         }
+    }
+}
+
+#Preview {
+    CanvasView() {
+        print("voltei")
     }
 }

@@ -110,6 +110,7 @@ struct ColorPickerComponent: View {
                     .frame(width: 50, height: 50)
             }
         }
+        .accessibilityIdentifier("ColorPickerComponent")
         /// --- CONFIGURAÇÃO DO GESTO  ---
         .coordinateSpace(name: "HoneycombSpace")
         .gesture(
