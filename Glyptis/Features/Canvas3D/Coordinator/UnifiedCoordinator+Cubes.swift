@@ -12,6 +12,13 @@ internal import UIKit
 extension UnifiedCoordinator {
 
     // MARK: - Cubos
+    
+    // Função auxiliar para disparar vibração
+        func triggerHaptic(style: UIImpactFeedbackGenerator.FeedbackStyle) {
+            let generator = UIImpactFeedbackGenerator(style: style)
+            generator.prepare() // Prepara o motor tátil para resposta instantânea
+            generator.impactOccurred()
+        }
 
     // Adiciona um cubo na posição calculada a partir da key "x_z"
     func addCube(atKey key: String, fromBase: Bool = false) {
@@ -48,30 +55,51 @@ extension UnifiedCoordinator {
             addCube(at: position, key: key)
         }
 
-    // Adiciona um cubo diretamente na posição 3D
-    func addCube(at position: SIMD3<Float>, key: String) {
-        guard let anchor = anchor else { return }
+    // Adiciona um cubo diretamente na posição 3D com animação
+        func addCube(at position: SIMD3<Float>, key: String) {
+            guard let anchor = anchor else { return }
 
-        let parts = key.split(separator: "_")
-        let x = Int(parts[0])!
-        let z = Int(parts[1])!
-        let layer = heights[key] ?? 0
+            triggerHaptic(style: .medium)
+            
+            let parts = key.split(separator: "_")
+            let x = Int(parts[0])!
+            let z = Int(parts[1])!
+            let layer = heights[key] ?? 0
 
-        let cube = ModelEntity(
-            mesh: .generateBox(size: cubeSize),
-            materials: [SimpleMaterial(color: selectedColor, isMetallic: false)]
-        )
+            let cube = ModelEntity(
+                mesh: .generateBox(size: cubeSize),
+                materials: [SimpleMaterial(color: selectedColor, isMetallic: false)]
+            )
 
-        cube.position = position
-        cube.name = "cell_\(x)_\(z)_\(layer)"
-        cube.generateCollisionShapes(recursive: false)
+            /// 1. Define a posição final
+            cube.position = position
+            cube.name = "cell_\(x)_\(z)_\(layer)"
+            cube.generateCollisionShapes(recursive: false)
+            
+            /// 2. CONFIGURAÇÃO INICIAL DA ANIMAÇÃO:
+            /// Começa invisível
+            cube.scale = SIMD3<Float>(0.01, 0.01, 0.01)
 
-        anchor.addChild(cube)
-        columns[key, default: []].append(cube)
+            /// 3. Adiciona à cena
+            anchor.addChild(cube)
+            columns[key, default: []].append(cube)
 
-        heights[key] = (heights[key] ?? 0) + 1
-        print("cube just added \(cube)")
-    }
+            heights[key] = (heights[key] ?? 0) + 1
+            
+            /// 4. RODA A ANIMAÇÃO:
+            /// Cria um transform com a escala final (1.0 = 100% do tamanho)
+            var targetTransform = cube.transform
+            targetTransform.scale = SIMD3<Float>(1.0, 1.0, 1.0)
+            
+            /// Animação de 0.25s com curva 'easeOut' (rápido no começo, suave no final)
+            /// Isso cria um efeito tátil de "construção"
+            cube.move(to: targetTransform,
+                      relativeTo: cube.parent,
+                      duration: 0.10,
+                      timingFunction: .easeOut)
+
+            print("cube just added \(cube)")
+        }
 
     // Verifica se já existe um cubo naquela coordenada específica
     func isSpaceOccupied(key: String, layer: Int) -> Bool {
@@ -84,34 +112,90 @@ extension UnifiedCoordinator {
         return list.contains { abs($0.position.y - targetY) < 0.001 }
     }
     
-    // Remove um cubo
-    func removeSpecificCube(entity: Entity, key: String) {
-        guard var list = columns[key] else { return }
-
-        /// Encontra o cubo específico na lista da colun
-        guard let index = list.firstIndex(where: { $0 === entity }) else { return }
-
-        /// Salva a posição antes de remover para notificar o delegate
-        let position = entity.position
-        
-        /// Remove visualmente da cena (sem mover os outros = flutuante)
-        entity.removeFromParent()
-        
-        /// Remove da lista de dados
-        list.remove(at: index)
-        columns[key] = list
-        
-        if list.isEmpty {
-            heights[key] = 0
-        } else {
-            let maxY = list.map { $0.position.y }.max() ?? 0
-            let topLayerIndex = Int((maxY - (cubeSize / 2)) / cubeSize)
-            heights[key] = topLayerIndex + 1
+    // Função auxiliar para criar o efeito de estilhaços
+        func spawnDebris(at position: SIMD3<Float>, color: UIColor) {
+            guard let anchor = anchor else { return }
+            
+            /// 8 pedaços menores
+            let debrisCount = 8
+            let debrisSize = cubeSize / 3.0
+            
+            for _ in 0..<debrisCount {
+                let debris = ModelEntity(
+                    mesh: .generateBox(size: debrisSize),
+                    materials: [SimpleMaterial(color: color, isMetallic: false)]
+                )
+                
+                /// Posição inicial levemente aleatória dentro da área do cubo original
+                let offset = Float.random(in: -cubeSize/4...cubeSize/4)
+                debris.position = position + SIMD3<Float>(offset, offset, offset)
+                
+                /// Rotação aleatória inicial
+                debris.orientation = simd_quatf(angle: .pi, axis: [Float.random(in: -1...1), Float.random(in: -1...1), Float.random(in: -1...1)])
+                
+                anchor.addChild(debris)
+                
+                /// ANIMAÇÃO DE EXPLOSÃO
+                /// 1. Destino: Voar para longe (direção aleatória) + Cair (gravidade fake)
+                let direction = SIMD3<Float>(
+                    Float.random(in: -0.2...0.2), // Espalha para os lados
+                    Float.random(in: -0.1...0.2), // Alguns sobem um pouco, outros descem
+                    Float.random(in: -0.2...0.2)
+                )
+                
+                var transform = debris.transform
+                transform.translation += direction
+                transform.scale = SIMD3<Float>(0.01, 0.01, 0.01) // Diminui até sumir
+                transform.rotation = simd_quatf(angle: .pi * 3, axis: [Float.random(in: -1...1), Float.random(in: -1...1), Float.random(in: -1...1)]) // Gira muito
+                
+                /// Roda  a animação
+                debris.move(to: transform,
+                            relativeTo: debris.parent,
+                            duration: 0.4, // Duração da explosão
+                            timingFunction: .easeOut)
+                
+                /// Limpa da memória após a animação
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.45) {
+                    debris.removeFromParent()
+                }
+            }
         }
-        
-        /// Notifica o delegate sobre a remoção
-        delegate?.didRemoveCube(x: position.x, y: position.y, z: position.z)
-    }
+    
+    // Remove um cubo com efeito de "Quebrar"
+        func removeSpecificCube(entity: Entity, key: String) {
+            guard var list = columns[key] else { return }
+
+            guard let index = list.firstIndex(where: { $0 === entity }) else { return }
+            let position = entity.position
+            
+            triggerHaptic(style: .medium)
+            
+            var debrisColor: UIColor = .gray
+            if let modelEntity = entity as? ModelEntity,
+               let material = modelEntity.model?.materials.first as? SimpleMaterial {
+                debrisColor = material.color.tint
+            }
+
+            /// 1. EFEITO VISUAL (EXPLOSÃO)
+            spawnDebris(at: position, color: debrisColor)
+            
+            /// 2. REMOÇÃO LÓGICA
+            list.remove(at: index)
+            columns[key] = list
+            
+            if list.isEmpty {
+                heights[key] = 0
+            } else {
+                let maxY = list.map { $0.position.y }.max() ?? 0
+                let topLayerIndex = Int((maxY - (cubeSize / 2)) / cubeSize)
+                heights[key] = topLayerIndex + 1
+            }
+            
+            delegate?.didRemoveCube(x: position.x, y: position.y, z: position.z)
+
+            /// 3. REMOÇÃO DO CUBO ORIGINAL
+            entity.removeFromParent()
+        }
     
     // Limpa todos os cubos da cena
     func clearAllCubes() {
@@ -126,58 +210,62 @@ extension UnifiedCoordinator {
 
     // MARK: Pré-visualização de adjacentes
 
-    func showPreviewCubes(for x: Int, y: Int, z: Int, color: UIColor) {
-        removeActivePreviews()
-        guard let anchor = anchor else { return }
-        
-        let directions: [(dx: Int, dy: Int, dz: Int)] = [
-            (0, 1, 0),  /// Cima
-            (0, -1, 0), /// Baixo
-            (-1, 0, 0), /// Esquerda
-            (1, 0, 0),  /// Direita
-            (0, 0, -1), /// Frente
-            (0, 0, 1)   /// Trás
-        ]
+        func showPreviewCubes(for x: Int, y: Int, z: Int, color: UIColor) {
+            removeActivePreviews()
+            guard let anchor = anchor else { return }
+            
+            let directions: [(dx: Int, dy: Int, dz: Int)] = [
+                (0, 1, 0),  /// Cima
+                (0, -1, 0), /// Baixo
+                (-1, 0, 0), /// Esquerda
+                (1, 0, 0),  /// Direita
+                (0, 0, -1), /// Frente
+                (0, 0, 1)   /// Trás
+            ]
 
-        for dir in directions {
-            let nx = x + dir.dx
-            let ny = y + dir.dy
-            let nz = z + dir.dz
+            for dir in directions {
+                let nx = x + dir.dx
+                let ny = y + dir.dy
+                let nz = z + dir.dz
 
-            guard nx >= 0, nx < gridSize, nz >= 0, nz < gridSize else { continue }
-            guard ny >= 0, ny < gridSize else { continue }
+                guard nx >= 0, nx < gridSize, nz >= 0, nz < gridSize else { continue }
+                guard ny >= 0, ny < gridSize else { continue }
 
-            let keyNeighbor = "\(nx)_\(nz)"
+                let keyNeighbor = "\(nx)_\(nz)"
 
-            if isSpaceOccupied(key: keyNeighbor, layer: ny) { continue }
+                if isSpaceOccupied(key: keyNeighbor, layer: ny) { continue }
 
-            let posY = (cubeSize / 2) + (Float(ny) * cubeSize)
-            let pos = SIMD3<Float>(
-                Float(nx) * (cubeSize + gap) - baseOffset,
-                posY,
-                Float(nz) * (cubeSize + gap) - baseOffset
-            )
+                let posY = (cubeSize / 2) + (Float(ny) * cubeSize)
+                let pos = SIMD3<Float>(
+                    Float(nx) * (cubeSize + gap) - baseOffset,
+                    posY,
+                    Float(nz) * (cubeSize + gap) - baseOffset
+                )
 
-            let preview = createPreviewCube(at: pos, key: keyNeighbor, color: color)
-            anchor.addChild(preview)
-            activePreviews.append(preview)
+                // CORREÇÃO: Agora passamos 'size: cubeSize' explicitamente
+                let preview = createPreviewCube(at: pos, key: keyNeighbor, color: color, size: cubeSize)
+                anchor.addChild(preview)
+                activePreviews.append(preview)
+            }
         }
-    }
 
-    func removeActivePreviews() {
-        activePreviews.forEach { $0.removeFromParent() }
-        activePreviews.removeAll()
-    }
+        func removeActivePreviews() {
+            activePreviews.forEach { $0.removeFromParent() }
+            activePreviews.removeAll()
+        }
 
-    func createPreviewCube(at position: SIMD3<Float>, key: String, color: UIColor, size: Float = 0.1) -> ModelEntity {
-        let material = SimpleMaterial(color: color.withAlphaComponent(0.4), isMetallic: false)
-        let cube = ModelEntity(mesh: .generateBox(size: size), materials: [material])
+        // CORREÇÃO: Removido o '= 0.1' para obrigar a passar o tamanho correto
+        func createPreviewCube(at position: SIMD3<Float>, key: String, color: UIColor, size: Float) -> ModelEntity {
+            let material = SimpleMaterial(color: color.withAlphaComponent(0.4), isMetallic: false)
+            
+            // Usa o 'size' passado como parâmetro (que agora é 0.05)
+            let cube = ModelEntity(mesh: .generateBox(size: size), materials: [material])
 
-        cube.position = position
-        cube.name = "preview_\(UUID().uuidString)"
-        cube.components[PreviewCubeComponent.self] = PreviewCubeComponent(key: key)
-        cube.generateCollisionShapes(recursive: false)
+            cube.position = position
+            cube.name = "preview_\(UUID().uuidString)"
+            cube.components[PreviewCubeComponent.self] = PreviewCubeComponent(key: key)
+            cube.generateCollisionShapes(recursive: false)
 
-        return cube
-    }
+            return cube
+        }
 }
