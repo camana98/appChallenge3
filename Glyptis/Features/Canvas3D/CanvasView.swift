@@ -10,8 +10,7 @@ internal import RealityKit
 
 struct CanvasView: View {
     @StateObject private var vm = CanvasViewModel()
-    
-    // Estados de UI
+
     @Environment(\.modelContext) private var context
     
     @State private var showNamingPopup: Bool = false
@@ -57,24 +56,6 @@ struct CanvasView: View {
                         }
                     }
                     .zIndex(1)
-            }
-            // Top Buttons
-            HStack {
-                CubeButtonComponent(
-                    cubeStyle: .xmark,
-                    cubeColor: .red
-                ) {
-                    onCancel()
-                }
-                .frame(width: 140, height: 140)
-                
-                Spacer()
-
-                
-                SimpleCubeIcon(assetName: "saveCube", width: 56, height: 54) {
-                    showNamingPopup = true
-                }
-
             }
             
             // MARK: Layer 2 - UI Fixa
@@ -274,21 +255,6 @@ struct CanvasView: View {
                 }
             )
             .transition(.opacity)
-            .zIndex(1)
-        }
-    }
-
-    
-    @ViewBuilder
-    private func toolboxSheet() -> some View {
-        if showToolbox {
-            ToolboxSheet(
-                onDemolish: { vm.toggleRemove() },
-                onCleanAll: { vm.clearAllCubes() },
-                onChangeColor: { }, // * implementar color picker
-                isVisible: $showToolbox,
-                isDemolishActive: $vm.removeMode
-            )
             .zIndex(1)
         }
     }
