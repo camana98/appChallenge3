@@ -12,6 +12,8 @@ struct CanvasView: View {
     @StateObject private var vm = CanvasViewModel()
     
     // Estados de UI
+    @Environment(\.modelContext) private var context
+    
     @State private var showNamingPopup: Bool = false
     @State private var sculptureName: String = ""
     @State private var showColorPicker: Bool = false
@@ -54,6 +56,23 @@ struct CanvasView: View {
                         }
                     }
                     .zIndex(1)
+            // Top Buttons
+            HStack {
+                CubeButtonComponent(
+                    cubeStyle: .xmark,
+                    cubeColor: .red
+                ) {
+                    onCancel()
+                }
+                .frame(width: 140, height: 140)
+                
+                Spacer()
+
+                
+                SimpleCubeIcon(assetName: "saveCube", width: 56, height: 54) {
+                    showNamingPopup = true
+                }
+
             }
             
             // MARK: Layer 2 - UI Fixa
@@ -214,6 +233,7 @@ struct CanvasView: View {
     }
     
     @ViewBuilder
+    
     private func namingPopup() -> some View {
         if showNamingPopup {
             Color.black.opacity(0.4)
@@ -222,11 +242,52 @@ struct CanvasView: View {
             
             NameSculpturePopup(
                 sculptureName: $sculptureName,
-                onSave: { showNamingPopup = false },
-                onCancel: { showNamingPopup = false }
+                onSave: {
+                    // Validar se tem nome
+                    guard !sculptureName.trimmingCharacters(in: .whitespaces).isEmpty else {
+                        return
+                    }
+                    
+                    // Validar se tem cubos
+                    guard !vm.unfinishedCubes.isEmpty else {
+                        return
+                    }
+                    
+                    showNamingPopup = false
+                    
+                    // MARK: Criar service e salvar
+                    let service = SculptureService(context: context)
+                    
+                    let saved = service.create(
+                        name: sculptureName,
+                        author: nil,
+                        localization: nil,
+                        cubes: vm.unfinishedCubes
+                    )
+                    
+                    vm.currentSculpture = saved
+                },
+                onCancel: { 
+                    showNamingPopup = false 
+                }
             )
             .transition(.opacity)
-            .zIndex(3)
+            .zIndex(1)
+        }
+    }
+
+    
+    @ViewBuilder
+    private func toolboxSheet() -> some View {
+        if showToolbox {
+            ToolboxSheet(
+                onDemolish: { vm.toggleRemove() },
+                onCleanAll: { vm.clearAllCubes() },
+                onChangeColor: { }, // * implementar color picker
+                isVisible: $showToolbox,
+                isDemolishActive: $vm.removeMode
+            )
+            .zIndex(1)
         }
     }
 }
