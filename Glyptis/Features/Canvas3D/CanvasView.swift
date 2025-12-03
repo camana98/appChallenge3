@@ -10,8 +10,7 @@ internal import RealityKit
 
 struct CanvasView: View {
     @StateObject private var vm = CanvasViewModel()
-    
-    // Estados de UI
+
     @Environment(\.modelContext) private var context
     
     @State private var showNamingPopup: Bool = false
@@ -22,6 +21,7 @@ struct CanvasView: View {
     
     @State private var showColorPicker: Bool = false
     @State private var showConfirmClear: Bool = false
+    @State private var showToolbox: Bool = false
     
     var onCancel: () -> Void
     
@@ -199,9 +199,9 @@ struct CanvasView: View {
                 VStack(spacing: 6) {
                     SimpleCubeIcon(
                         assetName: vm.removeMode ? "demolishCubeActive" : "demolishCube",
-                        action: { vm.toggleRemove() },
                         width: 44,
-                        height: 46
+                        height: 46,
+                        action: { vm.toggleRemove() }
                     )
                     Text("Demolir")
                         .font(.caption2)
@@ -216,9 +216,9 @@ struct CanvasView: View {
                 VStack(spacing: 6) {
                     SimpleCubeIcon(
                         assetName: "clearAllCube",
-                        action: { showConfirmClear = true },
                         width: 44,
-                        height: 46
+                        height: 46,
+                        action: { showConfirmClear = true }
                     )
                     Text("Limpar")
                         .font(.caption2)
@@ -238,13 +238,13 @@ struct CanvasView: View {
                     ZStack {
                         SimpleCubeIcon(
                             assetName: "changeColorCube",
+                            width: 44,
+                            height: 46,
                             action: {
                                 withAnimation(.spring(response: 0.4, dampingFraction: 0.8)) {
                                     showColorPicker = true
                                 }
-                            },
-                            width: 44,
-                            height: 46
+                            }
                         )
                         
                         Circle()
@@ -306,24 +306,5 @@ struct CanvasView: View {
             .transition(.opacity)
             .zIndex(1)
         }
-    }
-
-    
-    @ViewBuilder
-    private func toolboxSheet() -> some View {
-        if showToolbox {
-            ToolboxSheet(
-                onDemolish: { vm.toggleRemove() },
-                onCleanAll: { vm.clearAllCubes() },
-                onChangeColor: { }, // * implementar color picker
-                isVisible: $showToolbox,
-                isDemolishActive: $vm.removeMode
-            )
-            .zIndex(1)
-        }
-    }
-    
-    func save3DPreview() {
-        
     }
 }
