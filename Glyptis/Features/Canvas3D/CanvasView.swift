@@ -179,7 +179,7 @@ struct CanvasView: View {
     
     // MARK: - Tools Buttons
     private func toolsButtonsView() -> some View {
-        HStack {
+        HStack(spacing: 60) {
             
             Button(action: { vm.toggleRemove() }) {
                 VStack(spacing: 6) {

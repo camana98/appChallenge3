@@ -27,23 +27,22 @@ struct MuseuView: View {
             
             VStack {
                 HStack {
-                    CubeButtonComponent(cubeStyle: .back, cubeColor: .blue) {
+                    
+                    SimpleCubeIcon(assetName: "backCube", width: 55, height: 55) {
                         onBackClicked()
                     }
-                        .frame(width: 100, height: 100)
-                        .scaledToFill()
                     
                     Spacer()
                     
                     Text("Museu")
+                        .font(.custom("Angle Square DEMO", size: 24))
+                        .foregroundStyle(.customWhite)
                     
                     Spacer()
                     
-                    CubeButtonComponent(cubeStyle: .grid, cubeColor: .blue) {
+                    SimpleCubeIcon(assetName: "gridCube", width: 55, height: 55) {
                         showGridListMuseum.toggle()
                     }
-                        .frame(width: 100, height: 100)
-                        .scaledToFill()
                 }
                 
                 Spacer()
