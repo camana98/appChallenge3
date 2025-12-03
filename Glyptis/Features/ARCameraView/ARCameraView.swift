@@ -18,16 +18,28 @@ struct ARCameraView: View {
     
     // Closure para avisar quando abrir o Canvas
     var onOpenCanvas: () -> Void
+    var onOpenMuseum: () -> Void
     
     var body: some View {
         ZStack {
-            Color.gray.opacity(0.2) /// Placeholder da câmera
+            
+            ARViewContainer(coordinator: $coordinator)
+                .edgesIgnoringSafeArea(.all)
             
             VStack {
                 Spacer()
                 
                 Button {
-                    printSavedSculptures()
+                    onOpenMuseum()
+                } label: {
+                    Text("Ir para Museu")
+                        .padding()
+                        .background(Color.green)
+                        .foregroundColor(.white)
+                        .cornerRadius(10)
+                }
+                
+                Button {
                     onOpenCanvas()
                 } label: {
                     Text("Ir para Canvas")
@@ -95,6 +107,6 @@ struct ARCameraView: View {
 }
 
 #Preview {
-    ARCameraView(onOpenCanvas: {})
+    ARCameraView(onOpenCanvas: {}, onOpenMuseum: {})
 }
 

@@ -13,6 +13,7 @@ import SwiftData
 enum AppScreen {
     case camera
     case canvas
+    case museu
 }
 
 @main
@@ -28,6 +29,9 @@ struct GlyptisApp: App {
                 ARCameraView(
                     onOpenCanvas: {
                         currentScreen = .canvas
+                    },
+                    onOpenMuseum: {
+                        currentScreen = .museu
                     }
                 )
             case .canvas:
@@ -38,9 +42,15 @@ struct GlyptisApp: App {
                     },
                    
                 )
+            case .museu:
+                /// Tela de museu
+                MuseuView(
+                    onBackClicked: {
+                        currentScreen = .camera
+                    }
+                )
             }
         }
-        /// Define os modelos persistentes do SwiftData
         .modelContainer(for: [
             Author.self,
             Cube.self,

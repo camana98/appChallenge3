@@ -15,8 +15,9 @@ struct ARViewContainer: UIViewRepresentable {
     @Binding var coordinator: ARViewCoordinator
     
     func makeUIView(context: Context) -> some UIView {
-        // chama so quando é instanciada pela primeira vez
-        return coordinator.setupARView()
+        let view = coordinator.setupARView()
+        view.accessibilityIdentifier = "arViewContainer" // para UITests
+        return view
         
     }
     
