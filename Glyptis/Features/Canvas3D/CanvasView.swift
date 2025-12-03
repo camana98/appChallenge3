@@ -18,6 +18,7 @@ struct CanvasView: View {
     @State private var sculptureName: String = ""
     @State private var showColorPicker: Bool = false
     @State private var showConfirmClear: Bool = false
+    @State private var showToolbox: Bool = false
     
     var onCancel: () -> Void
     
@@ -56,6 +57,7 @@ struct CanvasView: View {
                         }
                     }
                     .zIndex(1)
+            }
             // Top Buttons
             HStack {
                 CubeButtonComponent(
@@ -167,9 +169,9 @@ struct CanvasView: View {
                 VStack(spacing: 6) {
                     SimpleCubeIcon(
                         assetName: vm.removeMode ? "demolishCubeActive" : "demolishCube",
-                        action: { vm.toggleRemove() },
                         width: 44,
-                        height: 46
+                        height: 46,
+                        action: { vm.toggleRemove() }
                     )
                     Text("Demolir")
                         .font(.caption2)
@@ -184,9 +186,9 @@ struct CanvasView: View {
                 VStack(spacing: 6) {
                     SimpleCubeIcon(
                         assetName: "clearAllCube",
-                        action: { showConfirmClear = true },
                         width: 44,
-                        height: 46
+                        height: 46,
+                        action: { showConfirmClear = true }
                     )
                     Text("Limpar")
                         .font(.caption2)
@@ -206,13 +208,13 @@ struct CanvasView: View {
                     ZStack {
                         SimpleCubeIcon(
                             assetName: "changeColorCube",
+                            width: 44,
+                            height: 46,
                             action: {
                                 withAnimation(.spring(response: 0.4, dampingFraction: 0.8)) {
                                     showColorPicker = true
                                 }
-                            },
-                            width: 44,
-                            height: 46
+                            }
                         )
                         
                         Circle()
