@@ -36,6 +36,8 @@ struct MuseuView: View {
                     Spacer()
                     
                     Text("Museu")
+                        .font(Fonts.title)
+                        .foregroundStyle(.customWhite)
                     
                     Spacer()
                     
@@ -45,6 +47,7 @@ struct MuseuView: View {
                         .frame(width: 100, height: 100)
                         .scaledToFill()
                 }
+                .padding(.top)
                 
                 Spacer()
                                 
