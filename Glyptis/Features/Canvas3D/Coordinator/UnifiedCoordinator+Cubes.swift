@@ -117,7 +117,7 @@ extension UnifiedCoordinator {
         guard let anchor = anchor else { return }
         
         /// 8 pedaços menores
-        let debrisCount = 8
+        let debrisCount = 4
         let debrisSize = cubeSize / 3.0
         
         for _ in 0..<debrisCount {
