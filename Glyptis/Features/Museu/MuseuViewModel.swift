@@ -15,7 +15,8 @@ protocol MuseuViewModelProtocol {
     func delete(s: Sculpture) -> Void
     func edit(s: Sculpture)  -> Void
     func anchor(s: Sculpture)  -> Void
-    func fetchData() -> Void
+    func fetchData() -> [Sculpture]
+    func getSnapshot(s: Sculpture) -> UIImage
 }
 
 
@@ -38,11 +39,20 @@ class MuseuViewModel: MuseuViewModelProtocol {
     func edit(s: Sculpture) {
         // TODO: fazer funcao de edit
     }
+    
+    func getSnapshot(s: Sculpture) -> UIImage {
+        
+        guard let snapshot = service.getSnapshot(sculpture: s) else { return UIImage()}
+        guard let uiImage = UIImage(data: snapshot) else { return UIImage() }
+        
+        return uiImage
+    }
+    
     func anchor(s: Sculpture) {
         // TODO: fazer funcao de ancorar
     }
     
-    func fetchData() {
-        sculptures = service.fetchAll()
+    func fetchData() -> [Sculpture] {
+        return service.fetchAll()
     }
 }

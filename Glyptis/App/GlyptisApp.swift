@@ -20,6 +20,7 @@ enum AppScreen {
 struct GlyptisApp: App {
     /// Estado que mantém a tela atual do app
     @State private var currentScreen: AppScreen = .camera
+    @Environment(\.modelContext) private var context
 
     var body: some Scene {
         WindowGroup {
@@ -39,12 +40,12 @@ struct GlyptisApp: App {
                 CanvasView(
                     onCancel: {
                         currentScreen = .camera
-                    },
-                   
+                    }
                 )
             case .museu:
                 /// Tela de museu
                 MuseuView(
+                    vm: MuseuViewModel(context: context, service: SculptureService(context: context)),
                     onBackClicked: {
                         currentScreen = .camera
                     }

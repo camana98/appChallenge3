@@ -19,6 +19,8 @@ struct MuseuView: View {
     @State private var showGridListMuseum: Bool = false
     var onBackClicked: () -> Void
     
+//    private var sculptures: [Sculpture]
+    
     var body: some View {
         ZStack {
             
@@ -53,30 +55,41 @@ struct MuseuView: View {
                 
                 ZStack {
                     
-                    VStack(spacing: 0) {
+                    ForEach(vm.fetchData()) { sculpture in
                         
-                        //TODO: colocar snapshot aqui e ajustar tamanho, tem que fazer a logica de qual snapshot é de qual escultura
                         
-                        Image(.colunaMuseu)
-                            .padding(.bottom, 50)
-                            .padding(.leading, 10)
+                        VStack(spacing: 0) {
+                            
+                            Image(uiImage: vm.getSnapshot(s: sculpture))
+                            
+                            Image(.colunaMuseu)
+                                .padding(.bottom, 50)
+                                .padding(.leading, 10)
+                        }
+                        
+                        MuseuSculptureComponent( sculpture: sculpture)
+                            .padding(.top, 325)
+                        
                     }
-                        
-                    MuseuSculptureComponent( sculpture: Sculpture(name: "Test", localization: nil, author: nil))
-                        .padding(.top, 325)
                 }
                 
                 
             }
+            .padding(.top, 50)
         }
         .sheet(isPresented: $showGridListMuseum) {
             MuseuGridListView(vm: MuseuGridViewModel(context: modelContext, service: SculptureService(context: modelContext)))
                 .presentationDetents([.medium, .large])
                 .presentationBackgroundInteraction(.enabled(upThrough: .medium))
         }
+        .task {
+            vm.fetchData()
+        }
     }
 }
 
 #Preview {
-//    MuseuView(vm: MuseuViewModel(), onBackClicked: {})
+    @Environment(\.modelContext) var modelContext
+    
+    MuseuView(vm: MuseuViewModel(context: modelContext, service: SculptureService(context: modelContext)), onBackClicked: {})
 }

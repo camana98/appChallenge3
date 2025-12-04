@@ -101,6 +101,11 @@ final class SculptureService {
         return try? context.fetch(descriptor).first
     }
     
+    /// Get snapshot da Sculpture
+    func getSnapshot(sculpture: Sculpture) -> Data? {
+        return sculpture.snapshot
+    }
+    
     // MARK: - UPDATE
 
         /// Atualiza SOMENTE o nome
