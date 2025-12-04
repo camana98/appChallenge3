@@ -12,8 +12,6 @@ struct SnapshotService {
 
     // MARK: - SNAPSHOT DO ARVIEW
     static func takeSnapshot(from arView: ARView, completion: @escaping (UIImage?) -> Void) {
-    
-        
         arView.snapshot(saveToHDR: false) { image in
             completion(image)
         }

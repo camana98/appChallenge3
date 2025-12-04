@@ -5,14 +5,13 @@
 //  Created by Pablo Garcia-Dev on 02/12/25.
 //
 
-import SwiftUI
 
+import SwiftUI
 
 struct SnapshotListView: View {
 
     @StateObject private var viewModel = SnapshotListViewModel()
     @State private var showToolbox: Bool = false
-    @State private var showConfirmClear: Bool = false
 
     var body: some View {
         let columns = [
@@ -27,21 +26,27 @@ struct SnapshotListView: View {
                     Text("Minhas Esculturas")
                         .font(.custom("AngleSquareDEMO", size: 28))
                         .foregroundColor(.primary)
-                    Text("Filtro: Mais Recentes Primeiro")
+
+                    Text("Filtro: \(viewModel.sortOptions.rawValue)")
                         .font(.custom("NotoSans-Regular", size: 14))
                         .foregroundColor(.primary)
                 }
+
                 Spacer()
-                Button(action: { showConfirmClear = true }) {
-                    VStack(spacing: 6) {
-                        SimpleCubeIcon(
-                            assetName: "filterCube",
-                            width: 44,
-                            height: 46
-                        ) {
-                            showConfirmClear = true
+
+                Menu {
+                    ForEach(SnapshotSortOption.allCases) { option in
+                        Button(option.rawValue) {
+                            viewModel.sortOptions = option
+                            viewModel.loadSnapshots()
                         }
                     }
+                } label: {
+                    SimpleCubeIcon(
+                        assetName: "filterCube",
+                        width: 44,
+                        height: 46
+                    ) {}
                 }
             }
             .padding()
@@ -66,6 +71,7 @@ struct SnapshotListView: View {
                                         .resizable()
                                         .scaledToFill()
                                 )
+
                                 Text(url.lastPathComponent)
                                     .font(.caption)
                                     .lineLimit(1)
@@ -82,9 +88,4 @@ struct SnapshotListView: View {
         .background(.ultraThinMaterial.opacity(0.5))
         .navigationTitle("Snapshots Salvos")
     }
-
-}
-
-#Preview {
-    SnapshotListView()
 }
