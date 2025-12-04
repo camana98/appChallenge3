@@ -1,17 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "cancelCube1x.png",
+      "filename" : "addcubecolor 3.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "cancelCube2x.png",
+      "filename" : "addcubecolor 4.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "cancelCube3x.png",
+      "filename" : "addcubecolor 5.png",
       "idiom" : "universal",
       "scale" : "3x"
     }
