@@ -12,14 +12,10 @@ import SwiftData
 
 struct MuseuView: View {
     
-    @Environment(\.modelContext) var modelContext
-    
     @State var vm: MuseuViewModelProtocol
     
     @State private var showGridListMuseum: Bool = false
     var onBackClicked: () -> Void
-    
-//    private var sculptures: [Sculpture]
     
     var body: some View {
         ZStack {
@@ -53,43 +49,52 @@ struct MuseuView: View {
                 
                 Spacer()
                 
-                ZStack {
-                    
-                    ForEach(vm.fetchData()) { sculpture in
-                        
-                        
-                        VStack(spacing: 0) {
+                TabView {
+                    ForEach(vm.sculptures) { sculpture in
+                        ZStack(alignment: .bottom) {
                             
-                            Image(uiImage: vm.getSnapshot(s: sculpture))
+                            VStack(spacing: 0) {
+                                
+                                Image(uiImage: vm.getSnapshot(s: sculpture))
+                                    .resizable()
+                                    .scaledToFill()
+                                    .frame(maxWidth: 100, maxHeight: 100)
+                                
+                                Image(.colunaMuseu)
+                                    .padding(.bottom, 50)
+                                    .padding(.leading, 10)
+                            }
                             
-                            Image(.colunaMuseu)
-                                .padding(.bottom, 50)
-                                .padding(.leading, 10)
+                            MuseuSculptureComponent( sculpture: sculpture)
+                                .padding(.top, 325)
+                            
                         }
-                        
-                        MuseuSculptureComponent( sculpture: sculpture)
-                            .padding(.top, 325)
                         
                     }
                 }
-                
+                .tabViewStyle(.page(indexDisplayMode: .never))
                 
             }
             .padding(.top, 50)
         }
         .sheet(isPresented: $showGridListMuseum) {
-            MuseuGridListView(vm: MuseuGridViewModel(context: modelContext, service: SculptureService(context: modelContext)))
+            MuseuGridListView(vm: MuseuGridViewModel(service: SwiftDataService.shared))
                 .presentationDetents([.medium, .large])
                 .presentationBackgroundInteraction(.enabled(upThrough: .medium))
         }
-        .task {
+        .onAppear {
             vm.fetchData()
         }
     }
 }
 
 #Preview {
-    @Environment(\.modelContext) var modelContext
-    
-    MuseuView(vm: MuseuViewModel(context: modelContext, service: SculptureService(context: modelContext)), onBackClicked: {})
+    var previewVM = MuseuViewModel(service: SwiftDataService.shared)
+    previewVM.sculptures = [
+        Sculpture(name: "hahahahaha")
+    ]
+
+    return MuseuView(vm: previewVM) {
+        print("zum")
+    }
 }

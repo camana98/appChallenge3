@@ -15,21 +15,19 @@ protocol MuseuViewModelProtocol {
     func delete(s: Sculpture) -> Void
     func edit(s: Sculpture)  -> Void
     func anchor(s: Sculpture)  -> Void
-    func fetchData() -> [Sculpture]
+    func fetchData()
     func getSnapshot(s: Sculpture) -> UIImage
 }
 
 
+@MainActor
 @Observable
 class MuseuViewModel: MuseuViewModelProtocol {
     
-    let service: SculptureService
+    let service: SwiftDataService
     var sculptures: [Sculpture] = []
     
-    private var context: ModelContext
-    
-    init(context: ModelContext, service: SculptureService) {
-        self.context = context
+    init(service: SwiftDataService) {
         self.service = service
     }
     
@@ -42,8 +40,14 @@ class MuseuViewModel: MuseuViewModelProtocol {
     
     func getSnapshot(s: Sculpture) -> UIImage {
         
-        guard let snapshot = service.getSnapshot(sculpture: s) else { return UIImage()}
-        guard let uiImage = UIImage(data: snapshot) else { return UIImage() }
+        guard let snapshot = service.getSnapshot(sculpture: s) else {
+            print("zuuum")
+            return UIImage()
+        }
+        guard let uiImage = UIImage(data: snapshot) else {
+            print("opaaaaa")
+            return UIImage()
+        }
         
         return uiImage
     }
@@ -52,7 +56,7 @@ class MuseuViewModel: MuseuViewModelProtocol {
         // TODO: fazer funcao de ancorar
     }
     
-    func fetchData() -> [Sculpture] {
-        return service.fetchAll()
+    func fetchData() {
+        sculptures = service.fetchAll()
     }
 }

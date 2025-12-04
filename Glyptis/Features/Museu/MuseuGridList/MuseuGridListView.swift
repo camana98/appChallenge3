@@ -40,6 +40,9 @@ struct MuseuGridListView: View {
                     LazyVGrid(columns: vm.columns, spacing: 13){
                         ForEach(vm.filteredSculptures) { escultura in
                             GridSculptureComponent(sculpture: escultura)
+                                .onAppear {
+                                    print("JORGE " + escultura.name)
+                                }
                                 .contextMenu {
                                     
                                     Button {

@@ -18,10 +18,10 @@ enum AppScreen {
 
 @main
 struct GlyptisApp: App {
-    /// Estado que mantém a tela atual do app
+    
     @State private var currentScreen: AppScreen = .camera
-    @Environment(\.modelContext) private var context
-
+    let service = SwiftDataService.shared
+    
     var body: some Scene {
         WindowGroup {
             switch currentScreen {
@@ -45,18 +45,14 @@ struct GlyptisApp: App {
             case .museu:
                 /// Tela de museu
                 MuseuView(
-                    vm: MuseuViewModel(context: context, service: SculptureService(context: context)),
-                    onBackClicked: {
+                    vm: MuseuViewModel(service: service), onBackClicked: {
                         currentScreen = .camera
                     }
                 )
             }
         }
-        .modelContainer(for: [
-            Author.self,
-            Cube.self,
-            Localization.self,
-            Sculpture.self,
-        ])
+        .modelContainer(service.modelContainer)
     }
 }
+
+

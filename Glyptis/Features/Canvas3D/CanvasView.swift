@@ -11,7 +11,7 @@ internal import RealityKit
 struct CanvasView: View {
     @StateObject private var vm = CanvasViewModel()
     
-    @Environment(\.modelContext) private var context
+    @Environment(\.modelContext) private var modelContext
     
     @State private var showNamingPopup: Bool = false
     @State private var sculptureName: String = ""
@@ -264,7 +264,7 @@ struct CanvasView: View {
                     
                     showNamingPopup = false
                     
-                    let service = SculptureService(context: context)
+                    let service = SculptureService(context: modelContext)
                     
                     guard let snapshot else { return }
                     let saved = service.create(
