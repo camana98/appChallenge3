@@ -14,6 +14,8 @@ struct MuseuView: View {
     
     @Environment(\.modelContext) var modelContext
     
+    @State var vm: MuseuViewModelProtocol
+    
     @State private var showGridListMuseum: Bool = false
     var onBackClicked: () -> Void
     
@@ -28,11 +30,10 @@ struct MuseuView: View {
             
             VStack {
                 HStack {
-                    CubeButtonComponent(cubeStyle: .back, cubeColor: .blue) {
+                    
+                    SimpleCubeIcon(assetName: "backCube", width: 55, height: 55) {
                         onBackClicked()
                     }
-                        .frame(width: 100, height: 100)
-                        .scaledToFill()
                     
                     Spacer()
                     
@@ -42,11 +43,9 @@ struct MuseuView: View {
                     
                     Spacer()
                     
-                    CubeButtonComponent(cubeStyle: .grid, cubeColor: .blue) {
+                    SimpleCubeIcon(assetName: "gridCube", width: 55, height: 55) {
                         showGridListMuseum.toggle()
                     }
-                        .frame(width: 100, height: 100)
-                        .scaledToFill()
                 }
                 .padding(.horizontal)
                 
@@ -79,5 +78,5 @@ struct MuseuView: View {
 }
 
 #Preview {
-    MuseuView(onBackClicked: {})
+//    MuseuView(vm: MuseuViewModel(), onBackClicked: {})
 }

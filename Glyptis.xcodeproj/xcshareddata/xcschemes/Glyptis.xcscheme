@@ -41,6 +41,17 @@
                ReferencedContainer = "container:Glyptis.xcodeproj">
             </BuildableReference>
          </TestableReference>
+         <TestableReference
+            skipped = "NO"
+            parallelizable = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "C53C760F2EE0BFEC005C6BB0"
+               BuildableName = "GlyptisUITests.xctest"
+               BlueprintName = "GlyptisUITests"
+               ReferencedContainer = "container:Glyptis.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
    </TestAction>
    <LaunchAction

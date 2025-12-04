@@ -38,6 +38,7 @@ struct NameSculpturePopup: View {
                     .background(Color.white.opacity(0.6))
                     .cornerRadius(26)
                     .foregroundColor(.black)
+                    .accessibilityIdentifier("SculptureNameTextField")
                 
                 Button("Salvar") {
                     onSave()
@@ -47,6 +48,7 @@ struct NameSculpturePopup: View {
                 .background(Color("customBlue").opacity(0.8))
                 .foregroundColor(.white)
                 .cornerRadius(100)
+                .accessibilityIdentifier("ConfirmSaveButton")
                 
             }
             .padding()
