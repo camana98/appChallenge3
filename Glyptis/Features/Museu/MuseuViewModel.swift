@@ -19,7 +19,7 @@ protocol MuseuViewModelProtocol {
 }
 
 
-
+@Observable
 class MuseuViewModel: MuseuViewModelProtocol {
     
     let service: SculptureService

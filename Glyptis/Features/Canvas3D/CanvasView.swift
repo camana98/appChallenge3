@@ -20,6 +20,8 @@ struct CanvasView: View {
     @State private var showColorPicker: Bool = false
     @State private var showConfirmClear: Bool = false
     
+    @State private var snapshot: Data? = nil
+    
     var onCancel: () -> Void
     
     var body: some View {
@@ -95,10 +97,10 @@ struct CanvasView: View {
                             referenceModel?.isEnabled = true
                             gridLines?.isEnabled = true
                             
-                            SnapshotService.saveSnapshot(image) { _ in }
+                            self.snapshot = image.pngData()
+                            
+                            showNamingPopup = true
                         }
-                        
-                        showNamingPopup = true
                     }
                     .accessibilityIdentifier("SaveSculptureButton")
                 }
@@ -263,11 +265,14 @@ struct CanvasView: View {
                     showNamingPopup = false
                     
                     let service = SculptureService(context: context)
+                    
+                    guard let snapshot else { return }
                     let saved = service.create(
                         name: sculptureName,
                         author: nil,
                         localization: nil,
-                        cubes: vm.unfinishedCubes
+                        cubes: vm.unfinishedCubes,
+                        snapshot: snapshot
                     )
                     
                     vm.currentSculpture = saved

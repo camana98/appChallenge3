@@ -51,10 +51,11 @@ final class SculptureService {
         name: String,
         author: Author?,
         localization: Localization?,
-        cubes unfinishedCubes: [UnfinishedCube]
+        cubes unfinishedCubes: [UnfinishedCube],
+        snapshot: Data
     ) -> Sculpture {
 
-        let sculpture = Sculpture(name: name, localization: localization.map { [$0] }, author: author)
+        let sculpture = Sculpture(name: name, localization: localization.map { [$0] }, author: author, snapshot: snapshot)
 
         // 1) Insere a escultura no contexto
         context.insert(sculpture)
@@ -70,7 +71,7 @@ final class SculptureService {
 
         // 4) Insere os cubes no contexto
         insertCubesIntoContext(newCubes)
-
+    
         // 5) Salva
         do {
             try context.save()

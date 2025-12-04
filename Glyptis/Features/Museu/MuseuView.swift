@@ -14,6 +14,8 @@ struct MuseuView: View {
     
     @Environment(\.modelContext) var modelContext
     
+    @State var vm: MuseuViewModelProtocol
+    
     @State private var showGridListMuseum: Bool = false
     var onBackClicked: () -> Void
     
@@ -59,5 +61,5 @@ struct MuseuView: View {
 }
 
 #Preview {
-    MuseuView(onBackClicked: {})
+//    MuseuView(vm: MuseuViewModel(), onBackClicked: {})
 }
