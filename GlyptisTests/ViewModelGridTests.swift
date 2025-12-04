@@ -1,11 +1,11 @@
+////
+////  ViewModelGridTests.swift
+////  GlyptisTests
+////
+////  Created by Vicenzo Másera on 27/11/25.
+////
 //
-//  ViewModelGridTests.swift
-//  GlyptisTests
-//
-//  Created by Vicenzo Másera on 27/11/25.
-//
-
-// MuseuGridViewModelTests.swift
+//// MuseuGridViewModelTests.swift
 
 import XCTest
 import SwiftData

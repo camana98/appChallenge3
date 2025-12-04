@@ -39,6 +39,8 @@ struct ARCameraView: View {
                         .foregroundColor(.white)
                         .cornerRadius(10)
                 }
+                .accessibilityIdentifier("GoToMuseumButton")
+
                 
                 Button {
                     onOpenCanvas()
@@ -49,6 +51,7 @@ struct ARCameraView: View {
                         .foregroundStyle(.white)
                         .cornerRadius(10)
                 }
+                .accessibilityIdentifier("GoToCanvasButton")
                 
                 Button {
                     showSnapshots = true
@@ -61,6 +64,7 @@ struct ARCameraView: View {
                 }
                 .padding(.top, 12)
                 .padding(.bottom, 50)
+                .accessibilityIdentifier("GoToSnapShotsButton")
             }
         }
         .edgesIgnoringSafeArea(.all)
