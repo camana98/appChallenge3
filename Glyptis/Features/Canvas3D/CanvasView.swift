@@ -285,6 +285,7 @@ struct CanvasView: View {
                     )
                     
                     vm.currentSculpture = saved
+                    SoundManager.shared.playSound(named: "saveSuccess", volume: 0.5)
                 },
                 onCancel: {
                     showNamingPopup = false
