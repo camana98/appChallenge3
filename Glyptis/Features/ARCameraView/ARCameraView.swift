@@ -70,7 +70,10 @@ struct ARCameraView: View {
         .edgesIgnoringSafeArea(.all)
         .sheet(isPresented: $showSnapshots) {
             SnapshotListView()
+                .presentationDetents([.medium, .large])
+                .presentationDragIndicator(.visible)
         }
+        .background(.red)
     }
     
     private func printSavedSculptures() {

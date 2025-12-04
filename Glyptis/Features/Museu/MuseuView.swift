@@ -44,6 +44,7 @@ struct MuseuView: View {
                         showGridListMuseum.toggle()
                     }
                 }
+                .padding(.top)
                 
                 Spacer()
                                 

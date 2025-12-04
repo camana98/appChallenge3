@@ -25,8 +25,8 @@ class UnifiedCoordinator: NSObject, UIGestureRecognizerDelegate {
     var modelEntity: Entity?  /// Modelo de referência carregado (usdz)
 
     // MARK: - Configurações da grade
-    let gridSize = 10
-    let cubeSize: Float = 0.1
+    let gridSize = 20
+    let cubeSize: Float = 0.05
     let gap: Float = 0.0
     let gridLineWidth: Float = 0.002
 
