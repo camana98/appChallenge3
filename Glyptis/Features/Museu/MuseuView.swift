@@ -17,6 +17,7 @@ struct MuseuView: View {
     
     @State private var showGridListMuseum: Bool = false
     var onBackClicked: () -> Void
+    var onEditSculpture: ((Sculpture) -> Void)?
     
     @Query private var sculptures: [Sculpture]
     
@@ -112,6 +113,9 @@ struct MuseuView: View {
         }
         .onAppear {
             vm.fetchData()
+            if let onEdit = onEditSculpture {
+                vm.setOnEditNavigation(onEdit)
+            }
         }
         
     }

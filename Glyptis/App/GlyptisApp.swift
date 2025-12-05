@@ -12,7 +12,7 @@ import SwiftData
 /// Enum que define as telas principais do app
 enum AppScreen {
     case camera
-    case canvas
+    case canvas(sculpture: Sculpture? = nil)
     case museu
 }
 
@@ -27,12 +27,13 @@ struct GlyptisApp: App {
             switch currentScreen {
             case .camera:
                 ARCameraView(
-                    onOpenCanvas: { currentScreen = .canvas },
+                    onOpenCanvas: { currentScreen = .canvas(sculpture: nil) },
                     onOpenMuseum: { currentScreen = .museu }
                 )
-            case .canvas:
+            case .canvas(let sculpture):
                 /// Tela de canvas 3D
                 CanvasView(
+                    sculptureToEdit: sculpture,
                     onCancel: {
                         currentScreen = .camera
                     }
@@ -40,9 +41,13 @@ struct GlyptisApp: App {
             case .museu:
                 /// Tela de museu
                 MuseuView(
-                    vm: MuseuViewModel(service: service), onBackClicked: {
+                    vm: MuseuViewModel(service: service),
+                    onBackClicked: {
                         currentScreen = .camera
-                    }
+                    },
+//                    onEditSculpture: { sculpture in
+//                        currentScreen = .canvas(sculpture: sculpture)
+//                    }
                 )
             }
         }
