@@ -8,6 +8,7 @@
 import Foundation
 internal import RealityKit
 internal import UIKit
+import AVFoundation
 
 extension UnifiedCoordinator {
     
@@ -60,6 +61,7 @@ extension UnifiedCoordinator {
         guard let anchor = anchor else { return }
         
         triggerHaptic(style: .medium)
+        SoundManager.shared.playSound(named: "addCube", volume: 4)
         
         let parts = key.split(separator: "_")
         let x = Int(parts[0])!
@@ -169,6 +171,7 @@ extension UnifiedCoordinator {
         let position = entity.position
         
         triggerHaptic(style: .medium)
+        SoundManager.shared.playSound(named: "removeCube", volume: 4)
         
         var debrisColor: UIColor = .gray
         if let modelEntity = entity as? ModelEntity,
@@ -201,6 +204,7 @@ extension UnifiedCoordinator {
     func clearAllCubes() {
         /// 1. Haptic
         triggerHaptic(style: .heavy)
+        SoundManager.shared.playSound(named: "cleanCubes", volume: 3)
         
         /// 2. Coleta todos os cubos para animar
         var allCubes: [ModelEntity] = []
