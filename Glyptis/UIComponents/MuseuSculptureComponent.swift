@@ -63,11 +63,11 @@ struct MuseuSculptureComponent: View {
                 .frame(width: 89, height: 82)
                 
                 VStack(alignment: .center, spacing: 4) {
-                    SimpleCubeIcon(assetName: "emptyHeartCube", width: 54, height: 56) {
-//                        vm.favorite(s: sculpture)
+                    SimpleCubeIcon(assetName: sculpture.isFavorite ? "heartCube" : "emptyHeartCube", width: 54, height: 56) {
+                        vm.favorite(s: sculpture)
                     }
                     
-                    Text("Favoritar")
+                    Text(sculpture.isFavorite ? "Desfavoritar" : "Favoritar")
                         .font(Fonts.notoCubeButton)
                         .foregroundStyle(.customBlue)
                 }

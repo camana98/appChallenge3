@@ -51,6 +51,9 @@ struct NameSculpturePopup: View {
                 .foregroundColor(.white)
                 .cornerRadius(100)
                 .accessibilityIdentifier("ConfirmSaveButton")
+                .onTapGesture {
+                    onSave()
+                }
                 
             }
             .padding()

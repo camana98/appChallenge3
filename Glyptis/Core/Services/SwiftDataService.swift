@@ -169,6 +169,19 @@ class SwiftDataService: DataServiceProtocol {
         }
     }
     
+    /// Atualiza SOMENTE o estado de favorito
+    func updateFavorite(
+        _ sculpture: Sculpture,
+        to isFavorite: Bool
+    ) {
+        sculpture.isFavorite = isFavorite
+        do {
+            try context.save()
+        } catch {
+            print("Erro ao atualizar favorito da escultura:", error)
+        }
+    }
+    
     // MARK: - DELETE
     
     func delete(_ sculpture: Sculpture) {

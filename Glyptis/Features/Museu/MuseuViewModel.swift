@@ -18,6 +18,7 @@ protocol MuseuViewModelProtocol {
     func fetchData()
     func getSnapshot(s: Sculpture) -> UIImage
     func setOnEditNavigation(_ navigation: @escaping (Sculpture) -> Void)
+    func favorite(s: Sculpture) -> Void
 }
 
 
@@ -64,6 +65,12 @@ class MuseuViewModel: MuseuViewModelProtocol {
     
     func anchor(s: Sculpture) {
         // TODO: fazer funcao de ancorar
+    }
+    
+    func favorite(s: Sculpture) {
+        let newFavoriteStatus = !s.isFavorite
+        service.updateFavorite(s, to: newFavoriteStatus)
+        fetchData()
     }
     
     func fetchData() {
