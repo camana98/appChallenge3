@@ -12,6 +12,7 @@ struct MuseuSculptureComponent: View {
     
     var sculpture: Sculpture
     @State var vm: MuseuViewModelProtocol
+    var onDeleteRequested: () -> Void
     
     var body: some View {
         
@@ -33,7 +34,7 @@ struct MuseuSculptureComponent: View {
             HStack {
                 VStack(alignment: .center, spacing: 4) {
                     SimpleCubeIcon(assetName: "deleteCube", width: 54, height: 56) {
-                        vm.delete(s: sculpture)
+                        onDeleteRequested()
                     }
                     Text("Deletar")
                         .font(Fonts.notoCubeButton)

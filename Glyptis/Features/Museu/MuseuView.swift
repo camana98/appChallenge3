@@ -16,6 +16,10 @@ struct MuseuView: View {
     @State private var selectedSculptureID: Sculpture.ID?
     
     @State private var showGridListMuseum: Bool = false
+    @State private var sculptureToDelete: Sculpture?
+    @State private var isDeleting: Bool = false
+    @State private var deletingSculptureID: Sculpture.ID?
+    
     var onBackClicked: () -> Void
     var onEditSculpture: ((Sculpture) -> Void)?
     
@@ -63,7 +67,7 @@ struct MuseuView: View {
                                         
                                         FloatingSculptureImage(
                                             image: vm.getSnapshot(s: sculpture),
-                                            isActive: selectedSculptureID == sculpture.id
+                                            isActive: selectedSculptureID == sculpture.id && deletingSculptureID != sculpture.id
                                         )
                                         
                                         Image(.colunaMuseu)
@@ -78,15 +82,47 @@ struct MuseuView: View {
                                             .brightness(phase.isIdentity ? 0 : -0.35)
                                             .offset(y: phase.isIdentity ? 0 : -90) // vai pra cima qunaod não esá
                                     }
+                                    .opacity(deletingSculptureID == sculpture.id ? 0 : 1)
+                                    .rotationEffect(.degrees(deletingSculptureID == sculpture.id ? -45 : 0))
+                                    .scaleEffect(deletingSculptureID == sculpture.id ? 0.8 : 1.0)
+                                    .offset(
+                                        x: deletingSculptureID == sculpture.id ? 100 : 0,
+                                        y: deletingSculptureID == sculpture.id ? UIScreen.main.bounds.height + 200 : 0
+                                    )
+                                    .animation(
+                                        deletingSculptureID == sculpture.id ? 
+                                            .easeIn(duration: 0.9) : 
+                                            .default,
+                                        value: deletingSculptureID
+                                    )
                                     
-                                    MuseuSculptureComponent(sculpture: sculpture, vm: vm)
-                                        .padding(.bottom, 42)
-                                        .scrollTransition { content, phase in
-                                            content
-                                                .opacity(phase.isIdentity ? 1.0 : 0.0)
-                                                .scaleEffect(phase.isIdentity ? 1.0 : 0.8)
-                                                .offset(y: phase.isIdentity ? 0 : -90)
+                                    MuseuSculptureComponent(
+                                        sculpture: sculpture,
+                                        vm: vm,
+                                        onDeleteRequested: {
+                                            sculptureToDelete = sculpture
                                         }
+                                    )
+                                    .padding(.bottom, 42)
+                                    .scrollTransition { content, phase in
+                                        content
+                                            .opacity(phase.isIdentity ? 1.0 : 0.0)
+                                            .scaleEffect(phase.isIdentity ? 1.0 : 0.8)
+                                            .offset(y: phase.isIdentity ? 0 : -90)
+                                    }
+                                    .opacity(deletingSculptureID == sculpture.id ? 0 : 1)
+                                    .rotationEffect(.degrees(deletingSculptureID == sculpture.id ? 45 : 0))
+                                    .scaleEffect(deletingSculptureID == sculpture.id ? 0.8 : 1.0)
+                                    .offset(
+                                        x: deletingSculptureID == sculpture.id ? -100 : 0,
+                                        y: deletingSculptureID == sculpture.id ? UIScreen.main.bounds.height + 200 : 0
+                                    )
+                                    .animation(
+                                        deletingSculptureID == sculpture.id ? 
+                                            .easeIn(duration: 0.9) : 
+                                            .default,
+                                        value: deletingSculptureID
+                                    )
                                     
                                 }
                                 .containerRelativeFrame(.horizontal, count: 1, span: 1, spacing: 0)
@@ -115,6 +151,28 @@ struct MuseuView: View {
             vm.fetchData()
             if let onEdit = onEditSculpture {
                 vm.setOnEditNavigation(onEdit)
+            }
+        }
+        .overlay {
+            if let sculpture = sculptureToDelete {
+                DeleteConfirmationPopup(
+                    sculptureName: sculpture.name,
+                    onConfirm: {
+                        sculptureToDelete = nil
+                        deletingSculptureID = sculpture.id
+                        
+                        // Aguarda a animação terminar antes de deletar
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.9) {
+                            vm.delete(s: sculpture)
+                            deletingSculptureID = nil
+                        }
+                    },
+                    onCancel: {
+                        sculptureToDelete = nil
+                    }
+                )
+                .transition(.opacity)
+                .zIndex(10)
             }
         }
         
