@@ -45,9 +45,9 @@ struct GlyptisApp: App {
                     onBackClicked: {
                         currentScreen = .camera
                     },
-//                    onEditSculpture: { sculpture in
-//                        currentScreen = .canvas(sculpture: sculpture)
-//                    }
+                    onEditSculpture: { sculpture in
+                        currentScreen = .canvas(sculpture: sculpture)
+                    }
                 )
             }
         }
