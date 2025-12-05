@@ -17,9 +17,10 @@ struct MuseuView: View {
     @State private var showGridListMuseum: Bool = false
     var onBackClicked: () -> Void
     
+    @Query private var sculptures: [Sculpture]
+    
     var body: some View {
         ZStack {
-            
             Image(.backgroundMuseu)
                 .resizable()
                 .scaledToFill()
@@ -49,47 +50,52 @@ struct MuseuView: View {
                 
                 Spacer()
                 
-                ScrollView(.horizontal, showsIndicators: false) {
-                    LazyHStack {
-                        ForEach(vm.sculptures) { sculpture in
-                            ZStack(alignment: .bottom) {
-                                VStack(spacing: 0) {
-                                    
-                                    Image(uiImage: vm.getSnapshot(s: sculpture))
-                                        .resizable()
-                                        .scaledToFill()
-                                        .frame(maxWidth: 100, maxHeight: 100)
-                                    
-                                    Image(.colunaMuseu)
-                                        .resizable()
-                                        .padding(.bottom, 50)
-                                        .padding(.leading, 10)
-                                }
-                                .scrollTransition { content, phase in //  editar coisas quando não estão no centro
-                                    content
-                                        .blur(radius: phase.isIdentity ? 0 : 1)
-                                        .scaleEffect(phase.isIdentity ? 1.0 : 0.85)
-                                        .brightness(phase.isIdentity ? 0 : -0.35)
-                                        .offset(y: phase.isIdentity ? 0 : -90) // vai pra cima qunaod não esá
-                                }
-
-                                MuseuSculptureComponent(sculpture: sculpture)
-                                    .scrollTransition { content, phase in
-                                        content
-                                            .opacity(phase.isIdentity ? 1.0 : 0.0)
-                                            .scaleEffect(phase.isIdentity ? 1.0 : 0.8)
-                                            .offset(y: phase.isIdentity ? 0 : -90)
+                if sculptures.isEmpty {
+                    MuseuEmptyStateView(onBackClicked: onBackClicked)
+                } else {
+                    ScrollView(.horizontal, showsIndicators: false) {
+                        LazyHStack {
+                            ForEach(vm.sculptures) { sculpture in
+                                ZStack(alignment: .bottom) {
+                                    VStack(spacing: 0) {
+                                        
+                                        Image(uiImage: vm.getSnapshot(s: sculpture))
+                                            .resizable()
+                                            .scaledToFill()
+                                            .frame(maxWidth: 100, maxHeight: 100)
+                                        
+                                        Image(.colunaMuseu)
+                                            .resizable()
+                                            .padding(.bottom, 50)
+                                            .padding(.leading, 10)
                                     }
-                                
+                                    .scrollTransition { content, phase in //  editar coisas quando não estão no centro
+                                        content
+                                            .blur(radius: phase.isIdentity ? 0 : 1)
+                                            .scaleEffect(phase.isIdentity ? 1.0 : 0.85)
+                                            .brightness(phase.isIdentity ? 0 : -0.35)
+                                            .offset(y: phase.isIdentity ? 0 : -90) // vai pra cima qunaod não esá
+                                    }
+                                    
+                                    MuseuSculptureComponent(sculpture: sculpture)
+                                        .scrollTransition { content, phase in
+                                            content
+                                                .opacity(phase.isIdentity ? 1.0 : 0.0)
+                                                .scaleEffect(phase.isIdentity ? 1.0 : 0.8)
+                                                .offset(y: phase.isIdentity ? 0 : -90)
+                                        }
+                                    
+                                }
+                                .containerRelativeFrame(.horizontal, count: 1, span: 1, spacing: 0)
+                                .frame(width: UIScreen.main.bounds.width * 0.7) // frame da escultura e do pilar
                             }
-                            .containerRelativeFrame(.horizontal, count: 1, span: 1, spacing: 0)
-                            .frame(width: UIScreen.main.bounds.width * 0.7) // frame da escultura e do pilar
                         }
+                        .scrollTargetLayout()
                     }
-                    .scrollTargetLayout()
+                    .scrollTargetBehavior(.viewAligned) // permite o efeito de imã
+                    .safeAreaPadding(.horizontal, (UIScreen.main.bounds.width * 0.15))  // area pra cada um dos lados
+                    
                 }
-                .scrollTargetBehavior(.viewAligned) // permite o efeito de imã
-                .safeAreaPadding(.horizontal, (UIScreen.main.bounds.width * 0.15))  // area pra cada um dos lados
             }
             .padding(.top, 50)
         }
@@ -104,13 +110,3 @@ struct MuseuView: View {
     }
 }
 
-#Preview {
-    var previewVM = MuseuViewModel(service: SwiftDataService.shared)
-    previewVM.sculptures = [
-        Sculpture(name: "hahahahaha")
-    ]
-    
-    return MuseuView(vm: previewVM) {
-        print("zum")
-    }
-}
