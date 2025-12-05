@@ -12,6 +12,7 @@ import SwiftUI
 class ARViewCoordinator: NSObject, ARCoachingOverlayViewDelegate {
     
     var arView: ARView?
+    var onUpdateMessage: ((String?) -> Void)?
     
     // MARK: SETUP
     

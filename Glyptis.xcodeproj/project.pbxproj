@@ -200,11 +200,12 @@
 				};
 			};
 			buildConfigurationList = C5C4EC302ECE53E90068CA51 /* Build configuration list for PBXProject "Glyptis" */;
-			developmentRegion = en;
+			developmentRegion = "pt-BR";
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
 				Base,
+				"pt-BR",
 			);
 			mainGroup = C5C4EC2C2ECE53E90068CA51;
 			minimizedProjectReferenceProxies = 1;
