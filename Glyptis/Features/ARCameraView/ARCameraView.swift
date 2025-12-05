@@ -8,126 +8,89 @@
 import SwiftUI
 import SwiftData
 
-
 struct ARCameraView: View {
+
+    @Environment(\.modelContext) private var context
     
     @State var coordinator = ARViewCoordinator()
     @State private var showSnapshots = false
-    @Environment(\.modelContext) private var context
-    
+
     var onOpenCanvas: () -> Void
     var onOpenMuseum: () -> Void
     
     var body: some View {
         ZStack {
-            
+            ///  AR View
             ARViewContainer(coordinator: $coordinator)
                 .edgesIgnoringSafeArea(.all)
             
+            /// Camada de Interface
             VStack {
                 Spacer()
                 
-                Button {
-                    onOpenMuseum()
-                } label: {
-                    Text("Ir para Museu")
-                        .padding()
-                        .background(Color.green)
-                        .foregroundColor(.white)
-                        .cornerRadius(10)
-                }
-                .accessibilityIdentifier("GoToMuseumButton")
-                
-                
-                Button {
-                    onOpenCanvas()
-                } label: {
-                    Text("Ir para Canvas")
-                        .padding()
-                        .background(Color.blue)
-                        .foregroundStyle(.white)
-                        .cornerRadius(10)
-                }
-                .accessibilityIdentifier("GoToCanvasButton")
-                
-                Button {
-                    showSnapshots = true
-                } label: {
-                    Text("Ver Snapshots")
-                        .padding()
-                        .background(Color.green)
-                        .foregroundColor(.white)
-                        .cornerRadius(10)
-                }
-                .padding(.top, 12)
-                .padding(.bottom, 50)
-                .accessibilityIdentifier("GoToSnapShotsButton")
-            }
-            
-            Button {
-                deleteAllSculptures()
-            } label: {
-                Text("Excluir Esculturas")
-                    .padding()
-                    .background(Color.red)
-                    .foregroundColor(.white)
-                    .cornerRadius(10)
-            }
-            .padding(.top, 12)
-        }
-        .edgesIgnoringSafeArea(.all)
-        .sheet(isPresented: $showSnapshots) {
-            SnapshotListView()
-                .presentationDetents([.medium, .large])
-                .presentationDragIndicator(.visible)
-        }
-        .background(.red)
-    }
-    
-    private func deleteAllSculptures() {
-            do {
-                let descriptor = FetchDescriptor<Sculpture>()
-                let sculptures = try context.fetch(descriptor)
-                
-                for sculpture in sculptures {
-                    context.delete(sculpture)
-                }
-                try context.save()
-                
-            } catch {
-                print("Erro ao deletar esculturas: \(error)")
-            }
-        }
-    
-    private func printSavedSculptures() {
-        do {
-            let descriptor = FetchDescriptor<Sculpture>()
-            let sculptures = try context.fetch(descriptor)
-            
-            print("=== ESCULTURAS SALVAS ===")
-            
-            if sculptures.isEmpty {
-                print("Nenhuma escultura salva.")
-            } else {
-                for sculpture in sculptures {
+                /// Área dos Botões
+                HStack(spacing: 60) {
                     
-                    print("• Nome: \(sculpture.name)")
-                    
-                    let cubes = sculpture.cubes ?? []
-                    print("  Quantidade de cubos: \(cubes.count)")
-                    
-                    for cube in cubes {
-                        print("    • Cube(x: \(cube.locationX), y: \(cube.locationY), z: \(cube.locationZ)) "
-                              + "cor(r: \(cube.colorR), g: \(cube.colorG), b: \(cube.colorB), a: \(cube.colorA ?? 1))")
+                    /// Botão Museu
+                    Button {
+                        onOpenMuseum()
+                    } label: {
+                        VStack(spacing: 5) {
+                            Image("museum")
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: 54, height: 54)
+                            
+                            Text("Museu")
+                                .font(.custom("NotoSans-Medium", size: 15))
+                                .fontWeight(.medium)
+                                .foregroundStyle(.noite)
+                        }
                     }
                     
-                    print("-------------------------")
+                    /// Botão Canvas
+                    Button {
+                        onOpenCanvas()
+                    } label: {
+                        VStack(spacing: 5) {
+                            Image("newSculpture")
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: 54, height: 54)
+                            
+                            Text("Canvas")
+                                .font(.custom("NotoSans-Medium", size: 15))
+                                .fontWeight(.medium)
+                                .foregroundStyle(.noite)
+                        }
+                    }
                 }
+                .padding(.top, 26)
+                .padding(.bottom, 26)
+                .frame(maxWidth: .infinity)
+                .background {
+                    ZStack {
+                        Color.white.opacity(0.5)
+                        Rectangle()
+                            .fill(Material.ultraThinMaterial)
+                            .environment(\.colorScheme, .light)
+                    }
+                }
+                .clipShape(
+                    .rect(
+                        topLeadingRadius: 35,
+                        bottomLeadingRadius: 0,
+                        bottomTrailingRadius: 0,
+                        topTrailingRadius: 35
+                    )
+                )
+                .shadow(color: Color.black.opacity(0.1), radius: 10, x: 0, y: -5)
+                .overlay(
+                    UnevenRoundedRectangle(cornerRadii: .init(topLeading: 35, bottomLeading: 0, bottomTrailing: 0, topTrailing: 35))
+                        .stroke(Color.white.opacity(0.3), lineWidth: 1)
+                )
             }
-            print("==========================")
-            
-        } catch {
-            print("Erro ao carregar esculturas: \(error)")
+            .edgesIgnoringSafeArea(.bottom)
         }
     }
 }
@@ -135,4 +98,3 @@ struct ARCameraView: View {
 #Preview {
     ARCameraView(onOpenCanvas: {}, onOpenMuseum: {})
 }
-
