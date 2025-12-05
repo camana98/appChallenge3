@@ -25,15 +25,10 @@ struct GlyptisApp: App {
     var body: some Scene {
         WindowGroup {
             switch currentScreen {
-                /// Tela de câmera AR
             case .camera:
                 ARCameraView(
-                    onOpenCanvas: {
-                        currentScreen = .canvas
-                    },
-                    onOpenMuseum: {
-                        currentScreen = .museu
-                    }
+                    onOpenCanvas: { currentScreen = .canvas },
+                    onOpenMuseum: { currentScreen = .museu }
                 )
             case .canvas:
                 /// Tela de canvas 3D
