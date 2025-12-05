@@ -17,43 +17,51 @@ struct MuseuView: View {
     @State private var showGridListMuseum: Bool = false
     var onBackClicked: () -> Void
     
+    @Query private var sculptures: [Sculpture]
+    
     var body: some View {
         ZStack {
             
-            Image(.backgroundMuseu)
-                .resizable()
-                .scaledToFill()
-                .ignoresSafeArea()
-            
-            VStack {
-                HStack {
-                    
-                    SimpleCubeIcon(assetName: "backCube", width: 55, height: 55) {
-                        onBackClicked()
-                    }
-                    
-                    Spacer()
-                    
-                    Text("Museu")
-                        .font(.custom("Angle Square DEMO", size: 24))
-                        .foregroundStyle(.customWhite)
-                    
-                    Spacer()
-                    
-                    SimpleCubeIcon(assetName: "gridCube", width: 55, height: 55) {
-                        showGridListMuseum.toggle()
-                    }
-                }
-                .padding(.top)
+            if sculptures.isEmpty {
+                MuseuEmptyStateView(onBackClicked: onBackClicked)
+            } else {
                 
-                Spacer()
-                                
+                Image(.backgroundMuseu)
+                    .resizable()
+                    .scaledToFill()
+                    .ignoresSafeArea()
+                
+                VStack {
+                    HStack {
+                        
+                        SimpleCubeIcon(assetName: "backCube", width: 55, height: 55) {
+                            onBackClicked()
+                        }
+                        
+                        Spacer()
+                        
+                        Text("Museu")
+                            .font(.custom("Angle Square DEMO", size: 24))
+                            .foregroundStyle(.customWhite)
+                        
+                        Spacer()
+                        
+                        SimpleCubeIcon(assetName: "gridCube", width: 55, height: 55) {
+                            showGridListMuseum.toggle()
+                        }
+                    }
+                    .padding(.top)
+                    
+                    Spacer()
+                    
+                }
+                .sheet(isPresented: $showGridListMuseum) {
+                    MuseuGridListView(vm: MuseuGridViewModel(context: modelContext, service: SculptureService(context: modelContext)))
+                        .presentationDetents([.medium, .large])
+                        .presentationBackgroundInteraction(.enabled(upThrough: .medium))
+                }
+                
             }
-        }
-        .sheet(isPresented: $showGridListMuseum) {
-            MuseuGridListView(vm: MuseuGridViewModel(context: modelContext, service: SculptureService(context: modelContext)))
-                .presentationDetents([.medium, .large])
-                .presentationBackgroundInteraction(.enabled(upThrough: .medium))
         }
     }
 }
