@@ -1,33 +1,42 @@
-//
-//  MuseuView.swift
-//  Glyptis
-//
-//  Created by Vicenzo Másera on 25/11/25.
-//
-
 import Foundation
 import SwiftUI
 internal import RealityKit
-import SwiftData
 
-struct MuseuView: View {
+struct MuseuEmptyStateView: View {
     
-    @Environment(\.modelContext) var modelContext
-    
-    @State private var showGridListMuseum: Bool = false
     var onBackClicked: () -> Void
     
+    @State private var isFloating = false
+    @State private var showCanvas = false
+    
     var body: some View {
+        // MARK: - Troca de Tela
+        if showCanvas {
+            CanvasView(onCancel: {
+                showCanvas = false
+            })
+            .transition(.opacity)
+        } else {
+            contentMuseu
+                .transition(.opacity)
+        }
+    }
+    
+    // MARK: - Conteúdo do Museu
+    var contentMuseu: some View {
         ZStack {
             
+            // MARK: - Background
             Image(.backgroundMuseu)
                 .resizable()
                 .scaledToFill()
                 .ignoresSafeArea()
+                .blur(radius: 4)
             
             VStack {
+                
+                // MARK: - Header
                 HStack {
-                    
                     SimpleCubeIcon(assetName: "backCube", width: 55, height: 55) {
                         onBackClicked()
                     }
@@ -35,29 +44,58 @@ struct MuseuView: View {
                     Spacer()
                     
                     Text("Museu")
-                        .font(.custom("Angle Square DEMO", size: 24))
+                        .font(Fonts.title)
                         .foregroundStyle(.customWhite)
                     
                     Spacer()
                     
-                    SimpleCubeIcon(assetName: "gridCube", width: 55, height: 55) {
-                        showGridListMuseum.toggle()
-                    }
+                    Color.clear
+                        .frame(width: 55, height: 55)
                 }
-                .padding(.top)
+                .padding(.horizontal)
                 
                 Spacer()
-                                
+                
+                // MARK: - Escultura e Coluna
+                ZStack {
+                    
+                    /// Cubo
+                    Image("newSculpture")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(height: 140)
+                        .padding(.bottom, 250)
+                        .zIndex(1)
+                        .offset(y: isFloating ? -5 : 5)
+                        .animation(
+                            .easeInOut(duration: 2.0)
+                            .repeatForever(autoreverses: true),
+                            value: isFloating
+                        )
+                        .onTapGesture {
+                             showCanvas = true
+                        }
+                    
+                    Image("column")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(height: 500)
+                        .padding(.top, 200)
+                }
+                .frame(maxWidth: .infinity)
+                
             }
+            .padding(.top, 50)
         }
-        .sheet(isPresented: $showGridListMuseum) {
-            MuseuGridListView(vm: MuseuGridViewModel(context: modelContext, service: SculptureService(context: modelContext)))
-                .presentationDetents([.medium, .large])
-                .presentationBackgroundInteraction(.enabled(upThrough: .medium))
+        .onAppear {
+            isFloating = true
+        }
+        .onDisappear {
+            isFloating = false
         }
     }
 }
 
 #Preview {
-    MuseuView(onBackClicked: {})
+    MuseuEmptyStateView(onBackClicked: {})
 }
