@@ -35,17 +35,20 @@ class MuseuViewModel: MuseuViewModelProtocol {
         service.delete(s)
     }
     func edit(s: Sculpture) {
-        // TODO: fazer funcao de edit
+//        CanvasView()
     }
     
     func getSnapshot(s: Sculpture) -> UIImage {
         
         guard let snapshot = service.getSnapshot(sculpture: s) else {
-            print("zuuum")
+//            print("zuuum")
             return UIImage()
         }
+        
+        SnapshotService.saveDrawing(data: snapshot)
+        
         guard let uiImage = UIImage(data: snapshot) else {
-            print("opaaaaa")
+//            print("opaaaaa")
             return UIImage()
         }
         

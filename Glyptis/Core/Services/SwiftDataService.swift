@@ -7,9 +7,17 @@
 import Foundation
 import SwiftData
 
+protocol DataServiceProtocol {
+    
+}
+
+class PreviewDataService: DataServiceProtocol {
+    
+}
+
 @Observable
 @MainActor
-class SwiftDataService {
+class SwiftDataService: DataServiceProtocol {
     let modelContainer: ModelContainer
     private let context: ModelContext
     

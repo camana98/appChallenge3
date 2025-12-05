@@ -83,6 +83,8 @@ struct CanvasView: View {
                     Spacer()
                     
                     SimpleCubeIcon(assetName: "saveCube", width: 55, height: 56) {
+                        
+                        vm.coordinator?.updateCameraPosition(animated: false)
                         guard let arView else { return }
                         
                         let referenceModel = arView.scene.findEntity(named: "reference_model")
@@ -91,7 +93,7 @@ struct CanvasView: View {
                         referenceModel?.isEnabled = false
                         gridLines?.isEnabled = false
                         
-                        SnapshotService.takeSnapshot(from: arView) { image in
+                        SnapshotService.takeSnapshot(from: arView, cameraCoordinator: vm.coordinator) { image in
                             guard let image else { return }
                             
                             referenceModel?.isEnabled = true
@@ -162,6 +164,7 @@ struct CanvasView: View {
         .background(
             ZStack {
                 Rectangle().fill(.ultraThinMaterial)
+                    .environment(\.colorScheme, .light)
                 
                 UnevenRoundedRectangle(topLeadingRadius: 35, topTrailingRadius: 35)
                     .stroke(

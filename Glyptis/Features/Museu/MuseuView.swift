@@ -13,6 +13,7 @@ import SwiftData
 struct MuseuView: View {
     
     @State var vm: MuseuViewModelProtocol
+    @State private var isFloating = false
     
     @State private var showGridListMuseum: Bool = false
     var onBackClicked: () -> Void
@@ -50,41 +51,62 @@ struct MuseuView: View {
                 Spacer()
                 
                 TabView {
-                    ForEach(vm.sculptures) { sculpture in
-                        ZStack(alignment: .bottom) {
+//                                        ForEach(vm.sculptures) { sculpture in
+                    ZStack(alignment: .bottom) {
+                        
+                        VStack(spacing: 0) {
                             
-                            VStack(spacing: 0) {
-                                
-                                Image(uiImage: vm.getSnapshot(s: sculpture))
-                                    .resizable()
-                                    .scaledToFill()
-                                    .frame(maxWidth: 100, maxHeight: 100)
-                                
-                                Image(.colunaMuseu)
-                                    .padding(.bottom, 50)
-                                    .padding(.leading, 10)
-                            }
+                            Image(.snapshot)
                             
-                            MuseuSculptureComponent( sculpture: sculpture)
-                                .padding(.top, 325)
+//                                                            Image(uiImage: vm.getSnapshot(s: sculpture))
+                                .resizable()
+                                .scaledToFill()
+                                .frame(maxWidth: 300, maxHeight: 300)
+//                                .offset(y: 200)
+                                .offset(y: isFloating ? 180 : 220) // deixa a diferença um pouco maior pra ficar visível
+                                    .onAppear {
+                                        withAnimation(
+                                            .easeInOut(duration: 2.0)
+                                                .repeatForever(autoreverses: true)
+                                        ) {
+                                            isFloating.toggle()
+                                        }
+                                    }
+                                    .zIndex(1)
                             
+                            Image(.colunaMuseu)
+
+                                .padding(.leading, 10)
                         }
                         
+//                                                    MuseuSculptureComponent( sculpture: sculpture)
+                        MuseuSculptureComponent( sculpture: Sculpture(name: "Oiii"), vm: vm)
+                            .padding(.bottom, 32)
+                            .padding(.horizontal)
                     }
+                    
+//                                        }
                 }
                 .tabViewStyle(.page(indexDisplayMode: .never))
                 
             }
             .padding(.top, 50)
         }
+        
+        
         .sheet(isPresented: $showGridListMuseum) {
             MuseuGridListView(vm: MuseuGridViewModel(service: SwiftDataService.shared))
                 .presentationDetents([.medium, .large])
                 .presentationBackgroundInteraction(.enabled(upThrough: .medium))
         }
         .onAppear {
+            isFloating = true
             vm.fetchData()
         }
+        .onDisappear {
+            isFloating = false
+        }
+        
     }
 }
 
@@ -93,7 +115,7 @@ struct MuseuView: View {
     previewVM.sculptures = [
         Sculpture(name: "hahahahaha")
     ]
-
+    
     return MuseuView(vm: previewVM) {
         print("zum")
     }
