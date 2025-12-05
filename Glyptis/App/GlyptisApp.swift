@@ -18,8 +18,10 @@ enum AppScreen {
 
 @main
 struct GlyptisApp: App {
+    
     @State private var currentScreen: AppScreen = .camera
-
+    let service = SwiftDataService.shared
+    
     var body: some Scene {
         WindowGroup {
             switch currentScreen {
@@ -29,18 +31,23 @@ struct GlyptisApp: App {
                     onOpenMuseum: { currentScreen = .museu }
                 )
             case .canvas:
-                CanvasView(onCancel: { currentScreen = .camera })
+                /// Tela de canvas 3D
+                CanvasView(
+                    onCancel: {
+                        currentScreen = .camera
+                    }
+                )
             case .museu:
-                MuseuView(onBackClicked: {
-                    currentScreen = .camera
-                })
+                /// Tela de museu
+                MuseuView(
+                    vm: MuseuViewModel(service: service), onBackClicked: {
+                        currentScreen = .camera
+                    }
+                )
             }
         }
-        .modelContainer(for: [
-            Author.self,
-            Cube.self,
-            Localization.self,
-            Sculpture.self,
-        ])
+        .modelContainer(service.modelContainer)
     }
 }
+
+

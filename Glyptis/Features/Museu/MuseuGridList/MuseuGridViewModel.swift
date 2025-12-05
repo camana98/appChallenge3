@@ -25,13 +25,11 @@ class MuseuGridViewModel: MuseuGridViewModelProtocol {
     
     var sculptures: [Sculpture] = []
     
-    private var context: ModelContext
-    let service: SculptureService
-    
     let columns = Array(repeating: GridItem(.flexible(), spacing: 10), count: 3)
     
-    init(context: ModelContext, service: SculptureService) {
-        self.context = context
+    let service: SwiftDataService
+    
+    init(service: SwiftDataService) {
         self.service = service
     }
     

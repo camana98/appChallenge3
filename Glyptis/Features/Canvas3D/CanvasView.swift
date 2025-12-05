@@ -11,7 +11,7 @@ internal import RealityKit
 struct CanvasView: View {
     @StateObject private var vm = CanvasViewModel()
     
-    @Environment(\.modelContext) private var context
+    @Environment(\.modelContext) private var modelContext
     
     @State private var showNamingPopup: Bool = false
     @State private var sculptureName: String = ""
@@ -19,6 +19,8 @@ struct CanvasView: View {
     @State private var showSaveAlert = false
     @State private var showColorPicker: Bool = false
     @State private var showConfirmClear: Bool = false
+    
+    @State private var snapshot: Data? = nil
     
     var onCancel: () -> Void
     
@@ -95,10 +97,10 @@ struct CanvasView: View {
                             referenceModel?.isEnabled = true
                             gridLines?.isEnabled = true
                             
-                            SnapshotService.saveSnapshot(image) { _ in }
+                            self.snapshot = image.pngData()
+                            
+                            showNamingPopup = true
                         }
-                        
-                        showNamingPopup = true
                     }
                     .accessibilityIdentifier("SaveSculptureButton")
                 }
@@ -262,12 +264,15 @@ struct CanvasView: View {
                     
                     showNamingPopup = false
                     
-                    let service = SculptureService(context: context)
+                    let service = SculptureService(context: modelContext)
+                    
+                    guard let snapshot else { return }
                     let saved = service.create(
                         name: sculptureName,
                         author: nil,
                         localization: nil,
-                        cubes: vm.unfinishedCubes
+                        cubes: vm.unfinishedCubes,
+                        snapshot: snapshot
                     )
                     
                     vm.currentSculpture = saved
