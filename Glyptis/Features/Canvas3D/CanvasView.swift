@@ -19,8 +19,9 @@ struct CanvasView: View {
     @State private var showSaveAlert = false
     @State private var showColorPicker: Bool = false
     @State private var showConfirmClear: Bool = false
-    
     @State private var snapshot: Data? = nil
+    
+
     
     var onCancel: () -> Void
     
@@ -84,7 +85,10 @@ struct CanvasView: View {
                     
                     SimpleCubeIcon(assetName: "saveCube", width: 55, height: 56) {
                         
-                        vm.coordinator?.updateCameraPosition(animated: false)
+                        vm.coordinator?.updateCameraPosition(animated: true)
+                        Timer.scheduledTimer(withTimeInterval: 0.2, repeats: false) {_ in
+                            
+                        }
                         guard let arView else { return }
                         
                         let referenceModel = arView.scene.findEntity(named: "reference_model")

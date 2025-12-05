@@ -43,7 +43,7 @@ struct SnapshotService {
     static func saveDrawing(data: Data) {
         let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
         let url = documentsDirectory.appendingPathComponent("snapshot").appendingPathExtension("png")
-        print(url)
+//        print(url)
         do {
             try data.write(to: url, options: .atomic)
         } catch {

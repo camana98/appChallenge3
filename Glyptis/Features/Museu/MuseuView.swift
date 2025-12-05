@@ -13,7 +13,7 @@ import SwiftData
 struct MuseuView: View {
     
     @State var vm: MuseuViewModelProtocol
-    @State private var isFloating = false
+    @State private var selectedSculptureID: Sculpture.ID?
     
     @State private var showGridListMuseum: Bool = false
     var onBackClicked: () -> Void
@@ -51,7 +51,7 @@ struct MuseuView: View {
                 
                 Spacer()
                 
-                if sculptures.isEmpty {
+                if vm.sculptures.isEmpty {
                     MuseuEmptyStateView(onBackClicked: onBackClicked)
                 } else {
                     ScrollView(.horizontal, showsIndicators: false) {
@@ -60,14 +60,14 @@ struct MuseuView: View {
                                 ZStack(alignment: .bottom) {
                                     VStack(spacing: 0) {
                                         
-                                        Image(uiImage: vm.getSnapshot(s: sculpture))
-                                            .resizable()
-                                            .scaledToFill()
-                                            .frame(maxWidth: 100, maxHeight: 100)
+                                        FloatingSculptureImage(
+                                            image: vm.getSnapshot(s: sculpture),
+                                            isActive: selectedSculptureID == sculpture.id
+                                        )
                                         
                                         Image(.colunaMuseu)
-                                            .resizable()
-                                            .padding(.bottom, 50)
+//                                            .resizable()
+//                                            .padding(.bottom, 50)
                                             .padding(.leading, 10)
                                     }
                                     .scrollTransition { content, phase in //  editar coisas quando não estão no centro
@@ -78,7 +78,8 @@ struct MuseuView: View {
                                             .offset(y: phase.isIdentity ? 0 : -90) // vai pra cima qunaod não esá
                                     }
                                     
-                                    MuseuSculptureComponent(sculpture: sculpture)
+                                    MuseuSculptureComponent(sculpture: sculpture, vm: vm)
+                                        .padding(.bottom, 42)
                                         .scrollTransition { content, phase in
                                             content
                                                 .opacity(phase.isIdentity ? 1.0 : 0.0)
@@ -94,9 +95,10 @@ struct MuseuView: View {
                         .scrollTargetLayout()
                     }
                     .scrollTargetBehavior(.viewAligned) // permite o efeito de imã
+                    .scrollPosition(id: $selectedSculptureID)
                     .safeAreaPadding(.horizontal, (UIScreen.main.bounds.width * 0.15))  // area pra cada um dos lados
                     
-//                                        }
+                    //                                        }
                 }
             }
             .padding(.top, 50)
@@ -109,13 +111,52 @@ struct MuseuView: View {
                 .presentationBackgroundInteraction(.enabled(upThrough: .medium))
         }
         .onAppear {
-            isFloating = true
             vm.fetchData()
         }
-        .onDisappear {
-            isFloating = false
-        }
         
+    }
+}
+
+private struct FloatingSculptureImage: View {
+    let image: UIImage
+    let isActive: Bool
+    
+    @State private var offsetY: CGFloat = 220
+    
+    var body: some View {
+        Image(uiImage: image)
+            .resizable()
+            .scaledToFill()
+            .frame(maxWidth: 300, maxHeight: 300)
+            .offset(y: offsetY)
+            .zIndex(1)
+            .onChange(of: isActive) { _, newValue in
+                if newValue {
+                    startFloating()
+                } else {
+                    stopFloating()
+                }
+            }
+            .onAppear {
+                if isActive {
+                    startFloating()
+                }
+            }
+    }
+    
+    private func startFloating() {
+        withAnimation(
+            .easeInOut(duration: 2.0)
+                .repeatForever(autoreverses: true)
+        ) {
+            offsetY = 180
+        }
+    }
+    
+    private func stopFloating() {
+        withAnimation(.easeOut(duration: 0.3)) {
+            offsetY = 220
+        }
     }
 }
 

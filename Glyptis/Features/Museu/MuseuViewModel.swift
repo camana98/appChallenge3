@@ -33,6 +33,7 @@ class MuseuViewModel: MuseuViewModelProtocol {
     
     func delete(s: Sculpture) {
         service.delete(s)
+        fetchData()
     }
     func edit(s: Sculpture) {
 //        CanvasView()
