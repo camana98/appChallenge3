@@ -26,13 +26,13 @@ struct OnboardingView: View {
     private let pages: [OnboardingPage] = [
         OnboardingPage(
             title: "Bem-vindo ao Glyptis",
-            description: "Descubra uma nova forma de criar esculturas digitais e espalhar arte pelo mundo através da Realidade Aumentada.",
+            description: "Descubra uma nova forma de criar esculturas e espalhar a arte pelo mundo com Realidade Aumentada.",
             iconName: "hand.wave.fill",
             isSystemIcon: true
         ),
         OnboardingPage(
             title: "Crie no Canvas",
-            description: "Use ferramentas intuitivas para esculpir, pintar e modelar suas obras. Dê vida à sua imaginação cubo a cubo.",
+            description: "Use ferramentas intuitivas para esculpir, pintar e modelar suas obras. Dê vida à sua imaginação!",
             iconName: "paintbrush.pointed.fill",
             isSystemIcon: true
         ),
@@ -44,7 +44,7 @@ struct OnboardingView: View {
         ),
         OnboardingPage(
             title: "Arte no Mundo Real",
-            description: "Use a câmera para posicionar suas esculturas em superfícies reais. Transforme qualquer lugar em uma galeria.",
+            description: "Transforme o mundo em sua galeria posicionando suas esculturas em superfícies reais.",
             iconName: "arkit",
             isSystemIcon: true
         )
