@@ -9,6 +9,7 @@ import Foundation
 import SwiftUI
 internal import RealityKit
 import SwiftData
+import AVFoundation
 
 struct MuseuView: View {
     
@@ -160,7 +161,7 @@ struct MuseuView: View {
                         primaryButton: .destructive(Text("Sim, desejo deletar")) {
                             // animação + delete, igual ao popup custom
                             deletingSculptureID = sculpture.id
-                            
+                            SoundManager.shared.playSound(named: "cleanCubes", volume: 1) // som quando demolir
                             DispatchQueue.main.asyncAfter(deadline: .now() + 0.9) {
                                 vm.delete(s: sculpture)
                                 deletingSculptureID = nil
