@@ -7,28 +7,40 @@
 
 import SwiftUI
 import SwiftData
+import AVFoundation
 
 struct ARCameraView: View {
 
     @Environment(\.modelContext) private var context
+    @Environment(\.scenePhase) var scenePhase
     
     @State var coordinator = ARViewCoordinator()
-    @State private var showSnapshots = false
+    // Estado inicial false para não piscar o erro enquanto carrega
+    @State private var isCameraAccessDenied = false
 
     var onOpenCanvas: () -> Void
     var onOpenMuseum: () -> Void
     
     var body: some View {
         ZStack {
-            ///  AR View
+            
+            // 1. Camada da Câmera (Fundo Real)
             ARViewContainer(coordinator: $coordinator)
                 .edgesIgnoringSafeArea(.all)
+                .opacity(isCameraAccessDenied ? 0 : 1)
             
-            /// Camada de Interface
+            // 2. Camada de Aviso com IMAGEM DE FUNDO (Meio)
+            // Aparece no lugar da câmera, não bloqueia os botões
+            if isCameraAccessDenied {
+                CameraAccessDeniedView()
+                    .transition(.opacity)
+                    .zIndex(1) // Garante que fique sobre a ARViewContainer vazia
+            }
+            
+            // 3. Camada de Interface dos Botões (Topo)
             VStack {
                 Spacer()
                 
-                /// Área dos Botões
                 HStack(spacing: 60) {
                     
                     /// Botão Museu
@@ -91,10 +103,34 @@ struct ARCameraView: View {
                 )
             }
             .edgesIgnoringSafeArea(.bottom)
+            .zIndex(2) // Garante que os botões fiquem sobre tudo
+        }
+        .onAppear {
+            checkCameraPermission()
+        }
+        .onChange(of: scenePhase) { newPhase in
+            if newPhase == .active {
+                checkCameraPermission()
+            }
+        }
+    }
+    
+    private func checkCameraPermission() {
+        switch AVCaptureDevice.authorizationStatus(for: .video) {
+        case .authorized:
+            withAnimation { isCameraAccessDenied = false }
+        case .notDetermined:
+            // Se ainda não determinou, não mostra erro, espera o prompt do sistema
+            AVCaptureDevice.requestAccess(for: .video) { granted in
+                DispatchQueue.main.async {
+                    withAnimation { isCameraAccessDenied = !granted }
+                }
+            }
+        case .denied, .restricted:
+            withAnimation { isCameraAccessDenied = true }
+        @unknown default:
+            break
         }
     }
 }
 
-#Preview {
-    ARCameraView(onOpenCanvas: {}, onOpenMuseum: {})
-}
