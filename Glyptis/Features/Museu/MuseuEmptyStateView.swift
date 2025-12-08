@@ -26,14 +26,7 @@ struct MuseuEmptyStateView: View {
     var contentMuseu: some View {
         ZStack {
             
-            // MARK: LAYER 1 - Background
-            Image(.backgroundMuseu)
-                .resizable()
-                .scaledToFill()
-                .ignoresSafeArea()
-                .blur(radius: 4)
-            
-            // MARK: LAYER 2 - Escultura e Coluna (Grudados no fundo)
+            // MARK: LAYER 1 - Escultura e Coluna
             VStack {
                 Spacer()
                 
@@ -44,7 +37,7 @@ struct MuseuEmptyStateView: View {
                         .resizable()
                         .scaledToFit()
                         .frame(height: 500)
-                        .padding(.top, 200)
+                        .padding(.top, 50)
                     
                     /// Cubo (Flutuando)
                     Image("newSculpture")
@@ -64,37 +57,14 @@ struct MuseuEmptyStateView: View {
                         }
                 }
             }
-            .ignoresSafeArea(.all, edges: .bottom)
             
-            // MARK: LAYER 3 - Interface (Header e Card)
+            // MARK: LAYER 2 - Interface
             VStack {
-            
-                HStack {
-                    SimpleCubeIcon(assetName: "backCube", width: 55, height: 55) {
-                        onBackClicked()
-                    }
-                    
-                    Spacer()
-                    
-                    Text("Museu")
-                        .font(Fonts.title)
-                        .foregroundStyle(.customWhite)
-                    
-                    Spacer()
-                    
-                    Color.clear
-                        .frame(width: 55, height: 55)
-                }
-                .padding(.horizontal)
-                .padding(.top, 50)
-                
                 Spacer()
                 
                 GlassCardView()
                     .environment(\.colorScheme, .light)
-                
             }
-            .ignoresSafeArea(.all, edges: .bottom)
         }
         .onAppear {
             isFloating = true
@@ -103,8 +73,4 @@ struct MuseuEmptyStateView: View {
             isFloating = false
         }
     }
-}
-
-#Preview {
-    MuseuEmptyStateView(onBackClicked: {})
 }

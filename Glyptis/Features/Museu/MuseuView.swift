@@ -20,6 +20,12 @@ struct MuseuView: View {
     @State private var isDeleting: Bool = false
     @State private var deletingSculptureID: Sculpture.ID?
     
+    /// Onboarding
+    @AppStorage("hasSeenOnboarding") private var hasSeenOnboarding: Bool = false
+    @State private var showOnboarding: Bool = false
+    @State private var navigateToCanvas: Bool = false
+    
+    
     var onBackClicked: () -> Void
     var onEditSculpture: ((Sculpture) -> Void)?
     
@@ -71,8 +77,6 @@ struct MuseuView: View {
                                         )
                                         
                                         Image(.colunaMuseu)
-//                                            .resizable()
-//                                            .padding(.bottom, 50)
                                             .padding(.leading, 10)
                                     }
                                     .scrollTransition { content, phase in //  editar coisas quando não estão no centro
@@ -90,9 +94,9 @@ struct MuseuView: View {
                                         y: deletingSculptureID == sculpture.id ? UIScreen.main.bounds.height + 200 : 0
                                     )
                                     .animation(
-                                        deletingSculptureID == sculpture.id ? 
-                                            .easeIn(duration: 0.9) : 
-                                            .default,
+                                        deletingSculptureID == sculpture.id ?
+                                            .easeIn(duration: 0.9) :
+                                                .default,
                                         value: deletingSculptureID
                                     )
                                     
@@ -118,9 +122,9 @@ struct MuseuView: View {
                                         y: deletingSculptureID == sculpture.id ? UIScreen.main.bounds.height + 200 : 0
                                     )
                                     .animation(
-                                        deletingSculptureID == sculpture.id ? 
-                                            .easeIn(duration: 0.9) : 
-                                            .default,
+                                        deletingSculptureID == sculpture.id ?
+                                            .easeIn(duration: 0.9) :
+                                                .default,
                                         value: deletingSculptureID
                                     )
                                     
@@ -139,7 +143,13 @@ struct MuseuView: View {
                 }
             }
             .padding(.top, 50)
+            
+            if showOnboarding {
+                OnboardingView(isPresented: $showOnboarding)
+                    .zIndex(100)
+            }
         }
+        
         
         
         .sheet(isPresented: $showGridListMuseum) {
@@ -152,6 +162,15 @@ struct MuseuView: View {
             if let onEdit = onEditSculpture {
                 vm.setOnEditNavigation(onEdit)
             }
+            
+            if !hasSeenOnboarding {
+                
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                    withAnimation {
+                        showOnboarding = true
+                    }
+                }
+            }
         }
         .overlay {
             if let sculpture = sculptureToDelete {
@@ -161,7 +180,6 @@ struct MuseuView: View {
                         sculptureToDelete = nil
                         deletingSculptureID = sculpture.id
                         
-                        // Aguarda a animação terminar antes de deletar
                         DispatchQueue.main.asyncAfter(deadline: .now() + 0.9) {
                             vm.delete(s: sculpture)
                             deletingSculptureID = nil
@@ -209,7 +227,7 @@ private struct FloatingSculptureImage: View {
     private func startFloating() {
         withAnimation(
             .easeInOut(duration: 2.0)
-                .repeatForever(autoreverses: true)
+            .repeatForever(autoreverses: true)
         ) {
             offsetY = 180
         }
