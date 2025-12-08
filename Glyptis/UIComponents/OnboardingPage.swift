@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+internal import UIKit
 
 // MARK: - Modelo de Dados
 struct OnboardingPage: Identifiable {
@@ -54,6 +55,7 @@ struct OnboardingView: View {
         ZStack {
             Color.black.opacity(0.7).ignoresSafeArea()
                 .onTapGesture {
+                    triggerHaptic(style: .light)
                     closeOnboarding()
                 }
             
@@ -64,6 +66,7 @@ struct OnboardingView: View {
                     Spacer()
                     if currentPage < pages.count - 1 {
                         Button("Pular") {
+                            triggerHaptic(style: .light)
                             closeOnboarding()
                         }
                         .font(.custom("NotoSans-Medium", size: 16))
@@ -86,6 +89,10 @@ struct OnboardingView: View {
                 }
                 .tabViewStyle(.page(indexDisplayMode: .never))
                 .frame(height: 400)
+                .onChange(of: currentPage) { _, _ in
+                    let generator = UISelectionFeedbackGenerator()
+                    generator.selectionChanged()
+                }
                 
                 VStack(spacing: 20) {
                     
@@ -103,11 +110,12 @@ struct OnboardingView: View {
                     /// Botão Ação
                     Button {
                         if currentPage < pages.count - 1 {
+                            triggerHaptic(style: .medium)
                             withAnimation {
                                 currentPage += 1
                             }
                         } else {
-                            // Última página: fecha o componente
+                            triggerHaptic(style: .heavy)
                             closeOnboarding()
                         }
                     } label: {
@@ -124,11 +132,11 @@ struct OnboardingView: View {
                     .padding(.bottom, 30)
                 }
             }
-            // Card background com bordas arredondadas (incluindo inferiores)
+            // Card background com bordas arredondadas
             .background {
                 RoundedRectangle(cornerRadius: 35)
                     .fill(.ultraThinMaterial)
-                    .environment(\.colorScheme, .light) // Ou .dark, conforme sua preferência
+                    .environment(\.colorScheme, .light)
             }
             .padding(.horizontal, 20)
             .shadow(radius: 20)
@@ -136,11 +144,18 @@ struct OnboardingView: View {
         .transition(.opacity)
     }
     
-    // Função auxiliar para fechar com animação
+    // MARK: - Funções Auxiliares
+    
     private func closeOnboarding() {
         withAnimation {
             isPresented = false
         }
+    }
+    
+    /// Função genérica para disparar haptics de impacto
+    private func triggerHaptic(style: UIImpactFeedbackGenerator.FeedbackStyle) {
+        let generator = UIImpactFeedbackGenerator(style: style)
+        generator.impactOccurred()
     }
 }
 
