@@ -19,7 +19,7 @@ enum AppScreen {
 @main
 struct GlyptisApp: App {
     
-    @State private var currentScreen: AppScreen = .camera
+    @State private var currentScreen: AppScreen = .museu
     let service = SwiftDataService.shared
     
     var body: some Scene {
