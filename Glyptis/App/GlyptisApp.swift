@@ -35,7 +35,7 @@ struct GlyptisApp: App {
                 CanvasView(
                     sculptureToEdit: sculpture,
                     onCancel: {
-                        currentScreen = .camera
+                        currentScreen = .museu
                     },
                     onSave: {
                         currentScreen = .museu
@@ -50,6 +50,12 @@ struct GlyptisApp: App {
                     },
                     onEditSculpture: { sculpture in
                         currentScreen = .canvas(sculpture: sculpture)
+                    },
+                    onOpenCamera: {
+                        currentScreen = .camera
+                    },
+                    onOpenCanvas: {
+                        currentScreen = .canvas(sculpture: nil)
                     }
                 )
             }

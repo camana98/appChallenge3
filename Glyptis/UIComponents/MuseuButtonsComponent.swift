@@ -10,6 +10,13 @@ import SwiftUI
 
 struct MuseuButtonsComponent: View {
     
+    var sculpture: Sculpture
+    @State var vm: MuseuViewModelProtocol
+    @Binding var sculptureToDelete: Sculpture?
+    var onOpenCamera: () -> Void
+    var onOpenCanvas: () -> Void
+    
+    @State private var showOptionsModal: Bool = false
     
     var body: some View {
         
@@ -19,7 +26,7 @@ struct MuseuButtonsComponent: View {
             HStack(spacing: 32) {
                 VStack(alignment: .center, spacing: 4) {
                     SimpleCubeIcon(assetName: "cameraAR", width: 54, height: 56) {
-                        //MARK: Acao navega pra tela de Camera
+                        onOpenCamera()
                     }
                     Text("Câmera AR")
                         .font(Fonts.notoCubeButton)
@@ -29,7 +36,7 @@ struct MuseuButtonsComponent: View {
                 
                 VStack(alignment: .center, spacing: 4) {
                     SimpleCubeIcon(assetName: "toolboxCube", width: 54, height: 56) {
-                        //MARK: Acao chamando MuseuSculptureComponent
+                        showOptionsModal = true
                     }
                     Text("Opções")
                         .font(Fonts.notoCubeButton)
@@ -39,14 +46,14 @@ struct MuseuButtonsComponent: View {
                 
                 VStack(alignment: .center, spacing: 4) {
                     SimpleCubeIcon(assetName: "newSculpture", width: 54, height: 56) {
-                        //MARK: Acao navega pra tela de Canvas
+                        onOpenCanvas()
                     }
                     
                     Text("Nova escultura")
                         .font(Fonts.notoCubeButton)
                         .foregroundStyle(.customBlue)
                 }
-                .frame(width: 89, height: 82)
+                .frame(width: 108, height: 82)
     
                 
             }
@@ -58,6 +65,28 @@ struct MuseuButtonsComponent: View {
         .frame(maxWidth: .infinity)
         .background(.ultraThinMaterial)
         .clipShape(RoundedRectangle(cornerRadius: 70, style: .continuous))
+        .preferredColorScheme(.light)
+        .sheet(isPresented: $showOptionsModal) {
+            MuseuSculptureComponent(
+                sculpture: sculpture,
+                vm: vm,
+                onDeleteRequested: {
+                    // Fecha a modal primeiro
+                    showOptionsModal = false
+                    // Depois dispara o alert com um pequeno delay
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                        sculptureToDelete = sculpture
+                    }
+                }
+            )
+//            .padding(.horizontal, 24)
+            .padding(.top, 40)
+            .presentationDetents([.height(188)])
+            .frame(maxWidth: .infinity)
+            .presentationDragIndicator(.visible)
+            .presentationBackground(.ultraThinMaterial)
+            .preferredColorScheme(.light)
+        }
     }
     
     
@@ -65,5 +94,15 @@ struct MuseuButtonsComponent: View {
 }
 
 #Preview {
-    MuseuButtonsComponent()
+    @Previewable @State var sculptureToDelete: Sculpture? = nil
+    let previewVM = MuseuViewModel(service: SwiftDataService.shared)
+    let previewSculpture = Sculpture(name: "Escultura Preview")
+    
+    return MuseuButtonsComponent(
+        sculpture: previewSculpture,
+        vm: previewVM,
+        sculptureToDelete: $sculptureToDelete,
+        onOpenCamera: {},
+        onOpenCanvas: {}
+    )
 }

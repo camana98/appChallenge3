@@ -23,6 +23,8 @@ struct MuseuView: View {
     
     var onBackClicked: () -> Void
     var onEditSculpture: ((Sculpture) -> Void)?
+    var onOpenCamera: (() -> Void)? = nil
+    var onOpenCanvas: (() -> Void)? = nil
     
     @Query private var sculptures: [Sculpture]
     
@@ -36,10 +38,8 @@ struct MuseuView: View {
             
             VStack {
                 HStack {
-                    
-                    SimpleCubeIcon(assetName: "backCube", width: 55, height: 55) {
-                        onBackClicked()
-                    }
+                    Color.clear
+                        .frame(width: 55, height: 55)
                     
                     Spacer()
                     
@@ -97,14 +97,18 @@ struct MuseuView: View {
                                         value: deletingSculptureID
                                     )
                                     
-                                    MuseuSculptureComponent(
+                                    MuseuButtonsComponent(
                                         sculpture: sculpture,
                                         vm: vm,
-                                        onDeleteRequested: {
-                                            sculptureToDelete = sculpture
+                                        sculptureToDelete: $sculptureToDelete,
+                                        onOpenCamera: {
+                                            onOpenCamera?()
+                                        },
+                                        onOpenCanvas: {
+                                            onOpenCanvas?()
                                         }
                                     )
-                                    .padding(.bottom, 42)
+                                    .padding(.bottom, 52)
                                     .scrollTransition { content, phase in
                                         content
                                             .opacity(phase.isIdentity ? 1.0 : 0.0)
