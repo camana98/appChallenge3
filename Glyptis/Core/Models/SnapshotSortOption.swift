@@ -6,11 +6,11 @@
 //
 
 
-enum SnapshotSortOption: String, CaseIterable, Identifiable {
+enum SnapshotSortOption: String, Identifiable, CaseIterable {
     case newestFirst = "Mais Recente Primeiro"
     case oldestFirst = "Mais Antigas Primeiro"
     case nameAZ = "Nome Crescente (A–Z)"
     case nameZA = "Nome Decrescente (Z–A)"
 
-    var id: String { rawValue }
+    var id: String { return self.rawValue }
 }
