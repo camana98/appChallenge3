@@ -37,6 +37,10 @@ struct Fonts {
     static var title: Font {
         angleSquare(24)
     }
+    
+    static var title2: Font {
+        notoSemiBold(17)
+    }
         
     static var notoSemi: Font {
         notoSemiBold(14)
