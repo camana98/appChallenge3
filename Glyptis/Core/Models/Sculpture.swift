@@ -12,6 +12,7 @@ final class Sculpture {
     var id: UUID = UUID()
     var createdAt: Date = Date()
     var name: String = ""
+    var isFavorite: Bool = false
     
     @Relationship(deleteRule: .cascade, inverse: \Localization.sculpture)
     var localization: [Localization]? = []
@@ -23,13 +24,14 @@ final class Sculpture {
     
     var snapshot: Data?
     
-    init(name: String, localization: [Localization]? = [], author: Author? = nil, snapshot: Data? = nil) {
+    init(name: String, localization: [Localization]? = [], author: Author? = nil, snapshot: Data? = nil, isFavorite: Bool = false) {
         self.id = UUID()
         self.createdAt = Date()
         self.name = name
         self.localization = localization
         self.author = author
         self.snapshot = snapshot
+        self.isFavorite = isFavorite
     }
 }
 

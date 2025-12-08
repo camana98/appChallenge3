@@ -7,9 +7,17 @@
 import Foundation
 import SwiftData
 
+protocol DataServiceProtocol {
+    
+}
+
+class PreviewDataService: DataServiceProtocol {
+    
+}
+
 @Observable
 @MainActor
-class SwiftDataService {
+class SwiftDataService: DataServiceProtocol {
     let modelContainer: ModelContainer
     private let context: ModelContext
     
@@ -158,6 +166,19 @@ class SwiftDataService {
             try context.save()
         } catch {
             print("Erro ao salvar novos cubos da escultura:", error)
+        }
+    }
+    
+    /// Atualiza SOMENTE o estado de favorito
+    func updateFavorite(
+        _ sculpture: Sculpture,
+        to isFavorite: Bool
+    ) {
+        sculpture.isFavorite = isFavorite
+        do {
+            try context.save()
+        } catch {
+            print("Erro ao atualizar favorito da escultura:", error)
         }
     }
     

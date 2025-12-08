@@ -11,7 +11,8 @@ struct NameSculpturePopup: View {
     @Binding var sculptureName: String
     var onSave: () -> Void
     var onCancel: () -> Void
-    
+    @FocusState private var isUsernameFocused: Bool
+
     
     var body: some View {
         ZStack {
@@ -39,6 +40,7 @@ struct NameSculpturePopup: View {
                     .cornerRadius(26)
                     .foregroundColor(.black)
                     .accessibilityIdentifier("SculptureNameTextField")
+                    .focused($isUsernameFocused)
                 
                 Button("Salvar") {
                     onSave()
@@ -49,6 +51,9 @@ struct NameSculpturePopup: View {
                 .foregroundColor(.white)
                 .cornerRadius(100)
                 .accessibilityIdentifier("ConfirmSaveButton")
+                .onTapGesture {
+                    onSave()
+                }
                 
             }
             .padding()
@@ -56,6 +61,9 @@ struct NameSculpturePopup: View {
             .cornerRadius(32)
             .shadow(radius: 10)
             .frame(maxWidth: 350)
+        }
+        .onAppear {
+            isUsernameFocused = true
         }
     }
 }

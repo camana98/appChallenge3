@@ -17,6 +17,8 @@ protocol MuseuViewModelProtocol {
     func anchor(s: Sculpture)  -> Void
     func fetchData()
     func getSnapshot(s: Sculpture) -> UIImage
+    func setOnEditNavigation(_ navigation: @escaping (Sculpture) -> Void)
+    func favorite(s: Sculpture) -> Void
 }
 
 
@@ -26,26 +28,35 @@ class MuseuViewModel: MuseuViewModelProtocol {
     
     let service: SwiftDataService
     var sculptures: [Sculpture] = []
+    private var onEditNavigation: ((Sculpture) -> Void)?
     
     init(service: SwiftDataService) {
         self.service = service
     }
     
+    func setOnEditNavigation(_ navigation: @escaping (Sculpture) -> Void) {
+        self.onEditNavigation = navigation
+    }
+    
     func delete(s: Sculpture) {
         service.delete(s)
+        fetchData()
     }
     func edit(s: Sculpture) {
-        // TODO: fazer funcao de edit
+        onEditNavigation?(s)
     }
     
     func getSnapshot(s: Sculpture) -> UIImage {
         
         guard let snapshot = service.getSnapshot(sculpture: s) else {
-            print("zuuum")
+//            print("zuuum")
             return UIImage()
         }
+        
+        SnapshotService.saveDrawing(data: snapshot)
+        
         guard let uiImage = UIImage(data: snapshot) else {
-            print("opaaaaa")
+//            print("opaaaaa")
             return UIImage()
         }
         
@@ -54,6 +65,12 @@ class MuseuViewModel: MuseuViewModelProtocol {
     
     func anchor(s: Sculpture) {
         // TODO: fazer funcao de ancorar
+    }
+    
+    func favorite(s: Sculpture) {
+        let newFavoriteStatus = !s.isFavorite
+        service.updateFavorite(s, to: newFavoriteStatus)
+        fetchData()
     }
     
     func fetchData() {

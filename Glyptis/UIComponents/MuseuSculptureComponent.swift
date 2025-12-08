@@ -11,6 +11,8 @@ import SwiftUI
 struct MuseuSculptureComponent: View {
     
     var sculpture: Sculpture
+    @State var vm: MuseuViewModelProtocol
+    var onDeleteRequested: () -> Void
     
     var body: some View {
         
@@ -31,7 +33,9 @@ struct MuseuSculptureComponent: View {
             //MARK: Botões
             HStack {
                 VStack(alignment: .center, spacing: 4) {
-                    SimpleCubeIcon(assetName: "deleteCube", width: 54, height: 56) { }
+                    SimpleCubeIcon(assetName: "deleteCube", width: 54, height: 56) {
+                        onDeleteRequested()
+                    }
                     Text("Deletar")
                         .font(Fonts.notoCubeButton)
                         .foregroundStyle(.customRed)
@@ -39,7 +43,9 @@ struct MuseuSculptureComponent: View {
                 .frame(width: 89, height: 82)
                 
                 VStack(alignment: .center, spacing: 4) {
-                    SimpleCubeIcon(assetName: "editCube", width: 54, height: 56) { }
+                    SimpleCubeIcon(assetName: "editCube", width: 54, height: 56) {
+                        vm.edit(s: sculpture)
+                    }
                     Text("Editar")
                         .font(Fonts.notoCubeButton)
                         .foregroundStyle(.customBlue)
@@ -47,7 +53,9 @@ struct MuseuSculptureComponent: View {
                 .frame(width: 89, height: 82)
                 
                 VStack(alignment: .center, spacing: 4) {
-                    SimpleCubeIcon(assetName: "pinCube", width: 54, height: 56) { }
+                    SimpleCubeIcon(assetName: "pinCube", width: 54, height: 56) {
+                        vm.anchor(s: sculpture)
+                    }
                     
                     Text("Ancorar")
                         .font(Fonts.notoCubeButton)
@@ -56,9 +64,11 @@ struct MuseuSculptureComponent: View {
                 .frame(width: 89, height: 82)
                 
                 VStack(alignment: .center, spacing: 4) {
-                    SimpleCubeIcon(assetName: "emptyHeartCube", width: 54, height: 56) { }
+                    SimpleCubeIcon(assetName: sculpture.isFavorite ? "heartCube" : "emptyHeartCube", width: 54, height: 56) {
+                        vm.favorite(s: sculpture)
+                    }
                     
-                    Text("Favoritar")
+                    Text(sculpture.isFavorite ? "Desfavoritar" : "Favoritar")
                         .font(Fonts.notoCubeButton)
                         .foregroundStyle(.customBlue)
                 }
@@ -80,5 +90,5 @@ struct MuseuSculptureComponent: View {
 }
 
 #Preview {
-    MuseuSculptureComponent(sculpture: Sculpture(name: "Test", localization: nil, author: nil))
+//    MuseuSculptureComponent(sculpture: Sculpture(name: "Test", localization: nil, author: nil), vm: MuseuViewModel()) arrumar se quiser usar
 }

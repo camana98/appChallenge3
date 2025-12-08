@@ -17,7 +17,7 @@ extension UnifiedCoordinator {
     func updateCameraPosition(animated: Bool) {
         guard let anchor = anchor else { return }
 
-        let radius: Float = 1.5 * currentScale
+        let radius: Float = 2.5 * currentScale
         let fixedPitch: Float = .pi / 6
 
         let camX = radius * sin(currentRotationY)

@@ -11,7 +11,10 @@ internal import RealityKit
 struct SnapshotService {
 
     // MARK: - SNAPSHOT DO ARVIEW
-    static func takeSnapshot(from arView: ARView, completion: @escaping (UIImage?) -> Void) {
+    static func takeSnapshot(from arView: ARView, cameraCoordinator: UnifiedCoordinator?, completion: @escaping (UIImage?) -> Void) {
+    
+        cameraCoordinator?.updateCameraPosition(animated: true)
+        
         arView.snapshot(saveToHDR: false) { image in
             completion(image)
         }
@@ -34,6 +37,21 @@ struct SnapshotService {
             completion(false)
         }
     }
+    
+    //Código do Igor Skriva
+    
+    static func saveDrawing(data: Data) {
+        let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
+        let url = documentsDirectory.appendingPathComponent("snapshot").appendingPathExtension("png")
+//        print(url)
+        do {
+            try data.write(to: url, options: .atomic)
+        } catch {
+            print("Unable to write in new file. \(error)")
+        }
+    }
+    
+    
 }
 
 

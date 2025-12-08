@@ -19,8 +19,9 @@ struct CanvasView: View {
     @State private var showSaveAlert = false
     @State private var showColorPicker: Bool = false
     @State private var showConfirmClear: Bool = false
-    
     @State private var snapshot: Data? = nil
+    
+    var sculptureToEdit: Sculpture?
     
     var onCancel: () -> Void
     
@@ -76,13 +77,18 @@ struct CanvasView: View {
                     
                     Spacer()
                     
-                    Text("Nova Escultura")
+                    Text(sculptureToEdit != nil ? "Editar Escultura" : "Nova Escultura")
                         .font(.custom("Angle Square DEMO", size: 24))
                         .foregroundStyle(.customWhite)
                     
                     Spacer()
                     
                     SimpleCubeIcon(assetName: "saveCube", width: 55, height: 56) {
+                        
+                        vm.coordinator?.updateCameraPosition(animated: true)
+                        Timer.scheduledTimer(withTimeInterval: 0.2, repeats: false) {_ in
+                            
+                        }
                         guard let arView else { return }
                         
                         let referenceModel = arView.scene.findEntity(named: "reference_model")
@@ -91,7 +97,7 @@ struct CanvasView: View {
                         referenceModel?.isEnabled = false
                         gridLines?.isEnabled = false
                         
-                        SnapshotService.takeSnapshot(from: arView) { image in
+                        SnapshotService.takeSnapshot(from: arView, cameraCoordinator: vm.coordinator) { image in
                             guard let image else { return }
                             
                             referenceModel?.isEnabled = true
@@ -128,6 +134,12 @@ struct CanvasView: View {
         .onChange(of: vm.selectedColor) { _ in
             vm.removeMode = false
         }
+        .onAppear {
+            if let sculpture = sculptureToEdit {
+                vm.loadSculpture(sculpture)
+                sculptureName = sculpture.name
+            }
+        }
         
         .alert("heheeeee", isPresented: $showSaveAlert) {
             Button("OK") {}
@@ -162,6 +174,7 @@ struct CanvasView: View {
         .background(
             ZStack {
                 Rectangle().fill(.ultraThinMaterial)
+                    .environment(\.colorScheme, .light)
                 
                 UnevenRoundedRectangle(topLeadingRadius: 35, topTrailingRadius: 35)
                     .stroke(
@@ -267,15 +280,25 @@ struct CanvasView: View {
                     let service = SculptureService(context: modelContext)
                     
                     guard let snapshot else { return }
-                    let saved = service.create(
-                        name: sculptureName,
-                        author: nil,
-                        localization: nil,
-                        cubes: vm.unfinishedCubes,
-                        snapshot: snapshot
-                    )
                     
-                    vm.currentSculpture = saved
+                    // Se estiver editando uma escultura existente, atualiza ela
+                    if let existingSculpture = sculptureToEdit {
+                        service.updateName(existingSculpture, to: sculptureName)
+                        service.updateCubes(for: existingSculpture, with: vm.unfinishedCubes)
+                        existingSculpture.snapshot = snapshot
+                        vm.currentSculpture = existingSculpture
+                    } else {
+                        // Caso contrário, cria uma nova escultura
+                        let saved = service.create(
+                            name: sculptureName,
+                            author: nil,
+                            localization: nil,
+                            cubes: vm.unfinishedCubes,
+                            snapshot: snapshot
+                        )
+                        vm.currentSculpture = saved
+                    }
+                    
                     SoundManager.shared.playSound(named: "saveSuccess", volume: 0.5)
                 },
                 onCancel: {
