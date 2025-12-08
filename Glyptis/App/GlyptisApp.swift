@@ -36,6 +36,9 @@ struct GlyptisApp: App {
                     sculptureToEdit: sculpture,
                     onCancel: {
                         currentScreen = .camera
+                    },
+                    onSave: {
+                        currentScreen = .museu
                     }
                 )
             case .museu:

@@ -24,6 +24,7 @@ struct CanvasView: View {
     var sculptureToEdit: Sculpture?
     
     var onCancel: () -> Void
+    var onSave: (() -> Void)? = nil
     
     var body: some View {
         ZStack {
@@ -300,6 +301,9 @@ struct CanvasView: View {
                     }
                     
                     SoundManager.shared.playSound(named: "saveSuccess", volume: 0.5)
+                    
+                    // Navega para o museu após salvar
+                    onSave?()
                 },
                 onCancel: {
                     showNamingPopup = false
