@@ -59,12 +59,14 @@ class MuseuGridViewModel: MuseuGridViewModelProtocol {
             })
         case .nameAZ:
             esculturasCruas.sort(by: { (sculpture1: Sculpture, sculpture2: Sculpture) -> Bool in
-                sculpture1.name.lowercased() > sculpture2.name.lowercased()
+                sculpture1.name.lowercased() < sculpture2.name.lowercased()
             })
         case .nameZA:
             esculturasCruas.sort(by: { (sculpture1: Sculpture, sculpture2: Sculpture) -> Bool in
-                sculpture1.name.lowercased() < sculpture2.name.lowercased()
+                sculpture1.name.lowercased() > sculpture2.name.lowercased()
             })
+        case .favorites:
+            esculturasCruas = esculturasCruas.filter({ $0.isFavorite })
         }
         
         sculptures = esculturasCruas

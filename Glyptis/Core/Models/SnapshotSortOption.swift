@@ -11,6 +11,7 @@ enum SnapshotSortOption: String, Identifiable, CaseIterable {
     case oldestFirst = "Mais Antigas Primeiro"
     case nameAZ = "Nome Crescente (A–Z)"
     case nameZA = "Nome Decrescente (Z–A)"
+    case favorites = "Somente favoritos"
 
     var id: String { return self.rawValue }
 }
