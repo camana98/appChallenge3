@@ -11,7 +11,7 @@ import SwiftUI
 struct CameraAccessDeniedView: View {
     var body: some View {
         ZStack {
-            Image("backgroundMuseu")
+            Image("emptyMuseum")
                 .resizable()
                 .scaledToFill()
                 .ignoresSafeArea()
@@ -49,7 +49,6 @@ struct CameraAccessDeniedView: View {
                         .padding(.top, 10)
                 }
             }
-            // Empurra o conteúdo para cima para não sobrepor a barra de navegação inferior
             .padding(.bottom, 120)
         }
     }

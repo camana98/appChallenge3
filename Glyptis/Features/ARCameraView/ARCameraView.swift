@@ -15,7 +15,6 @@ struct ARCameraView: View {
     @Environment(\.scenePhase) var scenePhase
     
     @State var coordinator = ARViewCoordinator()
-    // Estado inicial false para não piscar o erro enquanto carrega
     @State private var isCameraAccessDenied = false
 
     var onOpenCanvas: () -> Void
@@ -24,20 +23,19 @@ struct ARCameraView: View {
     var body: some View {
         ZStack {
             
-            // 1. Camada da Câmera (Fundo Real)
+            /// 1. Camada da Câmera
             ARViewContainer(coordinator: $coordinator)
                 .edgesIgnoringSafeArea(.all)
                 .opacity(isCameraAccessDenied ? 0 : 1)
             
-            // 2. Camada de Aviso com IMAGEM DE FUNDO (Meio)
-            // Aparece no lugar da câmera, não bloqueia os botões
+            /// 2. Camada de Aviso com IMAGEM DE FUNDO (Meio)
             if isCameraAccessDenied {
                 CameraAccessDeniedView()
                     .transition(.opacity)
-                    .zIndex(1) // Garante que fique sobre a ARViewContainer vazia
+                    .zIndex(1)
             }
             
-            // 3. Camada de Interface dos Botões (Topo)
+            /// 3. Camada de Interface dos Botões
             VStack {
                 Spacer()
                 
@@ -103,7 +101,7 @@ struct ARCameraView: View {
                 )
             }
             .edgesIgnoringSafeArea(.bottom)
-            .zIndex(2) // Garante que os botões fiquem sobre tudo
+            .zIndex(2)
         }
         .onAppear {
             checkCameraPermission()
@@ -120,7 +118,6 @@ struct ARCameraView: View {
         case .authorized:
             withAnimation { isCameraAccessDenied = false }
         case .notDetermined:
-            // Se ainda não determinou, não mostra erro, espera o prompt do sistema
             AVCaptureDevice.requestAccess(for: .video) { granted in
                 DispatchQueue.main.async {
                     withAnimation { isCameraAccessDenied = !granted }
