@@ -14,6 +14,7 @@ struct MuseuSculptureComponent: View {
     var sculpture: Sculpture
     @State var vm: MuseuViewModelProtocol
     var onDeleteRequested: () -> Void
+    var onAnchorRequested: (() -> Void)? // Novo callback opcional
     var onShowComingSoon: () -> Void
     
     var body: some View {
@@ -56,8 +57,12 @@ struct MuseuSculptureComponent: View {
                 
                 VStack(alignment: .center, spacing: 4) {
                     SimpleCubeIcon(assetName: "pinCube", width: 54, height: 56) {
-                        // vm.anchor(s: sculpture)
-                        onShowComingSoon()
+                        // Chama o novo callback se existir, senão o coming soon
+                        if let anchor = onAnchorRequested {
+                            anchor()
+                        } else {
+                            onShowComingSoon()
+                        }
                     }
                     
                     Text("Ancorar")
@@ -78,7 +83,6 @@ struct MuseuSculptureComponent: View {
                 .frame(width: 89, height: 82)
                 
             }
-//            .padding(.bottom, 22)
         }
         .padding(.top, 18)
         .padding(.horizontal, 24)
@@ -87,11 +91,4 @@ struct MuseuSculptureComponent: View {
         .background(.ultraThinMaterial)
         .clipShape(RoundedRectangle(cornerRadius: 70, style: .continuous))
     }
-    
-    
-    
-}
-
-#Preview {
-//    MuseuSculptureComponent(sculpture: Sculpture(name: "Test", localization: nil, author: nil), vm: MuseuViewModel()) arrumar se quiser usar
 }

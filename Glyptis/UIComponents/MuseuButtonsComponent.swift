@@ -16,6 +16,7 @@ struct MuseuButtonsComponent: View {
     @Binding var sculptureToDelete: Sculpture?
     var onOpenCamera: () -> Void
     var onOpenCanvas: () -> Void
+    var onAnchorSculpture: ((Sculpture) -> Void)?
     var onShowComingSoon: () -> Void
     
     @State private var showOptionsModal: Bool = false
@@ -28,8 +29,8 @@ struct MuseuButtonsComponent: View {
             HStack(spacing: 32) {
                 VStack(alignment: .center, spacing: 4) {
                     SimpleCubeIcon(assetName: "cameraAR", width: 54, height: 56) {
-                        //onOpenCamera()
-                        onShowComingSoon()
+                        // AQUI: Agora chama a função de abrir câmera limpa
+                        onOpenCamera()
                     }
                     Text("Câmera AR")
                         .font(Fonts.notoCubeButton)
@@ -74,11 +75,16 @@ struct MuseuButtonsComponent: View {
                 sculpture: sculpture,
                 vm: vm,
                 onDeleteRequested: {
-                    // Fecha a modal primeiro
                     showOptionsModal = false
-                    // Depois dispara o alert com um pequeno delay
                     DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
                         sculptureToDelete = sculpture
+                    }
+                },
+                onAnchorRequested: {
+                    showOptionsModal = false
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                        // Aqui continua chamando o modo de ancoragem
+                        onAnchorSculpture?(sculpture)
                     }
                 },
                 onShowComingSoon: {
@@ -88,7 +94,6 @@ struct MuseuButtonsComponent: View {
                     }
                 }
             )
-//            .padding(.horizontal, 24)
             .padding(.top, 40)
             .presentationDetents([.height(188)])
             .frame(maxWidth: .infinity)
@@ -97,22 +102,4 @@ struct MuseuButtonsComponent: View {
             .preferredColorScheme(.light)
         }
     }
-    
-    
-    
-}
-
-#Preview {
-    @Previewable @State var sculptureToDelete: Sculpture? = nil
-    let previewVM = MuseuViewModel(service: SwiftDataService.shared)
-    let previewSculpture = Sculpture(name: "Escultura Preview")
-    
-    return MuseuButtonsComponent(
-        sculpture: previewSculpture,
-        vm: previewVM,
-            sculptureToDelete: $sculptureToDelete,
-            onOpenCamera: {},
-            onOpenCanvas: {},
-            onShowComingSoon: {}
-        )
 }

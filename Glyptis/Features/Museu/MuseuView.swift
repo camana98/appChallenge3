@@ -30,6 +30,7 @@ struct MuseuView: View {
     
     var onBackClicked: () -> Void
     var onEditSculpture: ((Sculpture) -> Void)?
+    var onAnchorSculpture: ((Sculpture) -> Void)? // Novo callback
     var onOpenCamera: (() -> Void)? = nil
     var onOpenCanvas: (() -> Void)? = nil
     
@@ -93,12 +94,12 @@ struct MuseuView: View {
                                         Image(.colunaMuseu)
                                             .padding(.leading, 10)
                                     }
-                                    .scrollTransition { content, phase in //  editar coisas quando não estão no centro
+                                    .scrollTransition { content, phase in
                                         content
                                             .blur(radius: phase.isIdentity ? 0 : 1)
                                             .scaleEffect(phase.isIdentity ? 1.0 : 0.85)
                                             .brightness(phase.isIdentity ? 0 : -0.35)
-                                            .offset(y: phase.isIdentity ? 0 : -90) // vai pra cima qunaod não esá
+                                            .offset(y: phase.isIdentity ? 0 : -90)
                                     }
                                     .opacity(deletingSculptureID == sculpture.id ? 0 : 1)
                                     .rotationEffect(.degrees(deletingSculptureID == sculpture.id ? -45 : 0))
@@ -123,6 +124,9 @@ struct MuseuView: View {
                                         },
                                         onOpenCanvas: {
                                             onOpenCanvas?()
+                                        },
+                                        onAnchorSculpture: { s in
+                                            onAnchorSculpture?(s)
                                         },
                                         onShowComingSoon: {
                                             showComingSoonPopup = true
@@ -155,11 +159,9 @@ struct MuseuView: View {
                         }
                         .scrollTargetLayout()
                     }
-                    .scrollTargetBehavior(.viewAligned) // permite o efeito de imã
+                    .scrollTargetBehavior(.viewAligned)
                     .scrollPosition(id: $selectedSculptureID)
-                    .safeAreaPadding(.horizontal, (UIScreen.main.bounds.width * 0.15))  // area pra cada um dos lados
-                    
-                    //                                        }
+                    .safeAreaPadding(.horizontal, (UIScreen.main.bounds.width * 0.15))
                 }
             }
             .padding(.top, 50)
@@ -182,9 +184,6 @@ struct MuseuView: View {
                 .zIndex(200)
             }
         }
-        
-        
-        
         .sheet(isPresented: $showGridListMuseum) {
             MuseuGridListView(vm: MuseuGridViewModel(service: SwiftDataService.shared))
                 .presentationDetents([.medium, .large])
@@ -195,9 +194,7 @@ struct MuseuView: View {
             if let onEdit = onEditSculpture {
                 vm.setOnEditNavigation(onEdit)
             }
-            
             if !hasSeenOnboarding {
-                
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
                     withAnimation {
                         showOnboarding = true
@@ -210,9 +207,8 @@ struct MuseuView: View {
                 title: Text("Tem certeza que deseja deletar sua escultura \"\(sculpture.name)\"?"),
                 message: Text("Uma vez deletada, não poderá ser recuperada no museu."),
                 primaryButton: .destructive(Text("Sim, desejo deletar")) {
-                    // animação + delete, igual ao popup custom
                     deletingSculptureID = sculpture.id
-                    SoundManager.shared.playSound(named: "cleanCubes", volume: 1) // som quando demolir
+                    SoundManager.shared.playSound(named: "cleanCubes", volume: 1)
                     DispatchQueue.main.asyncAfter(deadline: .now() + 0.9) {
                         vm.delete(s: sculpture)
                         deletingSculptureID = nil
@@ -221,30 +217,6 @@ struct MuseuView: View {
                 secondaryButton: .cancel(Text("Não, desejo manter"))
             )
         }
-        //MARK: ISSO AQUI CASO VA USAR O DELETECONFIRMATIONPOPUP
-        //        .overlay {
-        //            if let sculpture = sculptureToDelete {
-        //                DeleteConfirmationPopup(
-        //                    sculptureName: sculpture.name,
-        //                    onConfirm: {
-        //                        sculptureToDelete = nil
-        //                        deletingSculptureID = sculpture.id
-        //
-        //                        // Aguarda a animação terminar antes de deletar
-        //                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.9) {
-        //                            vm.delete(s: sculpture)
-        //                            deletingSculptureID = nil
-        //                        }
-        //                    },
-        //                    onCancel: {
-        //                        sculptureToDelete = nil
-        //                    }
-        //                )
-        //                .transition(.opacity)
-        //                .zIndex(10)
-        //            }
-        //        }
-        
     }
     
     private func openInstagram() {
@@ -257,7 +229,6 @@ struct MuseuView: View {
         } else {
             UIApplication.shared.open(instagramWebURL)
         }
-        
         showComingSoonPopup = false
     }
 }
@@ -302,16 +273,5 @@ private struct FloatingSculptureImage: View {
         withAnimation(.easeOut(duration: 0.3)) {
             offsetY = 220
         }
-    }
-}
-
-#Preview {
-    var previewVM = MuseuViewModel(service: SwiftDataService.shared)
-    previewVM.sculptures = [
-        Sculpture(name: "hahahahaha")
-    ]
-    
-    return MuseuView(vm: previewVM) {
-        print("zum")
     }
 }
