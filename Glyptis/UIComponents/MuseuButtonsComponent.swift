@@ -7,6 +7,7 @@
 
 import Foundation
 import SwiftUI
+//import UIKit
 
 struct MuseuButtonsComponent: View {
     
@@ -15,6 +16,7 @@ struct MuseuButtonsComponent: View {
     @Binding var sculptureToDelete: Sculpture?
     var onOpenCamera: () -> Void
     var onOpenCanvas: () -> Void
+    var onShowComingSoon: () -> Void
     
     @State private var showOptionsModal: Bool = false
     
@@ -26,7 +28,8 @@ struct MuseuButtonsComponent: View {
             HStack(spacing: 32) {
                 VStack(alignment: .center, spacing: 4) {
                     SimpleCubeIcon(assetName: "cameraAR", width: 54, height: 56) {
-                        onOpenCamera()
+                        //onOpenCamera()
+                        onShowComingSoon()
                     }
                     Text("Câmera AR")
                         .font(Fonts.notoCubeButton)
@@ -77,6 +80,12 @@ struct MuseuButtonsComponent: View {
                     DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
                         sculptureToDelete = sculpture
                     }
+                },
+                onShowComingSoon: {
+                    showOptionsModal = false
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                        onShowComingSoon()
+                    }
                 }
             )
 //            .padding(.horizontal, 24)
@@ -101,8 +110,9 @@ struct MuseuButtonsComponent: View {
     return MuseuButtonsComponent(
         sculpture: previewSculpture,
         vm: previewVM,
-        sculptureToDelete: $sculptureToDelete,
-        onOpenCamera: {},
-        onOpenCanvas: {}
-    )
+            sculptureToDelete: $sculptureToDelete,
+            onOpenCamera: {},
+            onOpenCanvas: {},
+            onShowComingSoon: {}
+        )
 }
