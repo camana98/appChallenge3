@@ -125,11 +125,10 @@ struct MuseuView: View {
                                         }
                                     )
                                     .padding(.bottom, 52)
-                                    .scrollTransition { content, phase in
+                                    .scrollTransition(axis: .horizontal) { content, phase in
                                         content
-                                            .opacity(phase.isIdentity ? 1.0 : 0.0)
-                                            .scaleEffect(phase.isIdentity ? 1.0 : 0.8)
-                                            .offset(y: phase.isIdentity ? 0 : -90)
+                                            .opacity(max(0, 1.0 - (abs(phase.value) * 4.0)))
+                                            .scaleEffect(phase.isIdentity ? 1.0 : 0.6)
                                     }
                                     .opacity(deletingSculptureID == sculpture.id ? 0 : 1)
                                     .rotationEffect(.degrees(deletingSculptureID == sculpture.id ? 45 : 0))
@@ -141,13 +140,13 @@ struct MuseuView: View {
                                     .animation(
                                         deletingSculptureID == sculpture.id ?
                                             .easeIn(duration: 0.9) :
-                                                .default,
+                                            .default,
                                         value: deletingSculptureID
                                     )
                                     
                                 }
                                 .containerRelativeFrame(.horizontal, count: 1, span: 1, spacing: 0)
-                                .frame(width: UIScreen.main.bounds.width * 0.7) // frame da escultura e do pilar
+                                .frame(width: UIScreen.main.bounds.width * 0.7)
                             }
                         }
                         .scrollTargetLayout()
