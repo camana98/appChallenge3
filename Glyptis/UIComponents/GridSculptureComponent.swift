@@ -17,6 +17,8 @@ struct GridSculptureComponent: View {
                 Image(.bezeled)
                     .scaledToFill()
                 
+                
+                
             }
             
             Text(sculpture.name)

@@ -12,6 +12,7 @@ protocol MuseuGridViewModelProtocol {
     var showSearch: Bool { get set }
     var searchText: String { get set }
     var filteredSculptures: [Sculpture] { get }
+    var sortOptions: SnapshotSortOption { get set }
     
     var sculptures: [Sculpture] { get set }
     
@@ -21,4 +22,5 @@ protocol MuseuGridViewModelProtocol {
     func edit(s: Sculpture)  -> Void
     func anchor(s: Sculpture)  -> Void
     func fetchData() -> Void
+    func getSnapshot(s: Sculpture) -> UIImage
 }
