@@ -40,7 +40,7 @@ struct NameSculpturePopup: View {
                     .fixedSize(horizontal: false, vertical: true)
                     .foregroundColor(.black)
                 
-                TextField("Escreva aqui", text: $sculptureName)
+                TextField("", text: $sculptureName)
                     .padding()
                     .background(Color.white.opacity(0.6))
                     .cornerRadius(26)
