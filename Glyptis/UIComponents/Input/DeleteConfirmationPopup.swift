@@ -1,10 +1,3 @@
-//
-//  DeleteConfirmationPopup.swift
-//  Glyptis
-//
-//  Created by Auto on 05/12/25.
-//
-
 import SwiftUI
 
 struct DeleteConfirmationPopup: View {
@@ -14,53 +7,76 @@ struct DeleteConfirmationPopup: View {
     
     var body: some View {
         ZStack {
-            Color.black.opacity(0.4)
-                .edgesIgnoringSafeArea(.all)
+            // Fundo escurecido
+            Color.black.opacity(0.45)
+                .ignoresSafeArea()
                 .onTapGesture {
                     onCancel()
                 }
             
-            VStack(alignment: .leading, spacing: 20) {
+            VStack(alignment: .leading, spacing: 18) {
+                // Título
+                Text("Tem certeza que deseja deletar sua escultura \"\(sculptureName)\"?")
+                    .font(Fonts.title2) // aqui você pode trocar pra Fonts.title se quiser
+                    .foregroundStyle(.noite)
+                    .multilineTextAlignment(.leading)
+//                    .fixedSize(horizontal: false, vertical: true)
                 
-                Text("Deletar escultura?")
-                    .font(.title2)
-                    .bold()
-                    .foregroundColor(.black)
-                
-                Text("Tem certeza que deseja deletar \"\(sculptureName)\"? Esta ação não pode ser desfeita.")
+                // Mensagem
+                Text("Uma vez deletada, não poderá ser recuperada no museu.")
                     .font(.subheadline)
-                    .fixedSize(horizontal: false, vertical: true)
-                    .foregroundColor(.black)
+                    .foregroundStyle(.acinzentado)
+                    .multilineTextAlignment(.leading)
+//                    .fixedSize(horizontal: false, vertical: true)
                 
-                HStack(spacing: 12) {
-                    Button("Cancelar") {
-                        onCancel()
-                    }
-                    .frame(maxWidth: .infinity)
-                    .padding()
-                    .background(Color.gray.opacity(0.3))
-                    .foregroundColor(.black)
-                    .cornerRadius(100)
-                    .accessibilityIdentifier("CancelDeleteButton")
-                    
-                    Button("Deletar") {
+                VStack(spacing: 10) {
+                    // Botão "Sim, desejo deletar" – pill vermelha
+                    Button(action: {
                         onConfirm()
+                    }) {
+                        Text("Sim, desejo deletar")
+                            .font(.headline) // customiza aqui se quiser
+                            .frame(maxWidth: .infinity)
+                            .padding(.vertical, 14)
                     }
-                    .frame(maxWidth: .infinity)
-                    .padding()
-                    .background(Color("customRed").opacity(0.8))
-                    .foregroundColor(.white)
-                    .cornerRadius(100)
+                    .background(
+                        RoundedRectangle(cornerRadius: 24, style: .continuous)
+                            .fill(Color.white.opacity(0.06)) // fundo da pill
+                    )
+                    .foregroundStyle(Color.red)
                     .accessibilityIdentifier("ConfirmDeleteButton")
+                    
+                    // Botão "Não, desejo manter" – pill neutra
+                    Button(action: {
+                        onCancel()
+                    }) {
+                        Text("Não, desejo manter")
+                            .font(.headline)
+                            .frame(maxWidth: .infinity)
+                            .padding(.vertical, 14)
+                    }
+                    .background(
+                        RoundedRectangle(cornerRadius: 24, style: .continuous)
+                            .fill(Color.white.opacity(0.08))
+                    )
+                    .foregroundStyle(Color.white)
+                    .accessibilityIdentifier("CancelDeleteButton")
                 }
-                
             }
-            .padding()
-            .background(Color.white.opacity(0.6))
-            .cornerRadius(32)
-            .shadow(radius: 10)
-            .frame(maxWidth: 350)
+            .padding(24)
+            .background(.ultraThinMaterial) // efeito vidro
+            .clipShape(RoundedRectangle(cornerRadius: 32, style: .continuous))
+            .shadow(color: .black.opacity(0.35), radius: 30, x: 0, y: 20)
+            .frame(maxWidth: 360)
+            .padding(.horizontal, 24)
         }
     }
 }
 
+#Preview {
+    DeleteConfirmationPopup(
+        sculptureName: "ghhhh",
+        onConfirm: {},
+        onCancel: {}
+    )
+}

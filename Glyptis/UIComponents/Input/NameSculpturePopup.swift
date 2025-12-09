@@ -19,7 +19,13 @@ struct NameSculpturePopup: View {
             Color.black.opacity(0.4)
                 .edgesIgnoringSafeArea(.all)
                 .onTapGesture {
-                    onCancel()
+                    // Primeiro fecha o teclado
+                    if isUsernameFocused {
+                        isUsernameFocused = false
+                    } else {
+                        // Se o teclado já não está ativo, fecha o popup imediatamente
+                        onCancel()
+                    }
                 }
             
             VStack(alignment: .leading, spacing: 20) {
