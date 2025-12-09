@@ -36,7 +36,7 @@ struct ARCameraView: View {
                         onOpenMuseum()
                     } label: {
                         VStack(spacing: 5) {
-                            Image("museum")
+                            Image("newMuseu")
                                 .resizable()
                                 .scaledToFit()
                                 .frame(width: 54, height: 54)
@@ -68,14 +68,8 @@ struct ARCameraView: View {
                 .padding(.top, 26)
                 .padding(.bottom, 26)
                 .frame(maxWidth: .infinity)
-                .background {
-                    ZStack {
-                        Color.white.opacity(0.5)
-                        Rectangle()
-                            .fill(Material.ultraThinMaterial)
-                            .environment(\.colorScheme, .light)
-                    }
-                }
+                
+                .background(.ultraThinMaterial.opacity(1))
                 .clipShape(
                     .rect(
                         topLeadingRadius: 35,
@@ -89,6 +83,7 @@ struct ARCameraView: View {
                     UnevenRoundedRectangle(cornerRadii: .init(topLeading: 35, bottomLeading: 0, bottomTrailing: 0, topTrailing: 35))
                         .stroke(Color.white.opacity(0.3), lineWidth: 1)
                 )
+                .preferredColorScheme(ColorScheme.light)
             }
             .edgesIgnoringSafeArea(.bottom)
         }
