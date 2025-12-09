@@ -176,16 +176,6 @@ struct CanvasView: View {
             ZStack {
                 Rectangle().fill(.ultraThinMaterial)
                     .environment(\.colorScheme, .light)
-                
-                UnevenRoundedRectangle(topLeadingRadius: 35, topTrailingRadius: 35)
-                    .stroke(
-                        LinearGradient(
-                            colors: [.white.opacity(0.4), .white.opacity(0.1)],
-                            startPoint: .top,
-                            endPoint: .bottom
-                        ),
-                        lineWidth: 1
-                    )
             }
             .clipShape(UnevenRoundedRectangle(topLeadingRadius: 35, topTrailingRadius: 35))
             .shadow(color: .black.opacity(0.15), radius: 10, x: 0, y: -5)

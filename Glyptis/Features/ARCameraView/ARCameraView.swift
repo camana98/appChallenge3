@@ -49,13 +49,14 @@ struct ARCameraView: View {
                             Image("newMuseu")
                                 .resizable()
                                 .scaledToFit()
-                                .frame(width: 54, height: 54)
+                                .frame(width: 54, height: 56)
                             
                             Text("Museu")
                                 .font(.custom("NotoSans-Medium", size: 15))
                                 .fontWeight(.medium)
                                 .foregroundStyle(.noite)
                         }
+                        .frame(width: 89, height: 82)
                     }
                     
                     /// Botão Canvas
@@ -73,27 +74,16 @@ struct ARCameraView: View {
                                 .fontWeight(.medium)
                                 .foregroundStyle(.noite)
                         }
+                        .frame(width: 89, height: 82)
                     }
                 }
                 .padding(.top, 26)
-                .padding(.bottom, 26)
-                .frame(maxWidth: .infinity)
-                
-                .background(.ultraThinMaterial.opacity(1))
-                .clipShape(
-                    .rect(
-                        topLeadingRadius: 35,
-                        bottomLeadingRadius: 0,
-                        bottomTrailingRadius: 0,
-                        topTrailingRadius: 35
-                    )
-                )
-                .shadow(color: Color.black.opacity(0.1), radius: 10, x: 0, y: -5)
-                .overlay(
-                    UnevenRoundedRectangle(cornerRadii: .init(topLeading: 35, bottomLeading: 0, bottomTrailing: 0, topTrailing: 35))
-                        .stroke(Color.white.opacity(0.3), lineWidth: 1)
-                )
-                .preferredColorScheme(ColorScheme.light)
+                                .padding(.horizontal, 24)
+                                .padding(.bottom, 54)
+                                .frame(maxWidth: .infinity)
+                                .background(.ultraThinMaterial)
+                                .clipShape(RoundedRectangle(cornerRadius: 70, style: .continuous))
+                                .preferredColorScheme(.light)
             }
             .edgesIgnoringSafeArea(.bottom)
             .zIndex(2)
@@ -111,15 +101,15 @@ struct ARCameraView: View {
     private func checkCameraPermission() {
         switch AVCaptureDevice.authorizationStatus(for: .video) {
         case .authorized:
-            withAnimation { isCameraAccessDenied = false }
+           isCameraAccessDenied = false
         case .notDetermined:
             AVCaptureDevice.requestAccess(for: .video) { granted in
                 DispatchQueue.main.async {
-                    withAnimation { isCameraAccessDenied = !granted }
+                    isCameraAccessDenied = !granted
                 }
             }
         case .denied, .restricted:
-            withAnimation { isCameraAccessDenied = true }
+            isCameraAccessDenied = true
         @unknown default:
             break
         }

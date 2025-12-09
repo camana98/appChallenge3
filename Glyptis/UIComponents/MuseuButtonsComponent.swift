@@ -93,7 +93,7 @@ struct MuseuButtonsComponent: View {
             .presentationDetents([.height(188)])
             .frame(maxWidth: .infinity)
             .presentationDragIndicator(.visible)
-            .presentationBackground(.ultraThinMaterial)
+            .presentationBackground(.clear)
             .preferredColorScheme(.light)
         }
     }

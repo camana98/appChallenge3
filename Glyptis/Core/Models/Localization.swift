@@ -17,7 +17,7 @@ final class Localization {
     var altitude: Double = 0.0
     
     var sculpture: Sculpture?
-    
+       
     var contributors: [Author]?
     
     init(latitude: Double, longitude: Double, altitude: Double, sculpture: Sculpture) {
