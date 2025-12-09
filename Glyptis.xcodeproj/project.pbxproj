@@ -7,6 +7,13 @@
 	objects = {
 
 /* Begin PBXContainerItemProxy section */
+		C53C76162EE0BFEC005C6BB0 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C5C4EC2D2ECE53E90068CA51 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = C5C4EC342ECE53E90068CA51;
+			remoteInfo = Glyptis;
+		};
 		D29A77AA2ED0D899003908C4 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = C5C4EC2D2ECE53E90068CA51 /* Project object */;
@@ -17,13 +24,32 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		C53C76102EE0BFEC005C6BB0 /* GlyptisUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = GlyptisUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		C5C4EC352ECE53E90068CA51 /* Glyptis.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Glyptis.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D29A77A62ED0D899003908C4 /* GlyptisTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = GlyptisTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		B7006EA72EE0E5FB0048F15E /* Exceptions for "Glyptis" folder in "Glyptis" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = C5C4EC342ECE53E90068CA51 /* Glyptis */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
+		C53C76112EE0BFEC005C6BB0 /* GlyptisUITests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = GlyptisUITests;
+			sourceTree = "<group>";
+		};
 		C5C4EC372ECE53E90068CA51 /* Glyptis */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				B7006EA72EE0E5FB0048F15E /* Exceptions for "Glyptis" folder in "Glyptis" target */,
+			);
 			path = Glyptis;
 			sourceTree = "<group>";
 		};
@@ -35,6 +61,13 @@
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		C53C760D2EE0BFEC005C6BB0 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		C5C4EC322ECE53E90068CA51 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -57,6 +90,7 @@
 			children = (
 				C5C4EC372ECE53E90068CA51 /* Glyptis */,
 				D29A77A72ED0D899003908C4 /* GlyptisTests */,
+				C53C76112EE0BFEC005C6BB0 /* GlyptisUITests */,
 				C5C4EC362ECE53E90068CA51 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -66,6 +100,7 @@
 			children = (
 				C5C4EC352ECE53E90068CA51 /* Glyptis.app */,
 				D29A77A62ED0D899003908C4 /* GlyptisTests.xctest */,
+				C53C76102EE0BFEC005C6BB0 /* GlyptisUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -73,6 +108,29 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		C53C760F2EE0BFEC005C6BB0 /* GlyptisUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C53C76182EE0BFEC005C6BB0 /* Build configuration list for PBXNativeTarget "GlyptisUITests" */;
+			buildPhases = (
+				C53C760C2EE0BFEC005C6BB0 /* Sources */,
+				C53C760D2EE0BFEC005C6BB0 /* Frameworks */,
+				C53C760E2EE0BFEC005C6BB0 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				C53C76172EE0BFEC005C6BB0 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				C53C76112EE0BFEC005C6BB0 /* GlyptisUITests */,
+			);
+			name = GlyptisUITests;
+			packageProductDependencies = (
+			);
+			productName = GlyptisUITests;
+			productReference = C53C76102EE0BFEC005C6BB0 /* GlyptisUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
 		C5C4EC342ECE53E90068CA51 /* Glyptis */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = C5C4EC402ECE53EA0068CA51 /* Build configuration list for PBXNativeTarget "Glyptis" */;
@@ -128,6 +186,10 @@
 				LastSwiftUpdateCheck = 2610;
 				LastUpgradeCheck = 2600;
 				TargetAttributes = {
+					C53C760F2EE0BFEC005C6BB0 = {
+						CreatedOnToolsVersion = 26.1;
+						TestTargetID = C5C4EC342ECE53E90068CA51;
+					};
 					C5C4EC342ECE53E90068CA51 = {
 						CreatedOnToolsVersion = 26.0.1;
 					};
@@ -138,11 +200,12 @@
 				};
 			};
 			buildConfigurationList = C5C4EC302ECE53E90068CA51 /* Build configuration list for PBXProject "Glyptis" */;
-			developmentRegion = en;
+			developmentRegion = "pt-BR";
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
 				Base,
+				"pt-BR",
 			);
 			mainGroup = C5C4EC2C2ECE53E90068CA51;
 			minimizedProjectReferenceProxies = 1;
@@ -153,11 +216,19 @@
 			targets = (
 				C5C4EC342ECE53E90068CA51 /* Glyptis */,
 				D29A77A52ED0D899003908C4 /* GlyptisTests */,
+				C53C760F2EE0BFEC005C6BB0 /* GlyptisUITests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		C53C760E2EE0BFEC005C6BB0 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		C5C4EC332ECE53E90068CA51 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -175,6 +246,13 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		C53C760C2EE0BFEC005C6BB0 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		C5C4EC312ECE53E90068CA51 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -192,6 +270,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		C53C76172EE0BFEC005C6BB0 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = C5C4EC342ECE53E90068CA51 /* Glyptis */;
+			targetProxy = C53C76162EE0BFEC005C6BB0 /* PBXContainerItemProxy */;
+		};
 		D29A77AB2ED0D899003908C4 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = C5C4EC342ECE53E90068CA51 /* Glyptis */;
@@ -200,6 +283,48 @@
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
+		C53C76192EE0BFEC005C6BB0 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = K7J6QAV9ZN;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.6;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = br.app.GlyptisUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = Glyptis;
+			};
+			name = Debug;
+		};
+		C53C761A2EE0BFEC005C6BB0 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = K7J6QAV9ZN;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.6;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = br.app.GlyptisUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = Glyptis;
+			};
+			name = Release;
+		};
 		C5C4EC3E2ECE53EA0068CA51 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -253,6 +378,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
@@ -311,6 +437,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MTL_ENABLE_DEBUG_INFO = NO;
@@ -334,6 +461,7 @@
 				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = K7J6QAV9ZN;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Glyptis/Info.plist;
 				INFOPLIST_KEY_NSCameraUsageDescription = "O Glyptis usa sua câmera para projetar esculturas 3D no mundo real e permitir que você crie arte em Realidade Aumentada.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -373,6 +501,7 @@
 				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = K7J6QAV9ZN;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Glyptis/Info.plist;
 				INFOPLIST_KEY_NSCameraUsageDescription = "O Glyptis usa sua câmera para projetar esculturas 3D no mundo real e permitir que você crie arte em Realidade Aumentada.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -403,14 +532,18 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
-				CODE_SIGN_STYLE = Automatic;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = F2YG7Y5V9J;
+				DEVELOPMENT_TEAM = "";
+				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = K7J6QAV9ZN;
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 18.6;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = app.ghiseguilherme.GlyptisTests;
+				PRODUCT_BUNDLE_IDENTIFIER = br.app.Glyptis;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = GlyptisPP;
 				STRING_CATALOG_GENERATE_SYMBOLS = NO;
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
 				SWIFT_EMIT_LOC_STRINGS = NO;
@@ -425,14 +558,18 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
-				CODE_SIGN_STYLE = Automatic;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = F2YG7Y5V9J;
+				DEVELOPMENT_TEAM = "";
+				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = K7J6QAV9ZN;
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 18.6;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = app.ghiseguilherme.GlyptisTests;
+				PRODUCT_BUNDLE_IDENTIFIER = br.app.Glyptis;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = GlyptisPP;
 				STRING_CATALOG_GENERATE_SYMBOLS = NO;
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
 				SWIFT_EMIT_LOC_STRINGS = NO;
@@ -446,6 +583,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		C53C76182EE0BFEC005C6BB0 /* Build configuration list for PBXNativeTarget "GlyptisUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C53C76192EE0BFEC005C6BB0 /* Debug */,
+				C53C761A2EE0BFEC005C6BB0 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		C5C4EC302ECE53E90068CA51 /* Build configuration list for PBXProject "Glyptis" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
