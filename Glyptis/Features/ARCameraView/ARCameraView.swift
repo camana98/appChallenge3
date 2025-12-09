@@ -7,28 +7,38 @@
 
 import SwiftUI
 import SwiftData
+import AVFoundation
 
 struct ARCameraView: View {
 
     @Environment(\.modelContext) private var context
+    @Environment(\.scenePhase) var scenePhase
     
     @State var coordinator = ARViewCoordinator()
-    @State private var showSnapshots = false
+    @State private var isCameraAccessDenied = false
 
     var onOpenCanvas: () -> Void
     var onOpenMuseum: () -> Void
     
     var body: some View {
         ZStack {
-            ///  AR View
+            
+            /// 1. Camada da Câmera
             ARViewContainer(coordinator: $coordinator)
                 .edgesIgnoringSafeArea(.all)
+                .opacity(isCameraAccessDenied ? 0 : 1)
             
-            /// Camada de Interface
+            /// 2. Camada de Aviso com IMAGEM DE FUNDO (Meio)
+            if isCameraAccessDenied {
+                CameraAccessDeniedView()
+                    .transition(.opacity)
+                    .zIndex(1)
+            }
+            
+            /// 3. Camada de Interface dos Botões
             VStack {
                 Spacer()
                 
-                /// Área dos Botões
                 HStack(spacing: 60) {
                     
                     /// Botão Museu
@@ -86,10 +96,33 @@ struct ARCameraView: View {
                 .preferredColorScheme(ColorScheme.light)
             }
             .edgesIgnoringSafeArea(.bottom)
+            .zIndex(2)
+        }
+        .onAppear {
+            checkCameraPermission()
+        }
+        .onChange(of: scenePhase) { newPhase in
+            if newPhase == .active {
+                checkCameraPermission()
+            }
+        }
+    }
+    
+    private func checkCameraPermission() {
+        switch AVCaptureDevice.authorizationStatus(for: .video) {
+        case .authorized:
+            withAnimation { isCameraAccessDenied = false }
+        case .notDetermined:
+            AVCaptureDevice.requestAccess(for: .video) { granted in
+                DispatchQueue.main.async {
+                    withAnimation { isCameraAccessDenied = !granted }
+                }
+            }
+        case .denied, .restricted:
+            withAnimation { isCameraAccessDenied = true }
+        @unknown default:
+            break
         }
     }
 }
 
-#Preview {
-    ARCameraView(onOpenCanvas: {}, onOpenMuseum: {})
-}
