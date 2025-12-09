@@ -7,12 +7,14 @@
 
 import Foundation
 import SwiftUI
+//import UIKit
 
 struct MuseuSculptureComponent: View {
     
     var sculpture: Sculpture
     @State var vm: MuseuViewModelProtocol
     var onDeleteRequested: () -> Void
+    var onShowComingSoon: () -> Void
     
     var body: some View {
         
@@ -54,7 +56,8 @@ struct MuseuSculptureComponent: View {
                 
                 VStack(alignment: .center, spacing: 4) {
                     SimpleCubeIcon(assetName: "pinCube", width: 54, height: 56) {
-                        vm.anchor(s: sculpture)
+                        // vm.anchor(s: sculpture)
+                        onShowComingSoon()
                     }
                     
                     Text("Ancorar")

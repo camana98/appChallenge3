@@ -20,6 +20,7 @@ struct MuseuView: View {
     @State private var sculptureToDelete: Sculpture?
     @State private var isDeleting: Bool = false
     @State private var deletingSculptureID: Sculpture.ID?
+    @State private var showComingSoonPopup: Bool = false
     
     /// Onboarding
     @AppStorage("hasSeenOnboarding") private var hasSeenOnboarding: Bool = false
@@ -122,6 +123,9 @@ struct MuseuView: View {
                                         },
                                         onOpenCanvas: {
                                             onOpenCanvas?()
+                                        },
+                                        onShowComingSoon: {
+                                            showComingSoonPopup = true
                                         }
                                     )
                                     .padding(.bottom, 52)
@@ -164,6 +168,19 @@ struct MuseuView: View {
             if showOnboarding {
                 OnboardingView(isPresented: $showOnboarding)
                     .zIndex(100)
+            }
+            
+            if showComingSoonPopup {
+                ComingSoonPopup(
+                    onClose: {
+                        showComingSoonPopup = false
+                    },
+                    onOpenInstagram: {
+                        openInstagram()
+                    }
+                )
+                .transition(.opacity)
+                .zIndex(200)
             }
         }
         
@@ -229,6 +246,20 @@ struct MuseuView: View {
         //            }
         //        }
         
+    }
+    
+    private func openInstagram() {
+        let instagramUsername = "app.glyptis"
+        let instagramURL = URL(string: "instagram://user?username=\(instagramUsername)")!
+        let instagramWebURL = URL(string: "https://www.instagram.com/\(instagramUsername)/")!
+        
+        if UIApplication.shared.canOpenURL(instagramURL) {
+            UIApplication.shared.open(instagramURL)
+        } else {
+            UIApplication.shared.open(instagramWebURL)
+        }
+        
+        showComingSoonPopup = false
     }
 }
 
