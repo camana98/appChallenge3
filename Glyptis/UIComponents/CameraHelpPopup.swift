@@ -25,9 +25,8 @@ struct CameraHelpPopup: View {
                     instructionRow(icon: "lightbulb.max.fill", title: "Prepare o Ambiente", text: "Escaneie um local bem iluminado movendo a câmera lentamente.")
                     instructionRow(icon: "plus.square.fill.on.square.fill", title: "Adicionar Escultura", text: "Vá ao Museu, selecione uma obra e clique em 'Ancorar'.")
                     instructionRow(icon: "eye.fill", title: "Visualizar", text: "Escaneie a área para reencontrar esculturas já ancoradas.")
-                    instructionRow(icon: "arrow.up.and.down.and.arrow.left.and.right", title: "Ajustar Posição", text: "Arraste para mover no chão. Toque para ajustar a altura.")
-                    instructionRow(icon: "arrow.triangle.2.circlepath", title: "Girar", text: "Use dois dedos para rotacionar a escultura.")
-                    instructionRow(icon: "trash.fill", title: "Remover", text: "Segure pressionado (Long Press) na escultura para deletar.")
+                    instructionRow(icon: "arrow.up.and.down.and.arrow.left.and.right", title: "Ajustar Posição", text: "Arraste para mover no chão. Toque para ajustar a altura e rotacionar.")
+                    instructionRow(icon: "trash.fill", title: "Remover", text: "Segure pressionado na escultura para deletar.")
                 }
                 
                 Button { withAnimation { isPresented = false } } label: {

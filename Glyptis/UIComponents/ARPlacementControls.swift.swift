@@ -12,46 +12,43 @@ struct ARPlacementControls: View {
     var onConfirm: () -> Void
     
     var body: some View {
-        HStack(spacing: 40) {
-            Button {
-                onCancel()
-            } label: {
-                VStack(spacing: 5) {
-                    ZStack {
-                        Circle()
-                            .fill(.white.opacity(0.2))
-                            .frame(width: 56, height: 56)
-                        Image(systemName: "xmark")
-                            .font(.system(size: 24, weight: .bold))
-                            .foregroundStyle(.white)
-                    }
-                    Text("Cancelar")
-                        .font(.custom("NotoSans-Medium", size: 14))
-                        .foregroundStyle(.white)
-                        .shadow(radius: 2)
-                }
+        HStack(spacing: 60) {
+            /// Botão Cancelar
+            VStack(spacing: 5) {
+                SimpleCubeIcon(
+                    assetName: "cancelCube",
+                    width: 56,
+                    height: 56,
+                    action: onCancel
+                )
+                Text("Cancelar")
+                    .font(.custom("NotoSans-Medium", size: 15))
+                    .fontWeight(.medium)
+                    .foregroundStyle(.noite)
             }
+            .frame(width: 89, height: 82)
             
-            Button {
-                onConfirm()
-            } label: {
-                VStack(spacing: 5) {
-                    ZStack {
-                        Circle()
-                            .fill(Color.blue)
-                            .frame(width: 70, height: 70)
-                        Image(systemName: "checkmark")
-                            .font(.system(size: 30, weight: .black))
-                            .foregroundStyle(.white)
-                    }
-                    Text("Fixar")
-                        .font(.custom("NotoSans-Bold", size: 16))
-                        .foregroundStyle(.white)
-                        .shadow(radius: 2)
-                }
+            /// Botão Fixar
+            VStack(spacing: 5) {
+                SimpleCubeIcon(
+                    assetName: "saveCube",
+                    width: 56,
+                    height: 56,
+                    action: onConfirm
+                )
+                Text("Fixar")
+                    .font(.custom("NotoSans-Medium", size: 15))
+                    .fontWeight(.medium)
+                    .foregroundStyle(.noite)
             }
-            .offset(y: -20)
+            .frame(width: 89, height: 82)
         }
-        .padding(.bottom, 40)
+        .padding(.top, 26)
+        .padding(.horizontal, 24)
+        .padding(.bottom, 54)
+        .frame(maxWidth: .infinity)
+        .background(.ultraThinMaterial)
+        .clipShape(RoundedRectangle(cornerRadius: 70, style: .continuous))
+        .preferredColorScheme(.light)
     }
 }

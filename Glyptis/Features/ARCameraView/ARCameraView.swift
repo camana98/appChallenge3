@@ -65,8 +65,8 @@ struct ARCameraView: View {
                             .frame(width: 54, height: 56)
                             .shadow(radius: 4)
                     }
-                    .padding(.trailing, 24)
-                    .padding(.top, 60)
+                    .padding(.trailing, 16)
+                    .padding(.top, 16)
                 }
                 
                 Spacer()
