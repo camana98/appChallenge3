@@ -133,16 +133,36 @@ class ARViewCoordinator: NSObject, ARSessionDelegate, UIGestureRecognizerDelegat
     }
     
     func showPreview(of sculpture: Sculpture) {
-        self.activeSculpture = sculpture
-        clearPreview()
-        let cameraAnchor = AnchorEntity(.camera)
-        let sculptureEntity = buildSculptureEntity(from: sculpture, opacity: 0.5)
-        sculptureEntity.position = [0, -0.1, -0.5]
-        sculptureEntity.scale = [0.5, 0.5, 0.5]
-        cameraAnchor.addChild(sculptureEntity)
-        arView.scene.addAnchor(cameraAnchor)
-        self.previewAnchor = cameraAnchor
-    }
+            self.activeSculpture = sculpture
+            clearPreview()
+            
+            let cameraAnchor = AnchorEntity(.camera)
+            
+            let sculptureEntity = buildSculptureEntity(from: sculpture, opacity: 0.5)
+            let bounds = sculptureEntity.visualBounds(relativeTo: sculptureEntity)
+            let size = bounds.extents
+            let maxDimension = max(size.x, max(size.y, size.z))
+            
+
+            let targetSize: Float = 0.25
+            let scaleFactor = maxDimension > 0 ? (targetSize / maxDimension) : 1.0
+            
+            // 4. Cria um container para segurar a escultura na frente da câmera
+            let previewContainer = Entity()
+            
+            // Posiciona o container na frente da câmera (50cm à frente, levemente abaixo do centro)
+        previewContainer.position = [0, -0.1, -2.0]
+            
+            previewContainer.scale = SIMD3<Float>(repeating: scaleFactor)
+        
+            sculptureEntity.position = -bounds.center
+            
+            previewContainer.addChild(sculptureEntity)
+            cameraAnchor.addChild(previewContainer)
+            
+            arView.scene.addAnchor(cameraAnchor)
+            self.previewAnchor = cameraAnchor
+        }
     
     func anchorPreview() -> Bool {
         guard let sculpture = activeSculpture else { return false }
