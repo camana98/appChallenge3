@@ -8,19 +8,25 @@ struct MuseuEmptyStateView: View {
     
     @State private var isFloating = false
     @State private var showCanvas = false
+    var onSave: () -> Void
     
     var body: some View {
-        // MARK: - Troca de Tela
-        if showCanvas {
-            CanvasView(onCancel: {
-                showCanvas = false
-            })
-            .transition(.opacity)
-        } else {
             contentMuseu
-                .transition(.opacity)
+                .fullScreenCover(isPresented: $showCanvas) {
+                    CanvasView(
+                        onCancel: {
+                            showCanvas = false
+                        },
+                        onSave: {
+                            showCanvas = false
+                            
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                                onSave()
+                            }
+                        }
+                    )
+                }
         }
-    }
     
     // MARK: - Conteúdo do Museu
     var contentMuseu: some View {

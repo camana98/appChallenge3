@@ -55,8 +55,13 @@ struct MuseuView: View {
                     
                     Spacer()
                     
-                    SimpleCubeIcon(assetName: "gridCube", width: 55, height: 55) {
-                        showGridListMuseum.toggle()
+                    if !vm.sculptures.isEmpty {
+                        SimpleCubeIcon(assetName: "gridCube", width: 55, height: 55) {
+                            showGridListMuseum.toggle()
+                        }
+                    } else {
+                        Color.clear
+                            .frame(width: 55, height: 55)
                     }
                 }
                 .padding(.horizontal)
@@ -64,7 +69,14 @@ struct MuseuView: View {
                 Spacer()
                 
                 if vm.sculptures.isEmpty {
-                    MuseuEmptyStateView(onBackClicked: onBackClicked)
+                    MuseuEmptyStateView(
+                        onBackClicked: onBackClicked,
+                        onSave: {
+                            withAnimation {
+                                vm.fetchData()
+                            }
+                        }
+                    )
                 } else {
                     ScrollView(.horizontal, showsIndicators: false) {
                         LazyHStack {
@@ -178,44 +190,44 @@ struct MuseuView: View {
             }
         }
         .alert(item: $sculptureToDelete) { sculpture in
-                    Alert(
-                        title: Text("Tem certeza que deseja deletar sua escultura \"\(sculpture.name)\"?"),
-                        message: Text("Uma vez deletada, não poderá ser recuperada no museu."),
-                        primaryButton: .destructive(Text("Sim, desejo deletar")) {
-                            // animação + delete, igual ao popup custom
-                            deletingSculptureID = sculpture.id
-                            SoundManager.shared.playSound(named: "cleanCubes", volume: 1) // som quando demolir
-                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.9) {
-                                vm.delete(s: sculpture)
-                                deletingSculptureID = nil
-                            }
-                        },
-                        secondaryButton: .cancel(Text("Não, desejo manter"))
-                    )
-                }
+            Alert(
+                title: Text("Tem certeza que deseja deletar sua escultura \"\(sculpture.name)\"?"),
+                message: Text("Uma vez deletada, não poderá ser recuperada no museu."),
+                primaryButton: .destructive(Text("Sim, desejo deletar")) {
+                    // animação + delete, igual ao popup custom
+                    deletingSculptureID = sculpture.id
+                    SoundManager.shared.playSound(named: "cleanCubes", volume: 1) // som quando demolir
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.9) {
+                        vm.delete(s: sculpture)
+                        deletingSculptureID = nil
+                    }
+                },
+                secondaryButton: .cancel(Text("Não, desejo manter"))
+            )
+        }
         //MARK: ISSO AQUI CASO VA USAR O DELETECONFIRMATIONPOPUP
-//        .overlay {
-//            if let sculpture = sculptureToDelete {
-//                DeleteConfirmationPopup(
-//                    sculptureName: sculpture.name,
-//                    onConfirm: {
-//                        sculptureToDelete = nil
-//                        deletingSculptureID = sculpture.id
-//                        
-//                        // Aguarda a animação terminar antes de deletar
-//                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.9) {
-//                            vm.delete(s: sculpture)
-//                            deletingSculptureID = nil
-//                        }
-//                    },
-//                    onCancel: {
-//                        sculptureToDelete = nil
-//                    }
-//                )
-//                .transition(.opacity)
-//                .zIndex(10)
-//            }
-//        }
+        //        .overlay {
+        //            if let sculpture = sculptureToDelete {
+        //                DeleteConfirmationPopup(
+        //                    sculptureName: sculpture.name,
+        //                    onConfirm: {
+        //                        sculptureToDelete = nil
+        //                        deletingSculptureID = sculpture.id
+        //
+        //                        // Aguarda a animação terminar antes de deletar
+        //                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.9) {
+        //                            vm.delete(s: sculpture)
+        //                            deletingSculptureID = nil
+        //                        }
+        //                    },
+        //                    onCancel: {
+        //                        sculptureToDelete = nil
+        //                    }
+        //                )
+        //                .transition(.opacity)
+        //                .zIndex(10)
+        //            }
+        //        }
         
     }
 }

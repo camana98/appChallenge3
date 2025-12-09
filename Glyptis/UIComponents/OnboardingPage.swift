@@ -20,6 +20,7 @@ struct OnboardingPage: Identifiable {
 // MARK: - View Principal do Onboarding
 struct OnboardingView: View {
     @Binding var isPresented: Bool
+    @AppStorage("hasSeenOnboarding") private var hasSeenOnboarding: Bool = false
     
     @State private var currentPage = 0
     
@@ -147,6 +148,8 @@ struct OnboardingView: View {
     // MARK: - Funções Auxiliares
     
     private func closeOnboarding() {
+        hasSeenOnboarding = true
+        
         withAnimation {
             isPresented = false
         }
