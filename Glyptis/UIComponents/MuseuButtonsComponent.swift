@@ -7,7 +7,6 @@
 
 import Foundation
 import SwiftUI
-//import UIKit
 
 struct MuseuButtonsComponent: View {
     
@@ -29,7 +28,6 @@ struct MuseuButtonsComponent: View {
             HStack(spacing: 32) {
                 VStack(alignment: .center, spacing: 4) {
                     SimpleCubeIcon(assetName: "cameraAR", width: 54, height: 56) {
-                        // AQUI: Agora chama a função de abrir câmera limpa
                         onOpenCamera()
                     }
                     Text("Câmera AR")
@@ -58,17 +56,19 @@ struct MuseuButtonsComponent: View {
                         .foregroundStyle(.customBlue)
                 }
                 .frame(width: 108, height: 82)
-    
-                
             }
-//            .padding(.bottom, 22)
         }
         .padding(.top, 26)
         .padding(.horizontal, 24)
-        .padding(.bottom, 54)
+        .padding(.bottom, 54) // Padding interno para o conteúdo não colar na borda inferior
         .frame(maxWidth: .infinity)
-        .background(.ultraThinMaterial)
+        .background(.ultraThinMaterial) // Efeito de vidro
         .clipShape(RoundedRectangle(cornerRadius: 70, style: .continuous))
+        .shadow(color: Color.black.opacity(0.1), radius: 10, x: 0, y: -5) // Sombra suave
+        .overlay( // Borda fina branca para efeito "Liquid"
+            RoundedRectangle(cornerRadius: 70, style: .continuous)
+                .stroke(Color.white.opacity(0.3), lineWidth: 1)
+        )
         .preferredColorScheme(.light)
         .sheet(isPresented: $showOptionsModal) {
             MuseuSculptureComponent(
@@ -83,7 +83,6 @@ struct MuseuButtonsComponent: View {
                 onAnchorRequested: {
                     showOptionsModal = false
                     DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-                        // Aqui continua chamando o modo de ancoragem
                         onAnchorSculpture?(sculpture)
                     }
                 },

@@ -36,6 +36,14 @@ struct MuseuView: View {
     
     @Query private var sculptures: [Sculpture]
     
+    var activeSculpture: Sculpture? {
+            if let id = selectedSculptureID, let sculpture = vm.sculptures.first(where: { $0.id == id }) {
+                return sculpture
+            }
+            return vm.sculptures.first
+        }
+    
+    
     var body: some View {
         ZStack {
             Image(.backgroundMuseu)
@@ -80,91 +88,83 @@ struct MuseuView: View {
                         }
                     )
                 } else {
-                    ScrollView(.horizontal, showsIndicators: false) {
-                        LazyHStack {
-                            ForEach(vm.sculptures) { sculpture in
-                                ZStack(alignment: .bottom) {
-                                    VStack(spacing: 0) {
-                                        
-                                        FloatingSculptureImage(
-                                            image: vm.getSnapshot(s: sculpture),
-                                            isActive: selectedSculptureID == sculpture.id && deletingSculptureID != sculpture.id
-                                        )
-                                        
-                                        Image(.colunaMuseu)
-                                            .padding(.leading, 10)
-                                    }
-                                    .scrollTransition { content, phase in
-                                        content
-                                            .blur(radius: phase.isIdentity ? 0 : 1)
-                                            .scaleEffect(phase.isIdentity ? 1.0 : 0.85)
-                                            .brightness(phase.isIdentity ? 0 : -0.35)
-                                            .offset(y: phase.isIdentity ? 0 : -90)
-                                    }
-                                    .opacity(deletingSculptureID == sculpture.id ? 0 : 1)
-                                    .rotationEffect(.degrees(deletingSculptureID == sculpture.id ? -45 : 0))
-                                    .scaleEffect(deletingSculptureID == sculpture.id ? 0.8 : 1.0)
-                                    .offset(
-                                        x: deletingSculptureID == sculpture.id ? 100 : 0,
-                                        y: deletingSculptureID == sculpture.id ? UIScreen.main.bounds.height + 200 : 0
-                                    )
-                                    .animation(
-                                        deletingSculptureID == sculpture.id ?
-                                            .easeIn(duration: 0.9) :
-                                                .default,
-                                        value: deletingSculptureID
-                                    )
-                                    
-                                    MuseuButtonsComponent(
-                                        sculpture: sculpture,
-                                        vm: vm,
-                                        sculptureToDelete: $sculptureToDelete,
-                                        onOpenCamera: {
-                                            onOpenCamera?()
-                                        },
-                                        onOpenCanvas: {
-                                            onOpenCanvas?()
-                                        },
-                                        onAnchorSculpture: { s in
-                                            onAnchorSculpture?(s)
-                                        },
-                                        onShowComingSoon: {
-                                            showComingSoonPopup = true
+                    // MARK: - Conteúdo Principal (ZStack para sobreposição)
+                    ZStack(alignment: .bottom) {
+                        
+                        // 1. Carrossel de Esculturas (Fica atrás do menu)
+                        ScrollView(.horizontal, showsIndicators: false) {
+                            LazyHStack {
+                                ForEach(vm.sculptures) { sculpture in
+                                    ZStack(alignment: .bottom) {
+                                        VStack(spacing: 0) {
+                                            
+                                            FloatingSculptureImage(
+                                                image: vm.getSnapshot(s: sculpture),
+                                                isActive: selectedSculptureID == sculpture.id && deletingSculptureID != sculpture.id
+                                            )
+                                            
+                                            Image(.colunaMuseu)
+                                                .padding(.leading, 10)
                                         }
-                                    )
-                                    .padding(.bottom, 52)
-                                    .scrollTransition(axis: .horizontal) { content, phase in
-                                        content
-                                            .opacity(max(0, 1.0 - (abs(phase.value) * 4.0)))
-                                            .scaleEffect(phase.isIdentity ? 1.0 : 0.6)
+                                        .scrollTransition { content, phase in
+                                            content
+                                                .blur(radius: phase.isIdentity ? 0 : 1)
+                                                .scaleEffect(phase.isIdentity ? 1.0 : 0.85)
+                                                .brightness(phase.isIdentity ? 0 : -0.35)
+                                                .offset(y: phase.isIdentity ? 0 : -90)
+                                        }
+                                        .opacity(deletingSculptureID == sculpture.id ? 0 : 1)
+                                        .rotationEffect(.degrees(deletingSculptureID == sculpture.id ? -45 : 0))
+                                        .scaleEffect(deletingSculptureID == sculpture.id ? 0.8 : 1.0)
+                                        .offset(
+                                            x: deletingSculptureID == sculpture.id ? 100 : 0,
+                                            y: deletingSculptureID == sculpture.id ? UIScreen.main.bounds.height + 200 : 0
+                                        )
+                                        .animation(
+                                            deletingSculptureID == sculpture.id ?
+                                                .easeIn(duration: 0.9) :
+                                                    .default,
+                                            value: deletingSculptureID
+                                        )
                                     }
-                                    .opacity(deletingSculptureID == sculpture.id ? 0 : 1)
-                                    .rotationEffect(.degrees(deletingSculptureID == sculpture.id ? 45 : 0))
-                                    .scaleEffect(deletingSculptureID == sculpture.id ? 0.8 : 1.0)
-                                    .offset(
-                                        x: deletingSculptureID == sculpture.id ? -100 : 0,
-                                        y: deletingSculptureID == sculpture.id ? UIScreen.main.bounds.height + 200 : 0
-                                    )
-                                    .animation(
-                                        deletingSculptureID == sculpture.id ?
-                                            .easeIn(duration: 0.9) :
-                                            .default,
-                                        value: deletingSculptureID
-                                    )
-                                    
+                                    .containerRelativeFrame(.horizontal, count: 1, span: 1, spacing: 0)
+                                    .frame(width: UIScreen.main.bounds.width * 0.7)
                                 }
-                                .containerRelativeFrame(.horizontal, count: 1, span: 1, spacing: 0)
-                                .frame(width: UIScreen.main.bounds.width * 0.7)
                             }
+                            .scrollTargetLayout()
                         }
-                        .scrollTargetLayout()
+                        .scrollTargetBehavior(.viewAligned)
+                        .scrollPosition(id: $selectedSculptureID)
+                        .safeAreaPadding(.horizontal, (UIScreen.main.bounds.width * 0.15))
+                        // O padding bottom aqui garante que o conteúdo do ScrollView desça o suficiente
+                        .padding(.bottom, 0)
+                        
+                        // 2. Menu de Botões Fixo (Fica na frente, "Liquid Glass")
+                        if let currentSculpture = activeSculpture {
+                            MuseuButtonsComponent(
+                                sculpture: currentSculpture,
+                                vm: vm,
+                                sculptureToDelete: $sculptureToDelete,
+                                onOpenCamera: {
+                                    onOpenCamera?()
+                                },
+                                onOpenCanvas: {
+                                    onOpenCanvas?()
+                                },
+                                onAnchorSculpture: { s in
+                                    onAnchorSculpture?(s)
+                                },
+                                onShowComingSoon: {
+                                    showComingSoonPopup = true
+                                }
+                            )
+                            .disabled(deletingSculptureID != nil)
+                            .opacity(deletingSculptureID != nil ? 0.5 : 1.0)
+                        }
                     }
-                    .scrollTargetBehavior(.viewAligned)
-                    .scrollPosition(id: $selectedSculptureID)
-                    .safeAreaPadding(.horizontal, (UIScreen.main.bounds.width * 0.15))
+                    .ignoresSafeArea(.all, edges: .bottom) 
                 }
             }
-            .padding(.top, 50)
             
             if showOnboarding {
                 OnboardingView(isPresented: $showOnboarding)

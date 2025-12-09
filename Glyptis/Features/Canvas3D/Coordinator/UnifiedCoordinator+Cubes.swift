@@ -57,20 +57,21 @@ extension UnifiedCoordinator {
     }
     
     // Adiciona um cubo diretamente na posição 3D com animação
-    func addCube(at position: SIMD3<Float>, key: String, color: UIColor? = nil, skipHeightUpdate: Bool = false) {
+    func addCube(at position: SIMD3<Float>, key: String, color: UIColor? = nil, skipHeightUpdate: Bool = false, animated: Bool = true) {
         guard let anchor = anchor else { return }
         
-        triggerHaptic(style: .medium)
-        SoundManager.shared.playSound(named: "addCube", volume: 2)
+        // Só toca som e haptics se for animado (interação do usuário)
+        if animated {
+            triggerHaptic(style: .medium)
+            SoundManager.shared.playSound(named: "addCube", volume: 2)
+        }
         
         let parts = key.split(separator: "_")
         let x = Int(parts[0])!
         let z = Int(parts[1])!
         
-        // Calcula a layer baseada na posição Y, ou usa a altura atual da coluna
         let calculatedLayer: Int
         if skipHeightUpdate {
-            // Quando carregando, calcula a layer baseada na posição Y
             calculatedLayer = Int((position.y - (cubeSize / 2)) / cubeSize)
         } else {
             calculatedLayer = heights[key] ?? 0
@@ -82,42 +83,35 @@ extension UnifiedCoordinator {
             materials: [SimpleMaterial(color: cubeColor, isMetallic: false)]
         )
         
-        /// 1. Define a posição final
         cube.position = position
         cube.name = "cell_\(x)_\(z)_\(calculatedLayer)"
         cube.generateCollisionShapes(recursive: false)
         
-        /// 2. CONFIGURAÇÃO INICIAL DA ANIMAÇÃO:
-        /// Começa invisível
-        cube.scale = SIMD3<Float>(0.01, 0.01, 0.01)
-        
-        /// 3. Adiciona à cena
         anchor.addChild(cube)
         columns[key, default: []].append(cube)
         
-        // Atualiza a altura da coluna se não estiver carregando
         if !skipHeightUpdate {
             heights[key] = (heights[key] ?? 0) + 1
         } else {
-            // Ao carregar, atualiza a altura para o máximo da coluna
             let maxY = columns[key]?.map { $0.position.y }.max() ?? position.y
             let maxLayer = Int((maxY - (cubeSize / 2)) / cubeSize)
             heights[key] = maxLayer + 1
         }
         
-        /// 4. RODA A ANIMAÇÃO:
-        /// Cria um transform com a escala final (1.0 = 100% do tamanho)
-        var targetTransform = cube.transform
-        targetTransform.scale = SIMD3<Float>(1.0, 1.0, 1.0)
-        
-        /// Animação de 0.25s com curva 'easeOut' (rápido no começo, suave no final)
-        /// Isso cria um efeito tátil de "construção"
-        cube.move(to: targetTransform,
-                  relativeTo: cube.parent,
-                  duration: 0.10,
-                  timingFunction: .easeOut)
-        
-        print("cube just added \(cube)")
+        // LÓGICA DE ANIMAÇÃO ALTERADA
+        if animated {
+            cube.scale = SIMD3<Float>(0.01, 0.01, 0.01)
+            
+            var targetTransform = cube.transform
+            targetTransform.scale = SIMD3<Float>(1.0, 1.0, 1.0)
+            
+            cube.move(to: targetTransform,
+                      relativeTo: cube.parent,
+                      duration: 0.10,
+                      timingFunction: .easeOut)
+        } else {
+            cube.scale = SIMD3<Float>(1.0, 1.0, 1.0)
+        }
     }
     
     // Verifica se já existe um cubo naquela coordenada específica
