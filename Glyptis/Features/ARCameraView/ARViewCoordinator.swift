@@ -41,27 +41,29 @@ class ARViewCoordinator: NSObject, ARSessionDelegate, UIGestureRecognizerDelegat
     }
     
     private func setupARView() {
-        let config = ARWorldTrackingConfiguration()
-        config.planeDetection = [.horizontal, .vertical]
-        config.environmentTexturing = .automatic
-        
-        if let savedMap = retrieveWorldMap() {
-            config.initialWorldMap = savedMap
-            print("Mapa AR carregado com sucesso.")
+            arView.automaticallyConfigureSession = false
+            
+            let config = ARWorldTrackingConfiguration()
+            config.planeDetection = [.horizontal, .vertical]
+            config.environmentTexturing = .automatic
+            
+            if let savedMap = retrieveWorldMap() {
+                config.initialWorldMap = savedMap
+                print("Mapa AR carregado com sucesso. O ARKit tentará relocalizar.")
+            }
+            
+            arView.session.delegate = self
+            
+            let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap(_:)))
+            tapGesture.delegate = self
+            arView.addGestureRecognizer(tapGesture)
+            
+            let longPressGesture = UILongPressGestureRecognizer(target: self, action: #selector(handleLongPress(_:)))
+            longPressGesture.delegate = self
+            arView.addGestureRecognizer(longPressGesture)
+            
+            arView.session.run(config, options: [.resetTracking, .removeExistingAnchors])
         }
-        
-        arView.session.delegate = self
-        
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap(_:)))
-        tapGesture.delegate = self
-        arView.addGestureRecognizer(tapGesture)
-        
-        let longPressGesture = UILongPressGestureRecognizer(target: self, action: #selector(handleLongPress(_:)))
-        longPressGesture.delegate = self
-        arView.addGestureRecognizer(longPressGesture)
-        
-        arView.session.run(config, options: [])
-    }
     
     func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
         return true
