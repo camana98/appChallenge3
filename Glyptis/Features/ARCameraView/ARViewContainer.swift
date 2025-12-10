@@ -6,7 +6,7 @@
 //
 
 import Foundation
-internal import ARKit
+import ARKit
 internal import RealityKit
 import SwiftUI
 
