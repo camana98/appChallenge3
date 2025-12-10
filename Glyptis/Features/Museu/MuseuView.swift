@@ -54,27 +54,28 @@ struct MuseuView: View {
             
             VStack {
                 HStack {
-                    Color.clear
-                        .frame(width: 55, height: 55)
-                    
-                    Spacer()
-                    
-                    Text("Museu")
-                        .font(Fonts.title)
-                        .foregroundStyle(.customWhite)
-                    
-                    Spacer()
-                    
-                    if !vm.sculptures.isEmpty {
-                        SimpleCubeIcon(assetName: "gridCube", width: 55, height: 55) {
-                            showGridListMuseum.toggle()
-                        }
-                    } else {
                         Color.clear
                             .frame(width: 55, height: 55)
+                        
+                        Spacer()
+                        
+                        Text("Museu")
+                            .font(Fonts.title)
+                            .foregroundStyle(.customWhite)
+                        
+                        Spacer()
+                        
+                        if !vm.sculptures.isEmpty {
+                            SimpleCubeIcon(assetName: "gridCube", width: 55, height: 55) {
+                                showGridListMuseum.toggle()
+                            }
+                        } else {
+                            Color.clear
+                                .frame(width: 55, height: 55)
+                        }
                     }
-                }
-                .padding(.horizontal)
+                    .padding(.top, 60)
+                    .padding(.horizontal, 24)
                 
                 Spacer()
                 
@@ -190,18 +191,23 @@ struct MuseuView: View {
                 .presentationBackgroundInteraction(.enabled(upThrough: .medium))
         }
         .onAppear {
-            vm.fetchData()
-            if let onEdit = onEditSculpture {
-                vm.setOnEditNavigation(onEdit)
-            }
-            if !hasSeenOnboarding {
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                    withAnimation {
-                        showOnboarding = true
+                    vm.fetchData()
+                    
+                    if selectedSculptureID == nil, let first = vm.sculptures.first {
+                        selectedSculptureID = first.id
+                    }
+                    
+                    if let onEdit = onEditSculpture {
+                        vm.setOnEditNavigation(onEdit)
+                    }
+                    if !hasSeenOnboarding {
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                            withAnimation {
+                                showOnboarding = true
+                            }
+                        }
                     }
                 }
-            }
-        }
         .alert(item: $sculptureToDelete) { sculpture in
             Alert(
                 title: Text("Tem certeza que deseja deletar sua escultura \"\(sculpture.name)\"?"),

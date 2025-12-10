@@ -23,7 +23,6 @@ struct ARCameraView: View {
     @State private var showAdjustmentHint: Bool = false
     @State private var anchorToDelete: ARAnchor? = nil
     
-    // Controles de Edição
     @State private var showEditControls: Bool = false
     @State private var currentHeight: Float = 0.0
     @State private var currentRotation: Float = 0.0
@@ -53,9 +52,18 @@ struct ARCameraView: View {
             }
             
             VStack {
-                // --- TOPO ---
-                HStack(alignment: .top) {
+                HStack {
+                    Color.clear
+                        .frame(width: 54, height: 56)
+                    
                     Spacer()
+                    
+                    Text("Câmera AR")
+                        .font(Fonts.title)
+                        .foregroundStyle(.customWhite)
+                    
+                    Spacer()
+                    
                     Button {
                         withAnimation { showHelpPopup = true }
                     } label: {
@@ -65,9 +73,9 @@ struct ARCameraView: View {
                             .frame(width: 54, height: 56)
                             .shadow(radius: 4)
                     }
-                    .padding(.trailing, 16)
-                    .padding(.top, 16)
                 }
+                .padding(.top, 16)
+                .padding(.horizontal, 16)
                 
                 Spacer()
                 
