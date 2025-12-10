@@ -63,11 +63,11 @@ struct MuseuButtonsComponent: View {
         .padding(.bottom, 54) // Padding interno para o conteúdo não colar na borda inferior
         .frame(maxWidth: .infinity)
         .background(.ultraThinMaterial) // Efeito de vidro
-        .clipShape(RoundedRectangle(cornerRadius: 70, style: .continuous))
+        .clipShape(RoundedRectangle(cornerRadius: 50, style: .continuous))
         .shadow(color: Color.black.opacity(0.1), radius: 10, x: 0, y: -5) // Sombra suave
         .overlay( // Borda fina branca para efeito "Liquid"
-            RoundedRectangle(cornerRadius: 70, style: .continuous)
-                .stroke(Color.white.opacity(0.3), lineWidth: 1)
+            RoundedRectangle(cornerRadius: 50, style: .continuous)
+                .stroke(Color.white.opacity(0.5), lineWidth: 1)
         )
         .preferredColorScheme(.light)
         .sheet(isPresented: $showOptionsModal) {

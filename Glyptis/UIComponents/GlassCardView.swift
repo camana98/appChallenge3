@@ -38,7 +38,7 @@ struct GlassCardView: View {
         .shadow(color: Color.black.opacity(0.1), radius: 10, x: 0, y: -5)
         .overlay(
             UnevenRoundedRectangle(cornerRadii: .init(topLeading: 35, bottomLeading: 0, bottomTrailing: 0, topTrailing: 35))
-                .stroke(Color.white.opacity(0.3), lineWidth: 1)
+                .stroke(Color.white.opacity(0.5), lineWidth: 1)
         )
     }
 }

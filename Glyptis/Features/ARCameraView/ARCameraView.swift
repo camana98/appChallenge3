@@ -53,9 +53,6 @@ struct ARCameraView: View {
             
             VStack {
                 HStack {
-                    Color.clear
-                        .frame(width: 54, height: 56)
-                    
                     Spacer()
                     
                     Text("Camera")
@@ -63,16 +60,6 @@ struct ARCameraView: View {
                         .foregroundStyle(.customWhite)
                     
                     Spacer()
-                    
-                    Button {
-                        withAnimation { showHelpPopup = true }
-                    } label: {
-                        Image("infoCube")
-                            .resizable()
-                            .scaledToFit()
-                            .frame(width: 54, height: 56)
-                            .shadow(radius: 4)
-                    }
                 }
                 .padding(.top, 16)
                 .padding(.horizontal, 16)
@@ -87,7 +74,7 @@ struct ARCameraView: View {
                         }
                     )
                     .transition(.move(edge: .bottom).combined(with: .opacity))
-                    .padding(.bottom, 40)
+//                    .padding(.bottom, 40)
                     
                 } else if let _ = sculptureToAnchor {
                     ARPlacementControls(
@@ -114,13 +101,17 @@ struct ARCameraView: View {
                 } else {
                     ARMainNavigationControls(
                         onOpenMuseum: onOpenMuseum,
-                        onOpenCanvas: onOpenCanvas
+                        onOpenInfo: {
+                            withAnimation { showHelpPopup = true }
+                        }
                     )
                     .transition(.move(edge: .bottom).combined(with: .opacity))
+                    .padding(.top, -100)
                 }
             }
             .edgesIgnoringSafeArea(.bottom)
             .zIndex(2)
+            
             
             if showEditControls && sculptureToAnchor == nil {
                 HStack {

@@ -75,7 +75,7 @@ struct MuseuView: View {
                         }
                     }
                     .padding(.top, 60)
-                    .padding(.horizontal, 24)
+                    .padding(.horizontal, 45)
                 
                 Spacer()
                 
