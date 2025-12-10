@@ -31,7 +31,8 @@ struct UnifiedCanvasContainer: UIViewRepresentable {
     func makeUIView(context: Context) -> ARView {
         let arView = ARView(frame: .zero, cameraMode: .nonAR, automaticallyConfigureSession: false)
         arView.environment.background = .color(.clear)
-
+        arView.renderOptions.insert(.disableMotionBlur)
+        
         /// setup anchor, cena e coordinator
         let anchor = AnchorEntity(world: .zero)
         arView.scene.anchors.append(anchor)
