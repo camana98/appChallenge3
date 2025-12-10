@@ -5,7 +5,7 @@
 //  Created by Vicenzo Másera on 24/11/25.
 //
 
-import ARKit
+internal import ARKit
 internal import RealityKit
 import Foundation
 import SwiftUI

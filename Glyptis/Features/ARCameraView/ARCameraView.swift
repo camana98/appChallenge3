@@ -8,7 +8,7 @@
 import SwiftUI
 import SwiftData
 import AVFoundation
-import ARKit
+internal import ARKit
 
 struct ARCameraView: View {
     
