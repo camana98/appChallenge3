@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import ARKit
+internal import ARKit
 internal import RealityKit
 import SwiftUI
 
@@ -20,3 +20,4 @@ struct ARViewContainer: UIViewRepresentable {
     func updateUIView(_ uiView: ARView, context: Context) {
     }
 }
+

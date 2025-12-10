@@ -5,7 +5,7 @@
 //  Created by Vicenzo Másera on 24/11/25.
 //
 
-import ARKit
+internal import ARKit
 internal import RealityKit
 import Foundation
 import SwiftUI
@@ -40,6 +40,8 @@ class ARViewCoordinator: NSObject, ARSessionDelegate, UIGestureRecognizerDelegat
         setupARView()
     }
     
+    private var arConfig: ARWorldTrackingConfiguration?
+    
     private func setupARView() {
             arView.automaticallyConfigureSession = false
             
@@ -52,6 +54,7 @@ class ARViewCoordinator: NSObject, ARSessionDelegate, UIGestureRecognizerDelegat
                 print("Mapa AR carregado com sucesso. O ARKit tentará relocalizar.")
             }
             
+            self.arConfig = config
             arView.session.delegate = self
             
             let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap(_:)))
@@ -62,8 +65,47 @@ class ARViewCoordinator: NSObject, ARSessionDelegate, UIGestureRecognizerDelegat
             longPressGesture.delegate = self
             arView.addGestureRecognizer(longPressGesture)
             
-            arView.session.run(config, options: [.resetTracking, .removeExistingAnchors])
+            // Não inicia a sessão automaticamente - será iniciada quando necessário
         }
+    
+    // MARK: - Controle de Sessão AR
+    
+    /// Inicia ou retoma a sessão AR (chamado quando entra na câmera AR)
+    func startARSession() {
+        guard let config = arConfig else {
+            // Se não tiver config, cria uma nova
+            let newConfig = ARWorldTrackingConfiguration()
+            newConfig.planeDetection = [.horizontal, .vertical]
+            newConfig.environmentTexturing = .automatic
+            
+            if let savedMap = retrieveWorldMap() {
+                newConfig.initialWorldMap = savedMap
+            }
+            
+            self.arConfig = newConfig
+            arView.session.run(newConfig, options: [.resetTracking, .removeExistingAnchors])
+            return
+        }
+        
+        // Retoma a sessão com a configuração salva
+        arView.session.run(config, options: [])
+    }
+    
+    /// Pausa a sessão AR (chamado quando sai da câmera AR)
+    /// Isso evita que a sessão AR interfira nas snapshots do Canvas
+    func pauseARSession() {
+        // Verifica se a sessão está rodando antes de pausar
+        // Isso evita crashes quando a sessão não foi iniciada ainda
+        guard arView.session.configuration != nil else {
+            return
+        }
+        
+        // Pausa apenas se a sessão estiver ativa
+        // Verifica se a sessão não está já pausada para evitar crashes
+        if arView.session.configuration != nil {
+            arView.session.pause()
+        }
+    }
     
     func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
         return true

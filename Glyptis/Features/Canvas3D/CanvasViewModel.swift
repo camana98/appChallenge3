@@ -28,7 +28,14 @@ class CanvasViewModel: ObservableObject {
         coordinator.removeMode = removeMode
         coordinator.selectedColor = UIColor(selectedColor)
         coordinator.updateRotation(rotationY)
-        renderAllCubes()
+        
+        // Renderiza os cubos apenas se houver cubos para renderizar
+        // Aguarda um pouco para garantir que o coordinator esteja totalmente inicializado
+        if !unfinishedCubes.isEmpty {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                self.renderAllCubes()
+            }
+        }
     }
 
     // Alterna entre modo remover/adicionar

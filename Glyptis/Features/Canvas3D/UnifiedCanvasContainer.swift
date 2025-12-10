@@ -7,7 +7,7 @@
 
 import SwiftUI
 internal import RealityKit
-import ARKit
+internal import ARKit
 
 struct UnifiedCanvasContainer: UIViewRepresentable {
     @Binding var removeMode: Bool

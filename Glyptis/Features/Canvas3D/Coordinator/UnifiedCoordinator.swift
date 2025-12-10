@@ -8,7 +8,7 @@
 import SwiftUI
 internal import RealityKit
 import Combine
-import ARKit
+internal import ARKit
 
 protocol CubeDelegate: AnyObject {
     func didAddCube(x: Float, y: Float, z: Float, colorR: Float, colorG: Float, colorB: Float, colorA: Float)

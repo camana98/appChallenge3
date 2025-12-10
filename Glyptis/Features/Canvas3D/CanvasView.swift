@@ -7,6 +7,7 @@
 
 import SwiftUI
 internal import RealityKit
+internal import ARKit
 
 struct CanvasView: View {
     @StateObject private var vm = CanvasViewModel()
@@ -55,6 +56,12 @@ struct CanvasView: View {
                 onARViewCreated: { view in
                     DispatchQueue.main.async {
                         self.arView = view
+                        
+                        // Carrega a escultura após o ARView estar pronto
+                        // Isso garante que o coordinator esteja inicializado
+                        if let sculpture = sculptureToEdit {
+                            vm.loadSculpture(sculpture)
+                        }
                     }
                 }
             )
@@ -88,12 +95,14 @@ struct CanvasView: View {
                     Spacer()
                     
                     SimpleCubeIcon(assetName: "saveCube", width: 55, height: 56) {
-                        
-                        vm.coordinator?.updateCameraPosition(animated: true)
-                        Timer.scheduledTimer(withTimeInterval: 0.2, repeats: false) {_ in
-                            
-                        }
                         guard let arView else { return }
+                        
+                        // Atualiza a posição da câmera antes de tirar a snapshot
+                        vm.coordinator?.updateCameraPosition(animated: true)
+                        // Timer.scheduledTimer(withTimeInterval: 0.2, repeats: false) {_ in
+                            
+                        // }
+                        // guard let arView else { return }
                         
                         let referenceModel = arView.scene.findEntity(named: "reference_model")
                         let gridLines = arView.scene.findEntity(named: "grid_lines")
@@ -101,15 +110,24 @@ struct CanvasView: View {
                         referenceModel?.isEnabled = false
                         gridLines?.isEnabled = false
                         
-                        SnapshotService.takeSnapshot(from: arView, cameraCoordinator: vm.coordinator) { image in
-                            guard let image else { return }
-                            
-                            referenceModel?.isEnabled = true
-                            gridLines?.isEnabled = true
-                            
-                            self.snapshot = image.pngData()
-                            
-                            showNamingPopup = true
+                        // Aguarda um pouco para garantir que a câmera foi atualizada e tudo foi renderizado
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                            SnapshotService.takeSnapshot(from: arView, cameraCoordinator: vm.coordinator) { image in
+                                guard let image else {
+                                    // Restaura os elementos mesmo em caso de erro
+                                    referenceModel?.isEnabled = true
+                                    gridLines?.isEnabled = true
+                                    return
+                                }
+                                
+                                // Restaura os elementos após a snapshot
+                                referenceModel?.isEnabled = true
+                                gridLines?.isEnabled = true
+                                
+                                self.snapshot = image.pngData()
+                                
+                                showNamingPopup = true
+                            }
                         }
                     }
                     .accessibilityIdentifier("SaveSculptureButton")
@@ -139,9 +157,10 @@ struct CanvasView: View {
             vm.removeMode = false
         }
         .onAppear {
+            // Define o nome da escultura se estiver editando
             if let sculpture = sculptureToEdit {
-                vm.loadSculpture(sculpture)
                 sculptureName = sculpture.name
+                // A escultura será carregada quando o ARView estiver pronto (no onARViewCreated)
             }
         }
         

@@ -8,7 +8,7 @@
 import SwiftUI
 import SwiftData
 import AVFoundation
-import ARKit
+internal import ARKit
 
 struct ARCameraView: View {
     
@@ -170,11 +170,19 @@ struct ARCameraView: View {
             checkCameraPermission()
             setupCoordinatorCallbacks()
             
+            // Inicia a sessão AR quando entra na câmera
+            coordinator.startARSession()
+            
             if let sculpture = sculptureToAnchor {
                 coordinator.showPreview(of: sculpture)
             } else {
                 coordinator.clearPreview()
             }
+        }
+        .onDisappear {
+            // Pausa a sessão AR quando sai da câmera
+            // Isso evita que interfira nas snapshots do Canvas
+            coordinator.pauseARSession()
         }
         .onChange(of: scenePhase) { newPhase in
                     if newPhase == .active {
