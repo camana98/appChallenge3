@@ -14,6 +14,8 @@ class ARViewCoordinator: NSObject, ARSessionDelegate, UIGestureRecognizerDelegat
     
     static let shared = ARViewCoordinator()
     
+    var onTrackingStateChanged: ((String?) -> Void)?
+    
     var arView: ARView
     var previewAnchor: AnchorEntity?
     var activeSculpture: Sculpture?
@@ -107,14 +109,17 @@ class ARViewCoordinator: NSObject, ARSessionDelegate, UIGestureRecognizerDelegat
     }
     
     func remove(anchor: ARAnchor) {
-        arView.session.remove(anchor: anchor)
-        if let selectedEntity = selectedEntityForHeight,
-           let anchorEntity = selectedEntity.findAnchorEntity(),
-           anchorEntity.anchorIdentifier == anchor.identifier {
-            selectedEntityForHeight = nil
-            onSelectionCleared?()
-        }
-    }
+            arView.session.remove(anchor: anchor)
+            if let selectedEntity = selectedEntityForHeight,
+               let anchorEntity = selectedEntity.findAnchorEntity(),
+               anchorEntity.anchorIdentifier == anchor.identifier {
+                selectedEntityForHeight = nil
+                onSelectionCleared?()
+            }
+            
+            // MARK: - ATUALIZAÇÃO: Salvar o mapa após remover
+            self.saveWorldMap()
+        }   
     
     // MARK: - Persistence & Setup
     func saveWorldMap() {
@@ -165,19 +170,26 @@ class ARViewCoordinator: NSObject, ARSessionDelegate, UIGestureRecognizerDelegat
         }
     
     func anchorPreview() -> Bool {
-        guard let sculpture = activeSculpture else { return false }
-        let centerPoint = CGPoint(x: arView.bounds.midX, y: arView.bounds.midY)
-        let results = arView.raycast(from: centerPoint, allowing: .estimatedPlane, alignment: .any)
-        if let firstResult = results.first {
-            clearPreview()
-            let anchorName = "sculpture_ID:\(sculpture.id.uuidString)"
-            let arAnchor = ARAnchor(name: anchorName, transform: firstResult.worldTransform)
-            arView.session.add(anchor: arAnchor)
-            self.activeSculpture = nil
-            return true
+            guard let sculpture = activeSculpture else { return false }
+            let centerPoint = CGPoint(x: arView.bounds.midX, y: arView.bounds.midY)
+            
+            // Permite estimatedPlane para facilitar, mas existingPlane é mais preciso para persistência
+            let results = arView.raycast(from: centerPoint, allowing: .estimatedPlane, alignment: .any)
+            
+            if let firstResult = results.first {
+                clearPreview()
+                let anchorName = "sculpture_ID:\(sculpture.id.uuidString)"
+                let arAnchor = ARAnchor(name: anchorName, transform: firstResult.worldTransform)
+                arView.session.add(anchor: arAnchor)
+                self.activeSculpture = nil
+                
+                // MARK: - ATUALIZAÇÃO: Salvar o mapa imediatamente após fixar
+                self.saveWorldMap()
+                
+                return true
+            }
+            return false
         }
-        return false
-    }
     
     func session(_ session: ARSession, didAdd anchors: [ARAnchor]) {
         for anchor in anchors {

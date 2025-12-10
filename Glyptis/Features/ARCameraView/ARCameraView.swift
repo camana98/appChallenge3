@@ -12,22 +12,20 @@ import ARKit
 
 struct ARCameraView: View {
     
+    let coordinator = ARViewCoordinator.shared
+    
     @Environment(\.modelContext) private var context
     @Environment(\.scenePhase) var scenePhase
     
-    let coordinator = ARViewCoordinator.shared
-    
     @State private var isCameraAccessDenied = false
     @State var sculptureToAnchor: Sculpture?
-    
     @State private var showAdjustmentHint: Bool = false
     @State private var anchorToDelete: ARAnchor? = nil
-    
     @State private var showEditControls: Bool = false
     @State private var currentHeight: Float = 0.0
     @State private var currentRotation: Float = 0.0
-    
     @State private var showHelpPopup: Bool = false
+    @State private var showPlacementError: Bool = false
 
     var onOpenCanvas: () -> Void
     var onOpenMuseum: () -> Void
@@ -38,6 +36,28 @@ struct ARCameraView: View {
             ARViewContainer()
                 .edgesIgnoringSafeArea(.all)
                 .opacity(isCameraAccessDenied ? 0 : 1)
+            
+            if showPlacementError {
+                VStack {
+                    HStack(spacing: 12) {
+                        Image(systemName: "exclamationmark.triangle.fill")
+                            .foregroundColor(.yellow)
+                        
+                        Text("Não foi possível fixar.\nProcure uma superfície plana e bem iluminada.")
+                            .font(.callout)
+                            .foregroundStyle(.white)
+                            .multilineTextAlignment(.leading)
+                    }
+                    .padding()
+                    .background(.ultraThinMaterial)
+                    .clipShape(RoundedRectangle(cornerRadius: 16))
+                    .padding(.top, 60)
+                    
+                    Spacer()
+                }
+                .transition(.move(edge: .top).combined(with: .opacity))
+                .zIndex(10)
+            }
             
             if isCameraAccessDenied {
                 CameraAccessDeniedView()
@@ -74,25 +94,42 @@ struct ARCameraView: View {
                         }
                     )
                     .transition(.move(edge: .bottom).combined(with: .opacity))
-//                    .padding(.bottom, 40)
                     
                 } else if let _ = sculptureToAnchor {
                     ARPlacementControls(
                         onCancel: {
                             coordinator.clearPreview()
                             withAnimation { sculptureToAnchor = nil }
+                            showPlacementError = false
                         },
                         onConfirm: {
                             let success = coordinator.anchorPreview()
+                            
                             if success {
+                                /// SUCESSO
                                 let generator = UIImpactFeedbackGenerator(style: .heavy)
                                 generator.impactOccurred()
                                 withAnimation {
                                     sculptureToAnchor = nil
                                     showAdjustmentHint = true
+                                    showPlacementError = false
                                 }
                                 DispatchQueue.main.asyncAfter(deadline: .now() + 4.0) {
                                     withAnimation { showAdjustmentHint = false }
+                                }
+                            } else {
+                                /// FALHA - Mostra o erro
+                                let generator = UINotificationFeedbackGenerator()
+                                generator.notificationOccurred(.error)
+                                
+                                withAnimation {
+                                    showPlacementError = true
+                                }
+                                
+                                DispatchQueue.main.asyncAfter(deadline: .now() + 4.0) {
+                                    withAnimation {
+                                        showPlacementError = false
+                                    }
                                 }
                             }
                         }
@@ -139,10 +176,14 @@ struct ARCameraView: View {
             }
         }
         .onChange(of: scenePhase) { newPhase in
-            if newPhase == .active {
-                checkCameraPermission()
-            }
-        }
+                    if newPhase == .active {
+                        checkCameraPermission()
+                    } else if newPhase == .background || newPhase == .inactive {
+                        // MARK: - Salvar mapa ao sair do app
+                        print("💾 App indo para background, salvando WorldMap...")
+                        coordinator.saveWorldMap()
+                    }
+                }
         .alert(item: $anchorToDelete) { anchor in
             Alert(
                 title: Text("Remover escultura?"),
