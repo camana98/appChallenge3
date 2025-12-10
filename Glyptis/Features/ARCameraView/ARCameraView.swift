@@ -94,6 +94,7 @@ struct ARCameraView: View {
                         }
                     )
                     .transition(.move(edge: .bottom).combined(with: .opacity))
+                    .padding(.bottom, 20)
                     
                 } else if let _ = sculptureToAnchor {
                     ARPlacementControls(
@@ -160,7 +161,7 @@ struct ARCameraView: View {
                         }
                     )
                 }
-                .padding(.trailing, 24)
+                .padding(.trailing, 20)
                 .transition(.move(edge: .trailing).combined(with: .opacity))
                 .zIndex(3)
             }
@@ -179,8 +180,6 @@ struct ARCameraView: View {
                     if newPhase == .active {
                         checkCameraPermission()
                     } else if newPhase == .background || newPhase == .inactive {
-                        // MARK: - Salvar mapa ao sair do app
-                        print("💾 App indo para background, salvando WorldMap...")
                         coordinator.saveWorldMap()
                     }
                 }

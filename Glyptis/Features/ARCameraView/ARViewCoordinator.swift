@@ -47,7 +47,7 @@ class ARViewCoordinator: NSObject, ARSessionDelegate, UIGestureRecognizerDelegat
         
         if let savedMap = retrieveWorldMap() {
             config.initialWorldMap = savedMap
-            print("🗺️ Mapa AR carregado com sucesso.")
+            print("Mapa AR carregado com sucesso.")
         }
         
         arView.session.delegate = self
@@ -109,19 +109,19 @@ class ARViewCoordinator: NSObject, ARSessionDelegate, UIGestureRecognizerDelegat
     }
     
     func remove(anchor: ARAnchor) {
-            arView.session.remove(anchor: anchor)
-            if let selectedEntity = selectedEntityForHeight,
-               let anchorEntity = selectedEntity.findAnchorEntity(),
-               anchorEntity.anchorIdentifier == anchor.identifier {
-                selectedEntityForHeight = nil
-                onSelectionCleared?()
-            }
-            
-            // MARK: - ATUALIZAÇÃO: Salvar o mapa após remover
-            self.saveWorldMap()
-        }   
+        arView.session.remove(anchor: anchor)
+        if let selectedEntity = selectedEntityForHeight,
+           let anchorEntity = selectedEntity.findAnchorEntity(),
+           anchorEntity.anchorIdentifier == anchor.identifier {
+            selectedEntityForHeight = nil
+            onSelectionCleared?()
+        }
+        
+        self.saveWorldMap()
+    }
     
     // MARK: - Persistence & Setup
+    
     func saveWorldMap() {
         arView.session.getCurrentWorldMap { map, error in
             guard let map = map else { return }
@@ -138,58 +138,54 @@ class ARViewCoordinator: NSObject, ARSessionDelegate, UIGestureRecognizerDelegat
     }
     
     func showPreview(of sculpture: Sculpture) {
-            self.activeSculpture = sculpture
-            clearPreview()
-            
-            let cameraAnchor = AnchorEntity(.camera)
-            
-            let sculptureEntity = buildSculptureEntity(from: sculpture, opacity: 0.5)
-            let bounds = sculptureEntity.visualBounds(relativeTo: sculptureEntity)
-            let size = bounds.extents
-            let maxDimension = max(size.x, max(size.y, size.z))
-            
-
-            let targetSize: Float = 0.25
-            let scaleFactor = maxDimension > 0 ? (targetSize / maxDimension) : 1.0
-            
-            // 4. Cria um container para segurar a escultura na frente da câmera
-            let previewContainer = Entity()
-            
-            // Posiciona o container na frente da câmera (50cm à frente, levemente abaixo do centro)
-        previewContainer.position = [0, -0.1, -2.0]
-            
-            previewContainer.scale = SIMD3<Float>(repeating: scaleFactor)
+        self.activeSculpture = sculpture
+        clearPreview()
         
-            sculptureEntity.position = -bounds.center
-            
-            previewContainer.addChild(sculptureEntity)
-            cameraAnchor.addChild(previewContainer)
-            
-            arView.scene.addAnchor(cameraAnchor)
-            self.previewAnchor = cameraAnchor
-        }
+        let cameraAnchor = AnchorEntity(.camera)
+        
+        let sculptureEntity = buildSculptureEntity(from: sculpture, opacity: 0.5)
+        let bounds = sculptureEntity.visualBounds(relativeTo: sculptureEntity)
+        let size = bounds.extents
+        let maxDimension = max(size.x, max(size.y, size.z))
+        
+        
+        let targetSize: Float = 0.25
+        let scaleFactor = maxDimension > 0 ? (targetSize / maxDimension) : 1.0
+        
+        let previewContainer = Entity()
+        
+        previewContainer.position = [0, -0.1, -2.0]
+        
+        previewContainer.scale = SIMD3<Float>(repeating: scaleFactor)
+        
+        sculptureEntity.position = -bounds.center
+        
+        previewContainer.addChild(sculptureEntity)
+        cameraAnchor.addChild(previewContainer)
+        
+        arView.scene.addAnchor(cameraAnchor)
+        self.previewAnchor = cameraAnchor
+    }
     
     func anchorPreview() -> Bool {
-            guard let sculpture = activeSculpture else { return false }
-            let centerPoint = CGPoint(x: arView.bounds.midX, y: arView.bounds.midY)
+        guard let sculpture = activeSculpture else { return false }
+        let centerPoint = CGPoint(x: arView.bounds.midX, y: arView.bounds.midY)
+        
+        let results = arView.raycast(from: centerPoint, allowing: .estimatedPlane, alignment: .any)
+        
+        if let firstResult = results.first {
+            clearPreview()
+            let anchorName = "sculpture_ID:\(sculpture.id.uuidString)"
+            let arAnchor = ARAnchor(name: anchorName, transform: firstResult.worldTransform)
+            arView.session.add(anchor: arAnchor)
+            self.activeSculpture = nil
             
-            // Permite estimatedPlane para facilitar, mas existingPlane é mais preciso para persistência
-            let results = arView.raycast(from: centerPoint, allowing: .estimatedPlane, alignment: .any)
+            self.saveWorldMap()
             
-            if let firstResult = results.first {
-                clearPreview()
-                let anchorName = "sculpture_ID:\(sculpture.id.uuidString)"
-                let arAnchor = ARAnchor(name: anchorName, transform: firstResult.worldTransform)
-                arView.session.add(anchor: arAnchor)
-                self.activeSculpture = nil
-                
-                // MARK: - ATUALIZAÇÃO: Salvar o mapa imediatamente após fixar
-                self.saveWorldMap()
-                
-                return true
-            }
-            return false
+            return true
         }
+        return false
+    }
     
     func session(_ session: ARSession, didAdd anchors: [ARAnchor]) {
         for anchor in anchors {
