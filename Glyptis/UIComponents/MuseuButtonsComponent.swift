@@ -30,7 +30,7 @@ struct MuseuButtonsComponent: View {
                     SimpleCubeIcon(assetName: "cameraAR", width: 54, height: 56) {
                         onOpenCamera()
                     }
-                    Text("Câmera AR")
+                    Text("Câmera")
                         .font(Fonts.notoCubeButton)
                         .foregroundStyle(.customBlue)
                 }

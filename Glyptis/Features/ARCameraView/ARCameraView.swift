@@ -58,7 +58,7 @@ struct ARCameraView: View {
                     
                     Spacer()
                     
-                    Text("Câmera AR")
+                    Text("Camera")
                         .font(Fonts.title)
                         .foregroundStyle(.customWhite)
                     

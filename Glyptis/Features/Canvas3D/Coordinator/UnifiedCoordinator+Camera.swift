@@ -8,53 +8,55 @@
 import Foundation
 internal import RealityKit
 
-
 extension UnifiedCoordinator {
 
     // MARK: - Camera
 
-    /// Atualiza a posição da câmera na cena 3D
     func updateCameraPosition(animated: Bool) {
         guard let anchor = anchor else { return }
 
         let radius: Float = 2.5 * currentScale
-        let fixedPitch: Float = .pi / 6
-
-        let camX = radius * sin(currentRotationY)
-        let camY = radius * sin(fixedPitch)
-        let camZ = radius * cos(currentRotationY)
+        
+        // Usa currentPitch (controlado pelo botão Visão Aérea)
+        let horizontalRadius = radius * cos(currentPitch)
+        let camY = radius * sin(currentPitch)
+        
+        let camX = horizontalRadius * sin(currentRotationY)
+        let camZ = horizontalRadius * cos(currentRotationY)
 
         let targetPosition = SIMD3<Float>(camX, camY, camZ)
 
-        /// Remove câmeras anteriores
-        anchor.children.filter { $0.name == "camera" }.forEach { $0.removeFromParent() }
-        
-        /// Cria nova câmera
-        let cameraEntity = PerspectiveCamera()
-        cameraEntity.name = "camera"
-        cameraEntity.look(at: .zero, from: targetPosition, relativeTo: nil)
-
-        if animated {
-            let move = Transform(
-                scale: .one,
-                rotation: simd_quatf(),
-                translation: targetPosition
-            )
-            cameraEntity.move(to: move, relativeTo: nil, duration: 0.15, timingFunction: .easeInOut)
+        // 1. Reutiliza câmera para evitar flicker
+        let cameraEntity: PerspectiveCamera
+        if let existingCamera = anchor.findEntity(named: "camera") as? PerspectiveCamera {
+            cameraEntity = existingCamera
         } else {
-            cameraEntity.position = targetPosition
+            cameraEntity = PerspectiveCamera()
+            cameraEntity.name = "camera"
+            cameraEntity.camera.near = 0.01
+            cameraEntity.camera.far = 100.0
+            anchor.addChild(cameraEntity)
         }
 
-        anchor.addChild(cameraEntity)
+        // 2. Aplica posição
+        if animated {
+            let currentTransform = cameraEntity.transform
+            
+            cameraEntity.look(at: .zero, from: targetPosition, relativeTo: nil)
+            let targetTransform = cameraEntity.transform
+            
+            cameraEntity.transform = currentTransform
+            cameraEntity.move(to: targetTransform, relativeTo: nil, duration: 0.3, timingFunction: .easeInOut)
+        } else {
+            cameraEntity.look(at: .zero, from: targetPosition, relativeTo: nil)
+        }
     }
 
-    /// Atualiza a rotação horizontal da câmera
     func updateRotation(_ value: Float) {
         currentRotationY = value
         updateCameraPosition(animated: false)
     }
 
-    /// Atualiza a càmera
     func updateCamera(animated: Bool = false) {
         updateCameraPosition(animated: animated)
     }

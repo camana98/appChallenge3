@@ -21,6 +21,9 @@ struct CanvasView: View {
     @State private var showConfirmClear: Bool = false
     @State private var snapshot: Data? = nil
     
+    // NOVO: Estado para controlar se estamos na visão aérea ou não
+    @State private var isAerialView: Bool = false
+    
     var sculptureToEdit: Sculpture?
     
     var onCancel: () -> Void
@@ -185,8 +188,9 @@ struct CanvasView: View {
     
     // MARK: - Tools Buttons
     private func toolsButtonsView() -> some View {
-        HStack(spacing: 60) {
+        HStack(spacing: 30) {
             
+            // 1. Demolir
             Button(action: { vm.toggleRemove() }) {
                 VStack(spacing: 6) {
                     SimpleCubeIcon(
@@ -198,12 +202,13 @@ struct CanvasView: View {
                     }
                     
                     Text("Demolir")
-                        .font(.custom("NotoSans-Medium", size: 15))
+                        .font(.custom("NotoSans-Medium", size: 12))
                         .foregroundColor(vm.removeMode ? .customRed : .accent)
                 }
             }
             .accessibilityIdentifier("DemolishCubeButton")
             
+            // 2. Limpar
             Button(action: { showConfirmClear = true }) {
                 VStack(spacing: 6) {
                     SimpleCubeIcon(
@@ -214,12 +219,34 @@ struct CanvasView: View {
                         showConfirmClear = true
                     }
                     Text("Limpar")
-                        .font(.custom("NotoSans-Medium", size: 15))
+                        .font(.custom("NotoSans-Medium", size: 12))
                         .foregroundColor(.accent)
                 }
             }
             .accessibilityIdentifier("ClearAllButton")
             
+            // 3. Visão Aérea / Normal (TOGGLE)
+            Button {
+                isAerialView.toggle()
+                vm.coordinator?.toggleAerialView()
+            } label: {
+                VStack(spacing: 6) {
+                    SimpleCubeIcon(
+                        assetName: isAerialView ? "cameraAR" : "gridCube",
+                        width: 54,
+                        height: 56
+                    ) {
+                        isAerialView.toggle()
+                        vm.coordinator?.toggleAerialView()
+                    }
+                    // Alterna o texto
+                    Text(isAerialView ? "Visão 3D" : "Visão Aérea")
+                        .font(.custom("NotoSans-Medium", size: 12))
+                        .foregroundColor(.accent)
+                }
+            }
+            
+            // 4. Cor
             Button {
                 withAnimation(.spring(response: 0.4, dampingFraction: 0.8)) {
                     showColorPicker = true
@@ -244,7 +271,7 @@ struct CanvasView: View {
                             .offset(x: 16, y: -16)
                     }
                     Text("Cor")
-                        .font(.custom("NotoSans-Medium", size: 15))
+                        .font(.custom("NotoSans-Medium", size: 12))
                         .foregroundColor(.accent)
                 }
             }
