@@ -12,19 +12,11 @@ import SwiftUI
 
 struct ARViewContainer: UIViewRepresentable {
     
-    @Binding var coordinator: ARViewCoordinator
-    
-    func makeUIView(context: Context) -> some UIView {
-        let view = coordinator.setupARView()
-        view.accessibilityIdentifier = "arViewContainer" // para UITests
-        return view
-        
+    func makeUIView(context: Context) -> ARView {
+        let arView = ARViewCoordinator.shared.arView
+        return arView
     }
     
-    func updateUIView(_ uiView: UIViewType, context: Context) {
-//         não faz nada
+    func updateUIView(_ uiView: ARView, context: Context) {
     }
-    
 }
-
-

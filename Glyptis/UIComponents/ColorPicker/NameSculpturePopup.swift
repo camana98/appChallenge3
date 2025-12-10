@@ -12,7 +12,6 @@ struct NameSculpturePopup: View {
     var onSave: () -> Void
     var onCancel: () -> Void
     @FocusState private var isUsernameFocused: Bool
-
     
     var body: some View {
         ZStack {
@@ -35,7 +34,7 @@ struct NameSculpturePopup: View {
                     .bold()
                     .foregroundColor(.black)
                 
-                Text("Para salvar sua escultura no museu, defina um nome para ela.")
+                Text("Para salvar sua escultura no museu, defina um nome para ela.\n\nObs: A posição da escultura no museu será a mesma do canvas.")
                     .font(.subheadline)
                     .fixedSize(horizontal: false, vertical: true)
                     .foregroundColor(.black)

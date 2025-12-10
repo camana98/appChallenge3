@@ -48,42 +48,38 @@ class CanvasViewModel: ObservableObject {
         coordinator?.updateRotation(value)
     }
 
-
-//    func removeCube(x: Float, y: Float, z: Float) {
-//        // Remove o cubo do array usando posição (x, y, z)
-//        // Remove o último cubo que corresponde à posição x, z (mesma coluna)
-//        // e tem a altura y mais próxima
-//        if let index = unfinishedCubes.lastIndex(where: { 
-//            abs($0.locationX - x) < 0.01 && 
-//            abs($0.locationZ - z) < 0.01 &&
-//            abs($0.locationY - y) < 0.01w
-//        }) {
-//            unfinishedCubes.remove(at: index)
-//        }
-//        let key = "\(Int(x))_\(Int(z))"
-//        coordinator?.removeCube(in: key)
-//        coordinator
-//    }
-
     func clearAllCubes() {
         coordinator?.clearAllCubes()
         unfinishedCubes.removeAll()
     }
 
     // Renderiza cubos da escultura atual
-    func renderAllCubes() {
-        for cube in unfinishedCubes {
-            let key = "\(Int(cube.locationX))_\(Int(cube.locationZ))"
-            let color = UIColor(
-                red: CGFloat(cube.colorR),
-                green: CGFloat(cube.colorG),
-                blue: CGFloat(cube.colorB),
-                alpha: CGFloat(cube.colorA)
-            )
-            let position = SIMD3<Float>(cube.locationX, cube.locationY, cube.locationZ)
-            coordinator?.addCube(at: position, key: key, color: color, skipHeightUpdate: true)
+    // Renderiza cubos da escultura atual
+        func renderAllCubes() {
+            guard let coordinator = coordinator else { return }
+            
+            // Dados necessários para o cálculo correto do índice
+            let stride = coordinator.cubeSize + coordinator.gap
+            let offset = coordinator.baseOffset
+            
+            for cube in unfinishedCubes {
+                // CORREÇÃO: Converter posição do mundo (Float) para índice da grade (Int)
+                let xIndex = Int(round((cube.locationX + offset) / stride))
+                let zIndex = Int(round((cube.locationZ + offset) / stride))
+                
+                let key = "\(xIndex)_\(zIndex)"
+                
+                let color = UIColor(
+                    red: CGFloat(cube.colorR),
+                    green: CGFloat(cube.colorG),
+                    blue: CGFloat(cube.colorB),
+                    alpha: CGFloat(cube.colorA)
+                )
+                let position = SIMD3<Float>(cube.locationX, cube.locationY, cube.locationZ)
+
+                coordinator.addCube(at: position, key: key, color: color, skipHeightUpdate: true, animated: false)
+            }
         }
-    }
     
     // MARK: - Carregar escultura existente para edição
     func loadSculpture(_ sculpture: Sculpture) {

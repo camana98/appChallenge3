@@ -30,10 +30,19 @@ struct MuseuView: View {
     
     var onBackClicked: () -> Void
     var onEditSculpture: ((Sculpture) -> Void)?
+    var onAnchorSculpture: ((Sculpture) -> Void)? // Novo callback
     var onOpenCamera: (() -> Void)? = nil
     var onOpenCanvas: (() -> Void)? = nil
     
     @Query private var sculptures: [Sculpture]
+    
+    var activeSculpture: Sculpture? {
+            if let id = selectedSculptureID, let sculpture = vm.sculptures.first(where: { $0.id == id }) {
+                return sculpture
+            }
+            return vm.sculptures.first
+        }
+    
     
     var body: some View {
         ZStack {
@@ -45,27 +54,28 @@ struct MuseuView: View {
             
             VStack {
                 HStack {
-                    Color.clear
-                        .frame(width: 55, height: 55)
-                    
-                    Spacer()
-                    
-                    Text("Museu")
-                        .font(Fonts.title)
-                        .foregroundStyle(.customWhite)
-                    
-                    Spacer()
-                    
-                    if !vm.sculptures.isEmpty {
-                        SimpleCubeIcon(assetName: "gridCube", width: 55, height: 55) {
-                            showGridListMuseum.toggle()
-                        }
-                    } else {
                         Color.clear
                             .frame(width: 55, height: 55)
+                        
+                        Spacer()
+                        
+                        Text("Museu")
+                            .font(Fonts.title)
+                            .foregroundStyle(.customWhite)
+                        
+                        Spacer()
+                        
+                        if !vm.sculptures.isEmpty {
+                            SimpleCubeIcon(assetName: "gridCube", width: 55, height: 55) {
+                                showGridListMuseum.toggle()
+                            }
+                        } else {
+                            Color.clear
+                                .frame(width: 55, height: 55)
+                        }
                     }
-                }
-                .padding(.horizontal)
+                    .padding(.top, 60)
+                    .padding(.horizontal, 45)
                 
                 Spacer()
                 
@@ -79,90 +89,83 @@ struct MuseuView: View {
                         }
                     )
                 } else {
-                    ScrollView(.horizontal, showsIndicators: false) {
-                        LazyHStack {
-                            ForEach(vm.sculptures) { sculpture in
-                                ZStack(alignment: .bottom) {
-                                    VStack(spacing: 0) {
-                                        
-                                        FloatingSculptureImage(
-                                            image: vm.getSnapshot(s: sculpture),
-                                            isActive: selectedSculptureID == sculpture.id && deletingSculptureID != sculpture.id
-                                        )
-                                        
-                                        Image(.colunaMuseu)
-                                            .padding(.leading, 10)
-                                    }
-                                    .scrollTransition { content, phase in //  editar coisas quando não estão no centro
-                                        content
-                                            .blur(radius: phase.isIdentity ? 0 : 1)
-                                            .scaleEffect(phase.isIdentity ? 1.0 : 0.85)
-                                            .brightness(phase.isIdentity ? 0 : -0.35)
-                                            .offset(y: phase.isIdentity ? 0 : -90) // vai pra cima qunaod não esá
-                                    }
-                                    .opacity(deletingSculptureID == sculpture.id ? 0 : 1)
-                                    .rotationEffect(.degrees(deletingSculptureID == sculpture.id ? -45 : 0))
-                                    .scaleEffect(deletingSculptureID == sculpture.id ? 0.8 : 1.0)
-                                    .offset(
-                                        x: deletingSculptureID == sculpture.id ? 100 : 0,
-                                        y: deletingSculptureID == sculpture.id ? UIScreen.main.bounds.height + 200 : 0
-                                    )
-                                    .animation(
-                                        deletingSculptureID == sculpture.id ?
-                                            .easeIn(duration: 0.9) :
-                                                .default,
-                                        value: deletingSculptureID
-                                    )
-                                    
-                                    MuseuButtonsComponent(
-                                        sculpture: sculpture,
-                                        vm: vm,
-                                        sculptureToDelete: $sculptureToDelete,
-                                        onOpenCamera: {
-                                            onOpenCamera?()
-                                        },
-                                        onOpenCanvas: {
-                                            onOpenCanvas?()
-                                        },
-                                        onShowComingSoon: {
-                                            showComingSoonPopup = true
+                    // MARK: - Conteúdo Principal (ZStack para sobreposição)
+                    ZStack(alignment: .bottom) {
+                        
+                        // 1. Carrossel de Esculturas (Fica atrás do menu)
+                        ScrollView(.horizontal, showsIndicators: false) {
+                            LazyHStack {
+                                ForEach(vm.sculptures) { sculpture in
+                                    ZStack(alignment: .bottom) {
+                                        VStack(spacing: 0) {
+                                            
+                                            FloatingSculptureImage(
+                                                image: vm.getSnapshot(s: sculpture),
+                                                isActive: selectedSculptureID == sculpture.id && deletingSculptureID != sculpture.id
+                                            )
+                                            
+                                            Image(.colunaMuseu)
+                                                .padding(.leading, 10)
                                         }
-                                    )
-                                    .padding(.bottom, 52)
-                                    .scrollTransition(axis: .horizontal) { content, phase in
-                                        content
-                                            .opacity(max(0, 1.0 - (abs(phase.value) * 4.0)))
-                                            .scaleEffect(phase.isIdentity ? 1.0 : 0.6)
+                                        .scrollTransition { content, phase in
+                                            content
+                                                .blur(radius: phase.isIdentity ? 0 : 1)
+                                                .scaleEffect(phase.isIdentity ? 1.0 : 0.85)
+                                                .brightness(phase.isIdentity ? 0 : -0.35)
+                                                .offset(y: phase.isIdentity ? 0 : -90)
+                                        }
+                                        .opacity(deletingSculptureID == sculpture.id ? 0 : 1)
+                                        .rotationEffect(.degrees(deletingSculptureID == sculpture.id ? -45 : 0))
+                                        .scaleEffect(deletingSculptureID == sculpture.id ? 0.8 : 1.0)
+                                        .offset(
+                                            x: deletingSculptureID == sculpture.id ? 100 : 0,
+                                            y: deletingSculptureID == sculpture.id ? UIScreen.main.bounds.height + 200 : 0
+                                        )
+                                        .animation(
+                                            deletingSculptureID == sculpture.id ?
+                                                .easeIn(duration: 0.9) :
+                                                    .default,
+                                            value: deletingSculptureID
+                                        )
                                     }
-                                    .opacity(deletingSculptureID == sculpture.id ? 0 : 1)
-                                    .rotationEffect(.degrees(deletingSculptureID == sculpture.id ? 45 : 0))
-                                    .scaleEffect(deletingSculptureID == sculpture.id ? 0.8 : 1.0)
-                                    .offset(
-                                        x: deletingSculptureID == sculpture.id ? -100 : 0,
-                                        y: deletingSculptureID == sculpture.id ? UIScreen.main.bounds.height + 200 : 0
-                                    )
-                                    .animation(
-                                        deletingSculptureID == sculpture.id ?
-                                            .easeIn(duration: 0.9) :
-                                            .default,
-                                        value: deletingSculptureID
-                                    )
-                                    
+                                    .containerRelativeFrame(.horizontal, count: 1, span: 1, spacing: 0)
+                                    .frame(width: UIScreen.main.bounds.width * 0.7)
                                 }
-                                .containerRelativeFrame(.horizontal, count: 1, span: 1, spacing: 0)
-                                .frame(width: UIScreen.main.bounds.width * 0.7)
                             }
+                            .scrollTargetLayout()
                         }
-                        .scrollTargetLayout()
+                        .scrollTargetBehavior(.viewAligned)
+                        .scrollPosition(id: $selectedSculptureID)
+                        .safeAreaPadding(.horizontal, (UIScreen.main.bounds.width * 0.15))
+                        // O padding bottom aqui garante que o conteúdo do ScrollView desça o suficiente
+                        .padding(.bottom, 0)
+                        
+                        // 2. Menu de Botões Fixo (Fica na frente, "Liquid Glass")
+                        if let currentSculpture = activeSculpture {
+                            MuseuButtonsComponent(
+                                sculpture: currentSculpture,
+                                vm: vm,
+                                sculptureToDelete: $sculptureToDelete,
+                                onOpenCamera: {
+                                    onOpenCamera?()
+                                },
+                                onOpenCanvas: {
+                                    onOpenCanvas?()
+                                },
+                                onAnchorSculpture: { s in
+                                    onAnchorSculpture?(s)
+                                },
+                                onShowComingSoon: {
+                                    showComingSoonPopup = true
+                                }
+                            )
+                            .disabled(deletingSculptureID != nil)
+                            .opacity(deletingSculptureID != nil ? 0.5 : 1.0)
+                        }
                     }
-                    .scrollTargetBehavior(.viewAligned) // permite o efeito de imã
-                    .scrollPosition(id: $selectedSculptureID)
-                    .safeAreaPadding(.horizontal, (UIScreen.main.bounds.width * 0.15))  // area pra cada um dos lados
-                    
-                    //                                        }
+                    .ignoresSafeArea(.all, edges: .bottom) 
                 }
             }
-            .padding(.top, 50)
             
             if showOnboarding {
                 OnboardingView(isPresented: $showOnboarding)
@@ -182,37 +185,36 @@ struct MuseuView: View {
                 .zIndex(200)
             }
         }
-        
-        
-        
         .sheet(isPresented: $showGridListMuseum) {
             MuseuGridListView(vm: MuseuGridViewModel(service: SwiftDataService.shared))
                 .presentationDetents([.medium, .large])
                 .presentationBackgroundInteraction(.enabled(upThrough: .medium))
         }
         .onAppear {
-            vm.fetchData()
-            if let onEdit = onEditSculpture {
-                vm.setOnEditNavigation(onEdit)
-            }
-            
-            if !hasSeenOnboarding {
-                
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                    withAnimation {
-                        showOnboarding = true
+                    vm.fetchData()
+                    
+                    if selectedSculptureID == nil, let first = vm.sculptures.first {
+                        selectedSculptureID = first.id
+                    }
+                    
+                    if let onEdit = onEditSculpture {
+                        vm.setOnEditNavigation(onEdit)
+                    }
+                    if !hasSeenOnboarding {
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                            withAnimation {
+                                showOnboarding = true
+                            }
+                        }
                     }
                 }
-            }
-        }
         .alert(item: $sculptureToDelete) { sculpture in
             Alert(
                 title: Text("Tem certeza que deseja deletar sua escultura \"\(sculpture.name)\"?"),
                 message: Text("Uma vez deletada, não poderá ser recuperada no museu."),
                 primaryButton: .destructive(Text("Sim, desejo deletar")) {
-                    // animação + delete, igual ao popup custom
                     deletingSculptureID = sculpture.id
-                    SoundManager.shared.playSound(named: "cleanCubes", volume: 1) // som quando demolir
+                    SoundManager.shared.playSound(named: "cleanCubes", volume: 1)
                     DispatchQueue.main.asyncAfter(deadline: .now() + 0.9) {
                         vm.delete(s: sculpture)
                         deletingSculptureID = nil
@@ -221,30 +223,6 @@ struct MuseuView: View {
                 secondaryButton: .cancel(Text("Não, desejo manter"))
             )
         }
-        //MARK: ISSO AQUI CASO VA USAR O DELETECONFIRMATIONPOPUP
-        //        .overlay {
-        //            if let sculpture = sculptureToDelete {
-        //                DeleteConfirmationPopup(
-        //                    sculptureName: sculpture.name,
-        //                    onConfirm: {
-        //                        sculptureToDelete = nil
-        //                        deletingSculptureID = sculpture.id
-        //
-        //                        // Aguarda a animação terminar antes de deletar
-        //                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.9) {
-        //                            vm.delete(s: sculpture)
-        //                            deletingSculptureID = nil
-        //                        }
-        //                    },
-        //                    onCancel: {
-        //                        sculptureToDelete = nil
-        //                    }
-        //                )
-        //                .transition(.opacity)
-        //                .zIndex(10)
-        //            }
-        //        }
-        
     }
     
     private func openInstagram() {
@@ -257,7 +235,6 @@ struct MuseuView: View {
         } else {
             UIApplication.shared.open(instagramWebURL)
         }
-        
         showComingSoonPopup = false
     }
 }
@@ -302,16 +279,5 @@ private struct FloatingSculptureImage: View {
         withAnimation(.easeOut(duration: 0.3)) {
             offsetY = 220
         }
-    }
-}
-
-#Preview {
-    var previewVM = MuseuViewModel(service: SwiftDataService.shared)
-    previewVM.sculptures = [
-        Sculpture(name: "hahahahaha")
-    ]
-    
-    return MuseuView(vm: previewVM) {
-        print("zum")
     }
 }

@@ -7,7 +7,6 @@
 
 import Foundation
 import SwiftUI
-//import UIKit
 
 struct MuseuButtonsComponent: View {
     
@@ -16,6 +15,7 @@ struct MuseuButtonsComponent: View {
     @Binding var sculptureToDelete: Sculpture?
     var onOpenCamera: () -> Void
     var onOpenCanvas: () -> Void
+    var onAnchorSculpture: ((Sculpture) -> Void)?
     var onShowComingSoon: () -> Void
     
     @State private var showOptionsModal: Bool = false
@@ -28,10 +28,9 @@ struct MuseuButtonsComponent: View {
             HStack(spacing: 32) {
                 VStack(alignment: .center, spacing: 4) {
                     SimpleCubeIcon(assetName: "cameraAR", width: 54, height: 56) {
-                        //onOpenCamera()
-                        onShowComingSoon()
+                        onOpenCamera()
                     }
-                    Text("Câmera AR")
+                    Text("Câmera")
                         .font(Fonts.notoCubeButton)
                         .foregroundStyle(.customBlue)
                 }
@@ -57,28 +56,34 @@ struct MuseuButtonsComponent: View {
                         .foregroundStyle(.customBlue)
                 }
                 .frame(width: 108, height: 82)
-    
-                
             }
-//            .padding(.bottom, 22)
         }
         .padding(.top, 26)
         .padding(.horizontal, 24)
-        .padding(.bottom, 54)
+        .padding(.bottom, 54) // Padding interno para o conteúdo não colar na borda inferior
         .frame(maxWidth: .infinity)
-        .background(.ultraThinMaterial)
-        .clipShape(RoundedRectangle(cornerRadius: 70, style: .continuous))
+        .background(.ultraThinMaterial) // Efeito de vidro
+        .clipShape(RoundedRectangle(cornerRadius: 50, style: .continuous))
+        .shadow(color: Color.black.opacity(0.1), radius: 10, x: 0, y: -5) // Sombra suave
+        .overlay( // Borda fina branca para efeito "Liquid"
+            RoundedRectangle(cornerRadius: 50, style: .continuous)
+                .stroke(Color.white.opacity(0.5), lineWidth: 1)
+        )
         .preferredColorScheme(.light)
         .sheet(isPresented: $showOptionsModal) {
             MuseuSculptureComponent(
                 sculpture: sculpture,
                 vm: vm,
                 onDeleteRequested: {
-                    // Fecha a modal primeiro
                     showOptionsModal = false
-                    // Depois dispara o alert com um pequeno delay
                     DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
                         sculptureToDelete = sculpture
+                    }
+                },
+                onAnchorRequested: {
+                    showOptionsModal = false
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                        onAnchorSculpture?(sculpture)
                     }
                 },
                 onShowComingSoon: {
@@ -88,7 +93,6 @@ struct MuseuButtonsComponent: View {
                     }
                 }
             )
-//            .padding(.horizontal, 24)
             .padding(.top, 40)
             .presentationDetents([.height(188)])
             .frame(maxWidth: .infinity)
@@ -97,22 +101,4 @@ struct MuseuButtonsComponent: View {
             .preferredColorScheme(.light)
         }
     }
-    
-    
-    
-}
-
-#Preview {
-    @Previewable @State var sculptureToDelete: Sculpture? = nil
-    let previewVM = MuseuViewModel(service: SwiftDataService.shared)
-    let previewSculpture = Sculpture(name: "Escultura Preview")
-    
-    return MuseuButtonsComponent(
-        sculpture: previewSculpture,
-        vm: previewVM,
-            sculptureToDelete: $sculptureToDelete,
-            onOpenCamera: {},
-            onOpenCanvas: {},
-            onShowComingSoon: {}
-        )
 }
