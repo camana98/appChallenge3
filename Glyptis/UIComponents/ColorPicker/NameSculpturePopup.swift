@@ -47,18 +47,17 @@ struct NameSculpturePopup: View {
                     .accessibilityIdentifier("SculptureNameTextField")
                     .focused($isUsernameFocused)
                 
-                Button("Salvar") {
-                    onSave()
+                Button(action: onSave) {
+                    Text("Salvar")
+                        .frame(maxWidth: .infinity)
+                        .padding()
+                        .background(Color("customBlue").opacity(0.8))
+                        .foregroundColor(.white)
+                        .cornerRadius(100)
+                        .contentShape(Rectangle())
                 }
-                .frame(maxWidth: .infinity)
-                .padding()
-                .background(Color("customBlue").opacity(0.8))
-                .foregroundColor(.white)
-                .cornerRadius(100)
+                .buttonStyle(.plain)
                 .accessibilityIdentifier("ConfirmSaveButton")
-                .onTapGesture {
-                    onSave()
-                }
                 
             }
             .padding()
@@ -71,4 +70,8 @@ struct NameSculpturePopup: View {
             isUsernameFocused = true
         }
     }
+}
+
+#Preview {
+    NameSculpturePopup(sculptureName: Binding.constant("oi"), onSave: {}, onCancel: {})
 }
